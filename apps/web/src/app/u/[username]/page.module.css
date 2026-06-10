@@ -1,0 +1,169 @@
+.profile {
+  display: grid;
+  gap: 22px;
+}
+
+.notice {
+  color: var(--color-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.error {
+  background: rgba(127, 29, 29, 0.26);
+  border: 1px solid rgba(248, 113, 113, 0.34);
+  border-radius: 16px;
+  color: #fecaca;
+  margin: 0;
+  padding: 12px 14px;
+}
+
+.success {
+  background: color-mix(in srgb, var(--color-primary) 14%, var(--color-card));
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  color: var(--color-text);
+  margin: 0;
+  padding: 12px 14px;
+}
+
+.notFound {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 28px;
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: 12px;
+  padding: 28px;
+}
+
+.notFound h1 {
+  color: var(--color-text);
+  margin: 0;
+}
+
+.notFound p {
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.notFound a,
+.actions button {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border: none;
+  border-radius: 14px;
+  color: var(--color-on-primary);
+  cursor: pointer;
+  font-weight: 900;
+  justify-self: start;
+  padding: 13px 16px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.profileContent {
+  background: color-mix(in srgb, var(--color-card) 94%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 28px;
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+}
+
+.tabs {
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+}
+
+.tabs button {
+  background: transparent;
+  border: none;
+  color: var(--color-muted);
+  cursor: pointer;
+  font-weight: 900;
+  padding: 0 18px 14px;
+  position: relative;
+}
+
+.tabs button::after {
+  background: transparent;
+  border-radius: 999px;
+  bottom: -1px;
+  content: "";
+  height: 3px;
+  left: 16px;
+  position: absolute;
+  right: 16px;
+}
+
+.activeTab {
+  color: var(--color-text) !important;
+}
+
+.activeTab::after {
+  background: var(--color-primary) !important;
+}
+
+.tiles {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tiles article {
+  background: color-mix(in srgb, var(--color-card) 86%, var(--color-primary));
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  display: grid;
+  gap: 10px;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.tiles article div {
+  aspect-ratio: 1 / 1;
+  background:
+    radial-gradient(circle at 28% 24%, color-mix(in srgb, var(--color-primary) 44%, transparent), transparent 28%),
+    linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 54%, var(--color-card)), var(--color-bg));
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.tiles article img,
+.tiles article video {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.tiles strong {
+  color: var(--color-text);
+  font-size: 14px;
+}
+
+.tiles span {
+  color: var(--color-muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+@media (max-width: 620px) {
+  .tiles {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    justify-content: stretch;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+}

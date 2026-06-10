@@ -1,0 +1,192 @@
+.rewardCard {
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, var(--color-primary) 10%, transparent), transparent 36%),
+    var(--color-card);
+  border: 1px solid color-mix(in srgb, var(--color-border) 86%, var(--color-primary));
+  border-radius: 16px;
+  box-shadow: var(--shadow-card);
+  padding: 13px;
+}
+
+.header,
+.level,
+.mission,
+.streakHeader,
+.week {
+  align-items: center;
+  display: flex;
+}
+
+.header {
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.header strong {
+  color: var(--color-text);
+  font-size: 16px;
+}
+
+.header a {
+  background: transparent;
+  border: none;
+  color: var(--color-primary-hover);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.level {
+  gap: 9px;
+  margin-bottom: 8px;
+}
+
+.crystal {
+  align-items: center;
+  background: radial-gradient(circle at 35% 25%, #ffffff, #64cfff 36%, #3154ff 72%);
+  border-radius: 10px;
+  color: #ffffff;
+  display: flex;
+  flex-shrink: 0;
+  height: 32px;
+  justify-content: center;
+  width: 32px;
+}
+
+.level div {
+  flex: 1;
+  min-width: 0;
+}
+
+.level small {
+  color: var(--color-muted);
+  display: block;
+  font-size: 10px;
+}
+
+.level strong {
+  color: var(--color-text);
+  display: block;
+  font-size: 12px;
+}
+
+.xp {
+  color: var(--color-muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.progress,
+.missionBar {
+  background: color-mix(in srgb, var(--color-border) 62%, transparent);
+  border-radius: 999px;
+  height: 5px;
+  overflow: hidden;
+}
+
+.progress {
+  margin-bottom: 13px;
+}
+
+.progress span,
+.missionBar span {
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+}
+
+.mission {
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 52%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--color-border) 52%, transparent);
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 10px 0;
+}
+
+.mission > svg {
+  color: var(--color-primary-hover);
+  flex-shrink: 0;
+  font-size: 18px;
+}
+
+.mission div {
+  flex: 1;
+  min-width: 0;
+}
+
+.mission strong {
+  color: var(--color-text);
+  display: block;
+  font-size: 12px;
+  margin-bottom: 7px;
+}
+
+.mission small {
+  color: var(--color-text);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.mission em {
+  align-items: center;
+  color: #8edbff;
+  display: flex;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.streakHeader {
+  color: var(--color-muted);
+  font-size: 11px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.streakHeader strong {
+  color: var(--color-text);
+}
+
+.week {
+  justify-content: space-between;
+}
+
+.week span {
+  align-items: center;
+  color: var(--color-muted);
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+}
+
+.week i {
+  align-items: center;
+  border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+  border-radius: 50%;
+  display: flex;
+  height: 18px;
+  justify-content: center;
+  width: 18px;
+}
+
+.week svg {
+  color: var(--color-on-primary);
+  font-size: 12px;
+}
+
+.week small {
+  font-size: 10px;
+}
+
+.done i {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border-color: transparent;
+}
+
+.done small {
+  color: var(--color-text);
+}

@@ -1,0 +1,379 @@
+.post {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  padding: 18px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatar {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.authorLink {
+  display: grid;
+  gap: 2px;
+}
+
+.header strong {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+}
+
+.header span {
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.moreButton {
+  margin-left: auto;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  color: var(--color-muted);
+}
+
+.optionsWrap {
+  margin-left: auto;
+  position: relative;
+}
+
+.optionsMenu {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: 4px;
+  min-width: 210px;
+  padding: 8px;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 10;
+}
+
+.optionsMenu button {
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  color: var(--color-text);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.optionsMenu button:hover {
+  background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+
+.text {
+  margin: 12px 0 10px 62px;
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+.meta {
+  display: flex;
+  gap: 10px;
+  margin: 0 0 14px 62px;
+  flex-wrap: wrap;
+}
+
+.meta span {
+  background: color-mix(in srgb, var(--color-primary) 14%, var(--color-card));
+  color: var(--color-text);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meta svg {
+  color: var(--color-primary-hover);
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.media {
+  aspect-ratio: 1 / 1;
+  border-radius: 20px;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.18)),
+    linear-gradient(135deg, var(--color-text), var(--color-primary), var(--color-primary-hover));
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.media img,
+.media video {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.footer button,
+.presenceCount {
+  border: none;
+  background: transparent;
+  color: var(--color-muted);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer button {
+  cursor: pointer;
+}
+
+.footer button:disabled {
+  cursor: not-allowed;
+  opacity: 0.52;
+}
+
+.dahoraActive {
+  color: var(--color-primary-hover) !important;
+}
+
+.waveActive,
+.savedActive {
+  color: var(--color-primary-hover) !important;
+}
+
+.presenceCount {
+  cursor: default;
+}
+
+.error {
+  background: rgba(127, 29, 29, 0.26);
+  border: 1px solid rgba(248, 113, 113, 0.34);
+  border-radius: 16px;
+  color: #fecaca;
+  margin: 14px 0 0;
+  padding: 12px 14px;
+}
+
+.comments {
+  border-top: 1px solid var(--color-border);
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 14px;
+}
+
+.commentNotice {
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.comment {
+  align-items: flex-start;
+  background: color-mix(in srgb, var(--color-card) 88%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 42px 1fr max-content;
+  padding: 10px;
+}
+
+.commentAvatar {
+  display: flex;
+}
+
+.comment header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.comment header strong {
+  align-items: center;
+  color: var(--color-text);
+  display: inline-flex;
+  font-size: 14px;
+  gap: 5px;
+}
+
+.officialInline {
+  align-items: center;
+  background: linear-gradient(135deg, #ffd01a, #ff8a00);
+  border-radius: 999px;
+  color: #08111f;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 18px;
+  justify-content: center;
+  width: 18px;
+}
+
+.officialInline svg {
+  font-size: 12px;
+}
+
+.comment header span {
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.comment p {
+  color: var(--color-text);
+  line-height: 1.5;
+  margin: 5px 0 0;
+}
+
+.comment > button {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-muted);
+  cursor: pointer;
+  font-weight: 800;
+  padding: 7px 10px;
+}
+
+.commentForm {
+  align-items: end;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr max-content max-content;
+}
+
+.commentForm textarea {
+  background: color-mix(in srgb, var(--color-bg) 78%, var(--color-card));
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  color: var(--color-text);
+  font: inherit;
+  outline: none;
+  padding: 12px 14px;
+  resize: vertical;
+}
+
+.commentForm textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 14%, transparent);
+}
+
+.commentForm button {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border: none;
+  border-radius: 14px;
+  color: var(--color-on-primary);
+  cursor: pointer;
+  font-weight: 900;
+  padding: 12px 16px;
+}
+
+.commentForm button[type="button"] {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-muted);
+}
+
+.stickerWrap {
+  position: relative;
+}
+
+.stickerPopover {
+  background: color-mix(in srgb, var(--color-card) 96%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  bottom: calc(100% + 8px);
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: 6px;
+  min-width: 230px;
+  padding: 8px;
+  position: absolute;
+  right: 0;
+  z-index: 20;
+}
+
+.stickerPopover > span {
+  color: var(--color-muted);
+  font-size: 13px;
+  padding: 10px;
+}
+
+.stickerPopover button {
+  align-items: center;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 12px;
+  color: var(--color-text) !important;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  padding: 9px 10px;
+  text-align: left;
+}
+
+.stickerPopover button:hover {
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent) !important;
+}
+
+.stickerPopover strong {
+  font-size: 18px;
+}
+
+.stickerPopover span {
+  font-size: 13px;
+}
+
+.commentForm button:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+.footer svg {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 700px) {
+  .text,
+  .meta {
+    margin-left: 0;
+  }
+
+  .media {
+    height: 240px;
+  }
+
+  .comment,
+  .commentForm {
+    grid-template-columns: 1fr;
+  }
+}
+

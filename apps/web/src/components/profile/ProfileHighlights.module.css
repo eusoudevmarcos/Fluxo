@@ -1,0 +1,142 @@
+.highlights {
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, var(--color-primary) 12%, transparent), transparent 32%),
+    color-mix(in srgb, var(--color-card) 94%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+}
+
+.highlights header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.highlights h2 {
+  color: var(--color-text);
+  font-size: 18px;
+  margin: 0;
+}
+
+.highlights header button {
+  background: transparent;
+  border: none;
+  color: var(--color-primary-hover);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.notice {
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 22%, var(--color-border));
+  border-radius: 14px;
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 800;
+  margin: 0;
+  padding: 10px 12px;
+}
+
+.item {
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  display: grid;
+  flex: 0 0 78px;
+  gap: 8px;
+  justify-items: center;
+  padding: 0;
+}
+
+.item strong {
+  font-size: 13px;
+  max-width: 86px;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.thumb,
+.newThumb {
+  aspect-ratio: 1;
+  border-radius: 22px;
+  display: grid;
+  overflow: hidden;
+  place-items: center;
+  width: 78px;
+}
+
+.newThumb {
+  background:
+    linear-gradient(var(--color-card), var(--color-card)) padding-box,
+    linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 70%, transparent), transparent) border-box;
+  border: 1px dashed color-mix(in srgb, var(--color-primary) 58%, var(--color-border));
+  color: var(--color-text);
+  font-size: 30px;
+}
+
+.thumb {
+  border: 1px solid color-mix(in srgb, var(--color-border) 72%, var(--color-primary));
+  box-shadow: inset 0 -28px 42px rgb(0 0 0 / 42%);
+}
+
+.travel {
+  background: linear-gradient(145deg, #0a3b68, #4ec2ff 46%, #f6d58b);
+}
+
+.daily {
+  background: linear-gradient(145deg, #0b2546, #15a1ff 42%, #ffc05c);
+}
+
+.gym {
+  background: linear-gradient(145deg, #111827, #414a5d 48%, #090b10);
+}
+
+.mood {
+  background: linear-gradient(145deg, #16123e, #995cff 42%, #ff9b4a);
+}
+
+.food {
+  background: radial-gradient(circle at 35% 30%, #f9d46f, transparent 24%),
+    radial-gradient(circle at 70% 62%, #36b37e, transparent 18%),
+    linear-gradient(145deg, #44220d, #d46b2d);
+}
+
+.places {
+  background: linear-gradient(145deg, #063d68, #2dc0ff 48%, #f4d58d);
+}
+
+@media (max-width: 640px) {
+  .highlights {
+    border-radius: 20px;
+    padding: 14px;
+  }
+
+  .item {
+    flex-basis: 70px;
+  }
+
+  .thumb,
+  .newThumb {
+    border-radius: 20px;
+    width: 70px;
+  }
+}

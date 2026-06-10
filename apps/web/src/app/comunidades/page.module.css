@@ -1,0 +1,282 @@
+.page {
+  display: grid;
+  gap: 16px;
+}
+
+.hero,
+.controls,
+.createBox,
+.card,
+.notice,
+.error {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.hero {
+  align-items: center;
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+  padding: 22px;
+}
+
+.eyebrow {
+  color: var(--color-primary-hover);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.hero h1 {
+  color: var(--color-text);
+  font-size: clamp(28px, 4vw, 44px);
+  letter-spacing: 0;
+  line-height: 1.05;
+  margin: 6px 0 10px;
+}
+
+.hero p {
+  color: var(--color-muted);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 680px;
+}
+
+.hero button,
+.createBox button[type="submit"],
+.card a {
+  align-items: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border: none;
+  border-radius: 16px;
+  color: var(--color-on-primary);
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 900;
+  gap: 8px;
+  justify-content: center;
+  padding: 13px 18px;
+}
+
+.controls {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.controls label {
+  align-items: center;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  color: var(--color-muted);
+  display: flex;
+  gap: 10px;
+  padding: 12px 14px;
+}
+
+.controls input,
+.createBox input,
+.createBox textarea {
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font: inherit;
+  outline: none;
+  width: 100%;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filters button,
+.createBox button[type="button"] {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-muted);
+  cursor: pointer;
+  font-weight: 800;
+  padding: 9px 12px;
+}
+
+.activeFilter {
+  background: color-mix(in srgb, var(--color-primary) 18%, transparent) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-text) !important;
+}
+
+.createBox {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.createBox strong {
+  color: var(--color-text);
+}
+
+.createBox input,
+.createBox textarea {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.createBox div {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card {
+  overflow: hidden;
+}
+
+.cover {
+  align-items: center;
+  background:
+    radial-gradient(circle at 20% 20%, color-mix(in srgb, var(--color-primary) 42%, transparent), transparent 34%),
+    radial-gradient(circle at 80% 10%, color-mix(in srgb, var(--color-accent) 32%, transparent), transparent 36%),
+    linear-gradient(135deg, var(--color-bg), var(--color-card));
+  display: flex;
+  height: 120px;
+  justify-content: center;
+}
+
+.cover span {
+  color: var(--color-primary);
+  font-size: 48px;
+  font-weight: 900;
+}
+
+.cardBody {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.cardHeader {
+  align-items: flex-start;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.cardHeader strong {
+  color: var(--color-text);
+  font-size: 20px;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.official,
+.communityMade,
+.localBadge {
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-muted);
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 900;
+  gap: 5px;
+  padding: 6px 9px;
+}
+
+.official {
+  color: var(--color-primary-hover);
+}
+
+.localBadge {
+  color: var(--color-accent);
+}
+
+.localOption {
+  align-items: flex-start;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  color: var(--color-muted);
+  display: flex;
+  font-size: 13px;
+  font-weight: 800;
+  gap: 10px;
+  line-height: 1.4;
+  padding: 12px;
+}
+
+.localOption input {
+  margin-top: 2px;
+  width: auto;
+}
+
+.card p,
+.notice,
+.error {
+  color: var(--color-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.meta span {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-bg) 74%, var(--color-card));
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-muted);
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 800;
+  gap: 5px;
+  padding: 7px 10px;
+}
+
+.card a {
+  text-align: center;
+}
+
+.notice,
+.error {
+  padding: 14px;
+}
+
+.error {
+  border-color: rgba(248, 113, 113, 0.34);
+  color: #fecaca;
+}
+
+@media (max-width: 760px) {
+  .hero {
+    align-items: stretch;
+    display: grid;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,209 @@
+.page {
+  display: grid;
+  gap: 16px;
+}
+
+.hero,
+.auraCard,
+.examples {
+  background: color-mix(in srgb, var(--color-card) 94%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  box-shadow: var(--shadow-card);
+}
+
+.hero {
+  align-items: center;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr max-content;
+  padding: 22px;
+}
+
+.hero span {
+  color: var(--color-primary-hover);
+  font-size: 13px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  color: var(--color-text);
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1;
+  margin: 7px 0 8px;
+}
+
+.hero p,
+.auraCard p,
+.examples p,
+.preview small,
+.notice {
+  color: var(--color-muted);
+}
+
+.hero p {
+  line-height: 1.55;
+  margin: 0;
+  max-width: 680px;
+}
+
+.preview {
+  align-items: center;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  min-width: 190px;
+}
+
+.preview strong {
+  color: var(--color-text);
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.auraCard {
+  align-items: center;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: max-content 1fr max-content;
+  padding: 16px;
+}
+
+.auraCard span {
+  color: var(--color-primary-hover);
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.auraCard h2 {
+  color: var(--color-text);
+  font-size: 18px;
+  margin: 3px 0 6px;
+}
+
+.auraCard p {
+  line-height: 1.45;
+  margin: 0 0 8px;
+}
+
+.auraCard small {
+  color: #8edbff;
+  font-weight: 900;
+}
+
+.auraCard button,
+.auraCard em {
+  align-items: center;
+  border-radius: 14px;
+  display: inline-flex;
+  font-style: normal;
+  font-weight: 950;
+  gap: 6px;
+  justify-content: center;
+  padding: 11px 13px;
+  white-space: nowrap;
+}
+
+.auraCard button {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border: none;
+  color: var(--color-on-primary);
+  cursor: pointer;
+}
+
+.auraCard button:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.auraCard em {
+  border: 1px solid var(--color-border);
+  color: var(--color-muted);
+}
+
+.locked {
+  opacity: 0.72;
+}
+
+.examples {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+}
+
+.examples h2 {
+  color: var(--color-text);
+  font-size: 18px;
+  margin: 0 0 6px;
+}
+
+.examples article {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-bg) 58%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+  border-radius: 18px;
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+}
+
+.examples strong {
+  color: var(--color-text);
+}
+
+.examples p {
+  margin: 4px 0 0;
+}
+
+.notice,
+.error,
+.success {
+  border-radius: 16px;
+  margin: 0;
+  padding: 12px 14px;
+}
+
+.notice {
+  background: color-mix(in srgb, var(--color-card) 86%, var(--color-bg));
+}
+
+.error {
+  background: rgba(127, 29, 29, 0.26);
+  border: 1px solid rgba(248, 113, 113, 0.34);
+  color: #fecaca;
+}
+
+.success {
+  background: rgba(6, 78, 59, 0.28);
+  border: 1px solid rgba(45, 212, 191, 0.34);
+  color: #99f6e4;
+}
+
+@media (max-width: 900px) {
+  .hero,
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .preview {
+    justify-items: start;
+  }
+}
+
+@media (max-width: 640px) {
+  .auraCard {
+    grid-template-columns: max-content 1fr;
+  }
+
+  .auraCard button,
+  .auraCard em {
+    grid-column: 1 / -1;
+  }
+}

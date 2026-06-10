@@ -1,0 +1,378 @@
+.composer {
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, #10a8ff 6%, transparent), transparent 36%),
+    var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 10px 12px;
+  position: relative;
+}
+
+.fileInput {
+  display: none;
+}
+
+.createRow {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 42px minmax(0, 1fr) 38px 38px max-content;
+}
+
+.avatar {
+  align-items: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border-radius: 16px;
+  color: var(--color-on-primary);
+  display: flex;
+  flex-shrink: 0;
+  font-weight: 900;
+  height: 42px;
+  justify-content: center;
+  overflow: hidden;
+  width: 42px;
+}
+
+.avatar img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.createRow textarea {
+  background: color-mix(in srgb, var(--color-bg) 64%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  color: var(--color-text);
+  font-size: 13px;
+  height: 46px;
+  min-height: 46px;
+  outline: none;
+  overflow: hidden;
+  padding: 13px 16px;
+  resize: none;
+  width: 100%;
+}
+
+.createRow textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.54;
+}
+
+.iconButton,
+.mediaPreview > button {
+  align-items: center;
+  border-radius: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 800;
+  gap: 7px;
+  justify-content: center;
+}
+
+.iconButton {
+  background: color-mix(in srgb, var(--color-bg) 64%, transparent);
+  border: 1px solid var(--color-border);
+  color: var(--color-muted);
+  height: 38px;
+  padding: 0;
+  width: 38px;
+}
+
+.iconButton:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary-hover);
+}
+
+.iconButton svg {
+  font-size: 18px;
+}
+
+.createButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.46;
+}
+
+.mediaPreview svg {
+  color: var(--color-primary-hover);
+  flex-shrink: 0;
+  font-size: 19px;
+}
+
+.emojiMenu {
+  background: color-mix(in srgb, var(--color-card) 94%, #101827);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgb(0 0 0 / 34%);
+  display: grid;
+  gap: 7px;
+  min-width: 176px;
+  padding: 9px;
+  position: absolute;
+  right: 102px;
+  top: 60px;
+  z-index: 20;
+}
+
+.emojiGrid {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.emojiGrid button,
+.emojiMenu > button {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--color-text);
+  cursor: pointer;
+  display: grid;
+  font-size: 18px;
+  font-weight: 750;
+  min-height: 32px;
+  place-items: center;
+}
+
+.emojiMenu > button {
+  border: 1px solid var(--color-border);
+  font-size: 12px;
+}
+
+.emojiGrid button:hover,
+.emojiMenu > button:hover {
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  color: var(--color-primary-hover);
+}
+
+.todoPanel {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 26%, var(--color-border));
+  border-radius: 20px;
+  color: var(--color-text);
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 36px 1fr;
+  margin-top: 18px;
+  padding: 14px;
+}
+
+.destinationPanel {
+  background: color-mix(in srgb, var(--color-bg) 72%, var(--color-card));
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 12px;
+}
+
+.destinationHeader {
+  display: grid;
+  gap: 4px;
+}
+
+.destinationHeader strong,
+.momentsOptions strong {
+  color: var(--color-text);
+}
+
+.destinationHeader span,
+.momentsOptions span {
+  color: var(--color-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.destinationGrid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.destinationGrid button,
+.momentsOptions button {
+  align-items: center;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  color: var(--color-text);
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 800;
+  gap: 8px;
+  justify-content: flex-start;
+  padding: 10px;
+  text-align: left;
+}
+
+.destinationGrid button:hover,
+.momentsOptions button:hover {
+  border-color: var(--color-primary);
+}
+
+.destinationGrid svg,
+.momentsOptions svg {
+  color: var(--color-primary-hover);
+  flex-shrink: 0;
+  font-size: 18px;
+}
+
+.destinationActive {
+  background: color-mix(in srgb, var(--color-primary) 14%, var(--color-card)) !important;
+  border-color: var(--color-primary) !important;
+}
+
+.momentsOptions {
+  border-top: 1px solid var(--color-border);
+  display: grid;
+  gap: 10px;
+  padding-top: 12px;
+}
+
+.momentsOptions div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.todoPanel svg {
+  color: var(--color-primary-hover);
+  font-size: 24px;
+}
+
+.todoPanel div {
+  display: grid;
+  gap: 4px;
+}
+
+.todoPanel span {
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.mediaPreview {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-bg) 72%, var(--color-card));
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 112px 1fr max-content;
+  margin-top: 12px;
+  padding: 10px;
+}
+
+.previewFrame {
+  aspect-ratio: 1.15;
+  background: linear-gradient(135deg, var(--color-bg), var(--color-card));
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.previewFrame img,
+.previewFrame video {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.previewInfo {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.previewInfo strong {
+  color: var(--color-text);
+  font-size: 14px;
+}
+
+.previewInfo span {
+  color: var(--color-muted);
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mediaPreview > button {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-muted);
+  padding: 10px 12px;
+}
+
+.createButton {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border: none;
+  color: var(--color-on-primary);
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 900;
+  height: 42px;
+  min-width: 76px;
+  padding: 0 24px;
+}
+
+.error {
+  background: rgba(127, 29, 29, 0.26);
+  border: 1px solid rgba(248, 113, 113, 0.34);
+  border-radius: 16px;
+  color: #fecaca;
+  margin: 16px 0 0;
+  padding: 12px 14px;
+}
+
+.notice {
+  background: color-mix(in srgb, var(--color-primary) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 28%, var(--color-border));
+  border-radius: 16px;
+  color: var(--color-text);
+  margin: 16px 0 0;
+  padding: 12px 14px;
+}
+
+@media (max-width: 700px) {
+  .composer {
+    padding: 12px;
+  }
+
+  .createRow {
+    grid-template-columns: 40px minmax(0, 1fr) 36px 36px;
+  }
+
+  .createRow .createButton {
+    grid-column: 2 / -1;
+    justify-self: end;
+    margin-top: -2px;
+  }
+
+  .emojiMenu {
+    right: 12px;
+    top: 108px;
+  }
+
+  .mediaPreview {
+    grid-template-columns: 1fr;
+  }
+
+  .destinationGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .previewFrame {
+    aspect-ratio: 1.25;
+  }
+
+  .previewInfo span {
+    white-space: normal;
+  }
+
+  .mediaPreview > button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,109 @@
+.panel {
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--color-primary) 12%, transparent), transparent 34%),
+    var(--color-card);
+  border: 1px solid color-mix(in srgb, var(--color-border) 86%, var(--color-primary));
+  border-radius: 18px;
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+}
+
+.header {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.header strong {
+  align-items: center;
+  color: var(--color-text);
+  display: flex;
+  gap: 8px;
+  font-size: 17px;
+}
+
+.header strong svg {
+  color: var(--color-primary-hover);
+}
+
+.header span,
+.item p,
+.item small {
+  color: var(--color-muted);
+}
+
+.header span {
+  display: block;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.header button {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 7px 10px;
+}
+
+.list {
+  display: grid;
+  gap: 8px;
+}
+
+.item {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-bg) 58%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+  border-radius: 15px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 38px 1fr max-content;
+  padding: 10px;
+}
+
+.icon {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-primary) 14%, var(--color-card));
+  border: 1px solid color-mix(in srgb, var(--color-primary) 28%, var(--color-border));
+  border-radius: 13px;
+  color: var(--color-primary-hover);
+  display: flex;
+  height: 38px;
+  justify-content: center;
+  width: 38px;
+}
+
+.item strong {
+  color: var(--color-text);
+  display: block;
+  font-size: 13px;
+}
+
+.item p {
+  font-size: 12px;
+  margin: 3px 0 0;
+}
+
+.item small {
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.allLink {
+  align-items: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border-radius: 13px;
+  color: var(--color-on-primary);
+  display: flex;
+  font-weight: 950;
+  justify-content: center;
+  padding: 11px;
+  text-decoration: none;
+}

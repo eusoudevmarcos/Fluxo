@@ -1,0 +1,57 @@
+.logo {
+  display: inline-flex;
+  line-height: 1;
+}
+
+.logo img {
+  display: block;
+  height: auto;
+  object-fit: contain;
+  width: 100%;
+}
+
+.theme {
+  position: relative;
+}
+
+.theme img {
+  flex: 0 0 100%;
+}
+
+.blueImage {
+  display: none !important;
+}
+
+:global(.theme-ocean-blue) .theme .yellowImage {
+  display: none !important;
+}
+
+:global(.theme-ocean-blue) .theme .blueImage {
+  display: block !important;
+}
+
+:global(.theme-night-flow) .theme .yellowImage {
+  filter: brightness(0) invert(1);
+}
+
+.yellow,
+.blue,
+.white {
+  color: currentColor;
+}
+
+.white img {
+  filter: brightness(0) invert(1);
+}
+
+.sm {
+  width: 112px;
+}
+
+.md {
+  width: 168px;
+}
+
+.lg {
+  width: 232px;
+}

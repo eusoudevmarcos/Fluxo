@@ -1,0 +1,218 @@
+.page {
+  background:
+    radial-gradient(circle at 16% 10%, rgba(14, 165, 233, 0.16), transparent 28%),
+    radial-gradient(circle at 86% 12%, rgba(255, 199, 0, 0.1), transparent 24%),
+    #020617;
+  color: #f8fafc;
+  min-height: 100svh;
+  padding: clamp(16px, 3vw, 40px);
+}
+
+.topbar {
+  align-items: center;
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+  margin: 0 auto 24px;
+  max-width: 1080px;
+}
+
+.topbar nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.topbar a {
+  color: #f8fafc;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.topbar nav a {
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  color: #cbd5e1;
+  padding: 10px 13px;
+}
+
+.document,
+.index {
+  margin: 0 auto;
+  max-width: 1080px;
+}
+
+.hero,
+.sections,
+.cardGrid a,
+.acceptCard {
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 28px 84px rgba(0, 0, 0, 0.32);
+}
+
+.hero {
+  border-radius: 30px;
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: clamp(22px, 4vw, 42px);
+}
+
+.hero span {
+  color: #ffc700;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  color: #f8fafc;
+  font-size: clamp(34px, 5vw, 68px);
+  letter-spacing: 0;
+  line-height: 1;
+  margin: 0;
+}
+
+.hero p,
+.hero small,
+.sections p,
+.acceptCard p,
+.acceptCard li {
+  color: #cbd5e1;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.hero small {
+  color: #94a3b8;
+}
+
+.sections {
+  border-radius: 26px;
+  display: grid;
+  gap: 22px;
+  padding: clamp(20px, 3vw, 34px);
+}
+
+.sections section {
+  display: grid;
+  gap: 10px;
+}
+
+.sections h2 {
+  color: #f8fafc;
+  font-size: 22px;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+.cardGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.cardGrid a {
+  border-radius: 22px;
+  color: #f8fafc;
+  display: grid;
+  gap: 8px;
+  padding: 22px;
+  text-decoration: none;
+}
+
+.cardGrid strong {
+  font-size: 22px;
+}
+
+.cardGrid span {
+  color: #94a3b8;
+  line-height: 1.5;
+}
+
+.acceptCard {
+  border-radius: 30px;
+  display: grid;
+  gap: 18px;
+  margin: 0 auto;
+  max-width: 760px;
+  padding: clamp(22px, 4vw, 38px);
+}
+
+.acceptCard h1 {
+  font-size: clamp(30px, 4vw, 48px);
+  letter-spacing: 0;
+  margin: 0;
+}
+
+.acceptCard ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.checkbox {
+  align-items: flex-start;
+  background: rgba(2, 6, 23, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  color: #f8fafc;
+  display: flex;
+  gap: 12px;
+  line-height: 1.45;
+  padding: 14px;
+}
+
+.checkbox input {
+  margin-top: 4px;
+}
+
+.checkbox a {
+  color: #ffc700;
+  font-weight: 850;
+}
+
+.primaryButton {
+  background: #ffc700;
+  border: none;
+  border-radius: 16px;
+  color: #020617;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+  min-height: 52px;
+  padding: 14px 18px;
+}
+
+.primaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.error {
+  background: rgba(180, 35, 24, 0.13);
+  border: 1px solid rgba(255, 210, 204, 0.2);
+  border-radius: 14px;
+  color: #fecaca;
+  margin: 0;
+  padding: 12px 14px;
+}
+
+@media (max-width: 760px) {
+  .topbar {
+    align-items: flex-start;
+    display: grid;
+  }
+
+  .topbar nav {
+    justify-content: flex-start;
+  }
+
+  .cardGrid {
+    grid-template-columns: 1fr;
+  }
+}

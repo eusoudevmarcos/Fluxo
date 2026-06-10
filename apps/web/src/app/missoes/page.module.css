@@ -1,0 +1,222 @@
+.page {
+  display: grid;
+  gap: 16px;
+}
+
+.hero,
+.levelCard,
+.card {
+  background: color-mix(in srgb, var(--color-card) 94%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  box-shadow: var(--shadow-card);
+}
+
+.hero {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  padding: 22px;
+}
+
+.hero span {
+  color: var(--color-primary-hover);
+  font-size: 13px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  color: var(--color-text);
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1;
+  margin: 7px 0 8px;
+}
+
+.hero p {
+  color: var(--color-muted);
+  line-height: 1.55;
+  margin: 0;
+  max-width: 720px;
+}
+
+.hero a {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border-radius: 16px;
+  color: var(--color-on-primary);
+  flex-shrink: 0;
+  font-weight: 950;
+  padding: 13px 16px;
+  text-decoration: none;
+}
+
+.levelCard {
+  align-items: center;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: max-content 1fr max-content;
+  padding: 18px;
+}
+
+.crystal {
+  align-items: center;
+  background: radial-gradient(circle at 35% 20%, #ffffff, #64cfff 36%, #3154ff 72%);
+  border-radius: 18px;
+  color: #ffffff;
+  display: flex;
+  font-size: 24px;
+  height: 58px;
+  justify-content: center;
+  width: 58px;
+}
+
+.levelCard small,
+.mission p,
+.notice {
+  color: var(--color-muted);
+}
+
+.levelCard strong {
+  color: var(--color-text);
+  display: block;
+  font-size: 18px;
+  margin: 2px 0 10px;
+}
+
+.levelCard em {
+  color: var(--color-muted);
+  font-style: normal;
+  font-weight: 850;
+}
+
+.progressBar {
+  background: color-mix(in srgb, var(--color-border) 72%, transparent);
+  border-radius: 999px;
+  height: 7px;
+  overflow: hidden;
+}
+
+.progressBar span {
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card {
+  padding: 18px;
+}
+
+.card h2 {
+  color: var(--color-text);
+  font-size: 18px;
+  margin: 0 0 14px;
+}
+
+.missionList,
+.infoList {
+  display: grid;
+  gap: 10px;
+}
+
+.mission {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-bg) 58%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+  border-radius: 18px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: max-content 1fr max-content max-content;
+  padding: 12px;
+}
+
+.mission > svg,
+.infoList svg {
+  color: var(--color-primary-hover);
+  font-size: 20px;
+}
+
+.mission strong {
+  color: var(--color-text);
+}
+
+.mission p {
+  font-size: 13px;
+  margin: 4px 0 9px;
+}
+
+.mission small {
+  align-items: center;
+  color: var(--color-text);
+  display: flex;
+  font-weight: 900;
+  gap: 4px;
+}
+
+.mission em {
+  color: #8edbff;
+  font-style: normal;
+  font-weight: 950;
+}
+
+.infoList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.infoList li {
+  align-items: center;
+  color: var(--color-text);
+  display: flex;
+  gap: 9px;
+}
+
+.notice,
+.error {
+  border-radius: 16px;
+  margin: 0;
+  padding: 12px 14px;
+}
+
+.notice {
+  background: color-mix(in srgb, var(--color-card) 86%, var(--color-bg));
+}
+
+.error {
+  background: rgba(127, 29, 29, 0.26);
+  border: 1px solid rgba(248, 113, 113, 0.34);
+  color: #fecaca;
+}
+
+@media (max-width: 760px) {
+  .hero,
+  .levelCard {
+    align-items: stretch;
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    display: grid;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mission {
+    grid-template-columns: max-content 1fr;
+  }
+
+  .mission em {
+    grid-column: 2;
+  }
+}

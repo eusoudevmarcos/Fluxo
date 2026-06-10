@@ -1,0 +1,124 @@
+.page {
+  display: grid;
+  gap: 22px;
+}
+
+.header {
+  display: grid;
+  gap: 8px;
+  max-width: 760px;
+}
+
+.header span {
+  color: var(--color-primary-hover);
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.header h1 {
+  color: var(--color-text);
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.04;
+  margin: 0;
+}
+
+.header p {
+  color: var(--color-muted);
+  font-size: 17px;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.stats {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.stats div,
+.item {
+  background: color-mix(in srgb, var(--color-card) 92%, var(--color-primary));
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+}
+
+.stats div {
+  display: grid;
+  gap: 4px;
+  padding: 18px;
+}
+
+.stats strong {
+  color: var(--color-text);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.stats span,
+.item span,
+.item p {
+  color: var(--color-muted);
+}
+
+.stats span,
+.item span {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.item {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+}
+
+.item strong {
+  color: var(--color-text);
+  display: block;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.item p {
+  line-height: 1.5;
+  margin: 0;
+}
+
+.item button {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border: none;
+  border-radius: 14px;
+  color: var(--color-on-primary);
+  cursor: pointer;
+  font-weight: 900;
+  justify-self: start;
+  padding: 12px 16px;
+}
+
+.item button:hover {
+  background: linear-gradient(135deg, var(--color-primary-hover), var(--color-accent));
+}
+
+.notice {
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 22%, var(--color-border));
+  border-radius: 16px;
+  color: var(--color-text);
+  font-weight: 800;
+  margin: 0;
+  padding: 12px 14px;
+}
+
+@media (max-width: 760px) {
+  .stats,
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

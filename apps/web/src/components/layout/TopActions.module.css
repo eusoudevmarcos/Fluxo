@@ -1,0 +1,103 @@
+.topActions {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  height: 54px;
+  justify-content: flex-end;
+}
+
+.topActions button {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-card) 94%, transparent), var(--color-card)),
+    var(--color-card);
+  border: 1px solid color-mix(in srgb, var(--color-border) 86%, var(--color-primary));
+  border-radius: 14px;
+  color: var(--color-text);
+  cursor: pointer;
+  display: grid;
+  font-size: 20px;
+  height: 48px;
+  place-items: center;
+  position: relative;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+  width: 48px;
+}
+
+.topActions button:hover,
+.activeAction {
+  border-color: color-mix(in srgb, var(--color-primary) 72%, var(--color-border)) !important;
+  color: var(--color-primary-hover) !important;
+  transform: translateY(-1px);
+}
+
+.walletBadge {
+  align-items: center;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-card) 94%, transparent), var(--color-card)),
+    var(--color-card);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 46%, var(--color-border));
+  border-radius: 14px;
+  color: var(--color-primary-hover);
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 950;
+  gap: 7px;
+  height: 48px;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+.walletBadge svg {
+  font-size: 18px;
+}
+
+.notification span {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border-radius: 50%;
+  color: var(--color-on-primary);
+  display: grid;
+  font-size: 11px;
+  font-weight: 800;
+  height: 19px;
+  place-items: center;
+  position: absolute;
+  right: -5px;
+  top: -7px;
+  width: 19px;
+}
+
+.profileAvatar {
+  align-items: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  color: var(--color-on-primary);
+  display: flex;
+  flex-shrink: 0;
+  font-weight: 900;
+  height: 48px;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  width: 42px;
+}
+
+.profileAvatar img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.profileAvatar i {
+  background: #ffd11a;
+  border: 2px solid var(--color-card);
+  border-radius: 50%;
+  bottom: 3px;
+  height: 10px;
+  position: absolute;
+  right: 3px;
+  width: 10px;
+}

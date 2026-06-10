@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "Ocean",
+    "slug": "ocean-mobile",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "ocean",
+    "userInterfaceStyle": "dark",
+    "assetBundlePatterns": ["**/*"]
+  }
+}

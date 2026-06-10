@@ -1,0 +1,10 @@
+export const APP_NAME = "Ocean";
+export const FEATURE_FLOW = "Flow";
+export const FEATURE_MOMENTS = "Moments";
+export const FEATURE_WAVE = "Wave";
+export const FEATURE_DAHORA = "Dahora";
+export const FEATURE_PRESENCA = "Presença";
+export const FEATURE_FAS = "Fãs";
+export const FEATURE_SELETOS = "Seletos";
+export const FEATURE_AURA = "Aura";
+export const FEATURE_DISCOVER = "Discover";

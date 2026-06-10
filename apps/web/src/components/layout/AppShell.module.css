@@ -1,0 +1,139 @@
+.app {
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: grid;
+  grid-template-columns: minmax(280px, 300px) minmax(560px, 760px) minmax(360px, 390px);
+  justify-content: center;
+  gap: 22px;
+  padding: 18px;
+}
+
+.feed {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.topMenu {
+  align-self: center;
+  align-items: center;
+  background: color-mix(in srgb, var(--color-card) 94%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  max-width: 500px;
+  padding: 7px 18px;
+  position: relative;
+  width: min(100%, 500px);
+}
+
+.topMenu a {
+  align-items: center;
+  border-radius: 14px;
+  color: var(--color-muted);
+  display: inline-flex;
+  font-size: 20px;
+  font-weight: 800;
+  height: 38px;
+  justify-content: center;
+  min-width: 48px;
+  padding: 0 12px;
+  position: relative;
+  transition:
+    color 160ms ease,
+    background 160ms ease;
+}
+
+.topMenu svg {
+  font-size: 20px;
+}
+
+.topMenu a:hover,
+.topActive {
+  background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+  color: var(--color-primary-hover) !important;
+}
+
+.topActive::after {
+  background: var(--color-primary);
+  border-radius: 999px;
+  bottom: -8px;
+  content: "";
+  height: 3px;
+  left: 12px;
+  position: absolute;
+  right: 12px;
+}
+
+.srOnly {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.mobilePrivs {
+  display: none;
+}
+
+.gateNotice {
+  align-items: center;
+  background: var(--color-bg);
+  color: var(--color-muted);
+  display: flex;
+  font-weight: 850;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  text-align: center;
+}
+
+@media (max-width: 1400px) {
+  .app {
+    grid-template-columns: minmax(250px, 270px) minmax(520px, 680px) minmax(310px, 340px);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .app {
+    grid-template-columns: 230px minmax(500px, 620px) 290px;
+    gap: 14px;
+    padding: 14px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .app {
+    grid-template-columns: 1fr;
+    padding-top: 82px;
+    padding-bottom: 110px;
+  }
+
+  .topMenu {
+    display: none;
+  }
+
+  .mobilePrivs {
+    background: var(--color-bg);
+    display: block;
+    inset: 0;
+    padding: 12px;
+    position: fixed;
+    z-index: 1300;
+  }
+
+  .mobilePrivsInner {
+    height: 100%;
+  }
+}
+

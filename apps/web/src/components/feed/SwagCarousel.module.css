@@ -1,0 +1,339 @@
+.flows {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  position: relative;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header strong {
+  color: var(--color-text);
+  display: block;
+  font-size: 14px;
+}
+
+.header span {
+  color: var(--color-muted);
+  display: block;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.header button {
+  background: transparent;
+  border: none;
+  color: var(--color-primary-hover);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.track {
+  display: flex;
+  gap: 9px;
+  min-width: 0;
+  overflow-x: auto;
+  padding-bottom: 1px;
+}
+
+.notice,
+.error {
+  margin: 0;
+  min-width: max-content;
+}
+
+.notice {
+  color: var(--color-muted);
+}
+
+.error {
+  color: #fecaca;
+}
+
+.swagCard {
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  display: grid;
+  flex: 0 0 82px;
+  gap: 5px;
+  padding: 0;
+  text-align: center;
+}
+
+.swagImage {
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.25)),
+    linear-gradient(135deg, var(--color-text), var(--color-primary));
+  border-radius: 11px;
+  height: 92px;
+  overflow: hidden;
+  position: relative;
+  width: 82px;
+}
+
+.createFlowCard .swagImage {
+  align-items: center;
+  border: 1px dashed color-mix(in srgb, var(--color-primary) 58%, var(--color-border));
+  display: flex;
+  justify-content: center;
+}
+
+.createFlowCard svg {
+  background: transparent;
+  border: 1px solid var(--color-primary);
+  border-radius: 50%;
+  color: var(--color-on-primary);
+  font-size: 38px;
+  padding: 9px;
+}
+
+.swagImage img,
+.swagImage video {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.initial {
+  align-items: center;
+  color: var(--color-on-primary);
+  display: flex;
+  font-size: 26px;
+  font-weight: 900;
+  height: 100%;
+  justify-content: center;
+}
+
+.badge {
+  background: var(--color-primary);
+  border-radius: 999px;
+  bottom: 7px;
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--color-primary) 35%, transparent);
+  color: var(--color-on-primary);
+  font-size: 9px;
+  font-weight: 900;
+  left: 50%;
+  padding: 5px 9px;
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.swagCard strong {
+  align-items: center;
+  display: inline-flex;
+  font-size: 12px;
+  gap: 4px;
+  justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.swagCard small {
+  color: var(--color-muted);
+  font-size: 10px;
+  line-height: 1;
+}
+
+.suggestedCard {
+  text-align: left;
+}
+
+.suggestionArt {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.surf {
+  background: linear-gradient(135deg, #024f8b, #19c8ff 48%, #ffd180);
+}
+
+.sunset {
+  background: linear-gradient(135deg, #281737, #f47c3c 52%, #ffd587);
+}
+
+.city {
+  background: linear-gradient(135deg, #081a33, #1387ff 48%, #ff4bb4);
+}
+
+.sport {
+  background: linear-gradient(135deg, #173923, #43b657 54%, #ffc928);
+}
+
+.stage {
+  background: linear-gradient(135deg, #170936, #703cff 45%, #ff2ea6);
+}
+
+.night {
+  background: linear-gradient(135deg, #061021, #264a7a 48%, #d3edf9);
+}
+
+.nextButton {
+  align-self: center;
+  background: color-mix(in srgb, var(--color-card) 88%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  color: var(--color-text);
+  cursor: pointer;
+  display: grid;
+  flex: 0 0 28px;
+  height: 28px;
+  place-items: center;
+  width: 28px;
+}
+
+.viewerBackdrop {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.72);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 24px;
+  position: fixed;
+  z-index: 1000;
+}
+
+.viewer {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 28px;
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: 14px;
+  max-height: min(760px, 92vh);
+  max-width: 460px;
+  overflow: hidden;
+  padding: 16px;
+  width: min(100%, 460px);
+}
+
+.viewer header {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 46px 1fr 40px;
+}
+
+.viewer header strong {
+  align-items: center;
+  color: var(--color-text);
+  display: inline-flex;
+  gap: 6px;
+}
+
+.viewer header span {
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.viewer header button {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.viewerAvatar {
+  align-items: center;
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border-radius: 16px;
+  color: var(--color-on-primary);
+  display: flex;
+  font-weight: 900;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.viewerAvatar img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.viewerMedia {
+  align-items: center;
+  aspect-ratio: 9 / 14;
+  background: var(--color-bg);
+  border-radius: 22px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.viewerMedia img,
+.viewerMedia video {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.textFlow {
+  color: var(--color-text);
+  display: grid;
+  gap: 14px;
+  padding: 24px;
+  place-items: center;
+  text-align: center;
+}
+
+.textFlow svg {
+  color: var(--color-primary-hover);
+  font-size: 34px;
+}
+
+.viewer > p {
+  color: var(--color-text);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.officialInline {
+  align-items: center;
+  background: linear-gradient(135deg, #ffd01a, #ff8a00);
+  border-radius: 999px;
+  color: #08111f;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 17px;
+  justify-content: center;
+  width: 17px;
+}
+
+.officialInline svg {
+  font-size: 11px;
+}
+
+@media (max-width: 620px) {
+  .viewerBackdrop {
+    padding: 12px;
+  }
+
+  .viewer {
+    max-height: 94vh;
+  }
+}

@@ -1,0 +1,206 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+}
+
+
+.search {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  padding: 12px 14px;
+}
+
+.search input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  color: var(--color-text);
+  font-size: 15px;
+}
+
+.menu {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menu a,
+.menuButton {
+  color: var(--color-text);
+  padding: 11px 12px;
+  border-radius: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: 0.2s;
+}
+
+.menuButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+}
+
+.menu a:hover,
+.menuButton:hover {
+  background: color-mix(in srgb, var(--color-primary) 14%, var(--color-card));
+}
+
+.menuIcon {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.active {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  color: var(--color-on-primary) !important;
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--color-primary) 28%, transparent);
+}
+
+.followBox {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+.followHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.followHeader a {
+  border: none;
+  background: transparent;
+  color: var(--color-primary-hover);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.followItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.followItem:last-child {
+  margin-bottom: 0;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  flex-shrink: 0;
+}
+
+.followItem strong {
+  display: block;
+  font-size: 14px;
+}
+
+.followItem span {
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.followItem button {
+  margin-left: auto;
+  border: 1px solid var(--color-primary);
+  background: transparent;
+  color: var(--color-text);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.notice {
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 22%, var(--color-border));
+  border-radius: 14px;
+  color: var(--color-text);
+  font-size: 12px;
+  font-weight: 800;
+  margin: 12px 0 0;
+  padding: 9px 10px;
+}
+
+@media (max-width: 1100px) {
+  .sidebar {
+    display: none;
+  }
+}
+
+
+.userBox {
+  align-items: center;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  box-shadow: var(--shadow-card);
+  color: var(--color-text);
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+}
+
+.userBox strong {
+  display: block;
+  font-size: 14px;
+}
+
+.userBox span {
+  color: var(--color-muted);
+  display: block;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+.userAvatar {
+  align-items: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border-radius: 18px;
+  color: var(--color-on-primary);
+  display: flex;
+  flex-shrink: 0;
+  font-weight: 900;
+  height: 48px;
+  justify-content: center;
+  overflow: hidden;
+  width: 48px;
+}
+
+.userAvatar img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}

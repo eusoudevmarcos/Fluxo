@@ -1,0 +1,180 @@
+.chat {
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--color-primary) 12%, transparent), transparent 36%),
+    var(--color-card);
+  border: 1px solid color-mix(in srgb, var(--color-border) 86%, var(--color-primary));
+  border-radius: 24px;
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: 14px;
+  min-height: 520px;
+  padding: 14px;
+}
+
+.header {
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 40px 1fr 40px;
+  padding-bottom: 12px;
+}
+
+.header button,
+.composer button {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.header strong {
+  color: var(--color-text);
+  display: block;
+  font-size: 18px;
+}
+
+.header span {
+  color: var(--color-muted);
+  display: block;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.messages {
+  align-content: end;
+  display: grid;
+  gap: 10px;
+  max-height: 58vh;
+  min-height: 330px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.messages::-webkit-scrollbar {
+  width: 0;
+}
+
+.message,
+.ownMessage {
+  align-items: end;
+  display: flex;
+  gap: 10px;
+}
+
+.ownMessage {
+  justify-content: flex-end;
+}
+
+.message > span {
+  align-items: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border-radius: 12px;
+  color: var(--color-on-primary);
+  display: flex;
+  flex: 0 0 34px;
+  font-weight: 900;
+  height: 34px;
+  justify-content: center;
+}
+
+.message > div,
+.ownMessage > div {
+  border-radius: 18px;
+  max-width: min(76%, 520px);
+  padding: 10px 12px;
+}
+
+.message > div {
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--color-bg));
+  border-bottom-left-radius: 6px;
+}
+
+.ownMessage > div {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border-bottom-right-radius: 6px;
+  color: var(--color-on-primary);
+}
+
+.message strong {
+  color: var(--color-primary-hover);
+  display: block;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.message p,
+.ownMessage p,
+.notice,
+.error {
+  margin: 0;
+}
+
+.message time,
+.ownMessage time {
+  color: color-mix(in srgb, currentColor 65%, transparent);
+  display: block;
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+.notice,
+.error {
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 11px 12px;
+}
+
+.notice {
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 26%, var(--color-border));
+  color: var(--color-text);
+}
+
+.error {
+  background: rgba(127, 29, 29, 0.34);
+  border: 1px solid rgba(248, 113, 113, 0.36);
+  color: #fecaca;
+}
+
+.composer {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 44px;
+}
+
+.composer input {
+  background: color-mix(in srgb, var(--color-bg) 82%, var(--color-card));
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  color: var(--color-text);
+  font: inherit;
+  outline: none;
+  padding: 14px;
+}
+
+.composer input:disabled,
+.composer button:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+@media (max-width: 760px) {
+  .chat {
+    border-radius: 20px;
+    min-height: calc(100dvh - 150px);
+  }
+
+  .messages {
+    max-height: none;
+    min-height: 52dvh;
+  }
+}

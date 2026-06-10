@@ -1,0 +1,140 @@
+.avatar {
+  --aura-primary: var(--color-primary);
+  --aura-secondary: var(--color-accent);
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  position: relative;
+}
+
+.avatar::before,
+.avatar::after {
+  border-radius: inherit;
+  content: "";
+  inset: -3px;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 160ms ease;
+}
+
+.avatar::before {
+  background:
+    radial-gradient(circle at 20% 18%, color-mix(in srgb, var(--aura-secondary) 74%, transparent), transparent 22%),
+    linear-gradient(135deg, var(--aura-primary), var(--aura-secondary));
+  filter: blur(7px);
+}
+
+.avatar::after {
+  border: 1px solid color-mix(in srgb, var(--aura-primary) 76%, white 12%);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--aura-secondary) 42%, transparent),
+    0 0 18px color-mix(in srgb, var(--aura-primary) 34%, transparent);
+}
+
+.withAura::before {
+  opacity: 0.48;
+}
+
+.withAura::after {
+  opacity: 0.9;
+}
+
+.inner {
+  align-items: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+  border-radius: inherit;
+  color: var(--color-on-primary);
+  display: flex;
+  font-weight: 950;
+  height: 100%;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.inner img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.fallback {
+  display: inline-flex;
+  line-height: 1;
+}
+
+.xs {
+  border-radius: 12px;
+  font-size: 12px;
+  height: 34px;
+  width: 34px;
+}
+
+.sm {
+  border-radius: 15px;
+  font-size: 14px;
+  height: 42px;
+  width: 42px;
+}
+
+.md {
+  border-radius: 18px;
+  font-size: 17px;
+  height: 50px;
+  width: 50px;
+}
+
+.lg {
+  border-radius: 28px;
+  font-size: 38px;
+  height: 174px;
+  width: 174px;
+}
+
+.common {
+  --aura-primary: #ffd01a;
+  --aura-secondary: #fff1a8;
+}
+
+.special {
+  --aura-primary: #ffca2f;
+  --aura-secondary: #2ac7ff;
+}
+
+.rare {
+  --aura-primary: #22d3ee;
+  --aura-secondary: #2178ff;
+}
+
+.epic {
+  --aura-primary: #f8fbff;
+  --aura-secondary: #9b5cff;
+}
+
+.secret {
+  --aura-primary: #ff335f;
+  --aura-secondary: #d946ef;
+}
+
+.legendary {
+  --aura-primary: #ffb020;
+  --aura-secondary: #ff5b21;
+}
+
+.milenar {
+  --aura-primary: #8efcff;
+  --aura-secondary: #fff7c2;
+}
+
+@media (max-width: 760px) {
+  .lg {
+    height: 156px;
+    width: 156px;
+  }
+}

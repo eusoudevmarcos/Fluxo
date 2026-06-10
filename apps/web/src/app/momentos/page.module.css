@@ -1,0 +1,317 @@
+.page {
+  display: grid;
+  gap: 10px;
+  max-height: calc(100vh - 18px);
+  overflow: hidden;
+}
+
+.hero {
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, #10a8ff 12%, transparent), transparent 36%),
+    var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  display: grid;
+  padding: 14px 16px;
+}
+
+.hero span {
+  color: var(--color-primary-hover);
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  color: var(--color-text);
+  font-size: clamp(28px, 3.2vw, 38px);
+  line-height: 1.02;
+  margin: 4px 0 6px;
+  max-width: 620px;
+}
+
+.hero p {
+  color: var(--color-muted);
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 620px;
+}
+
+.filterRail button {
+  align-items: center;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 900;
+  gap: 8px;
+}
+
+.filterRail {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0 2px 2px;
+}
+
+.filterRail::-webkit-scrollbar {
+  display: none;
+}
+
+.filterRail button {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-muted);
+  flex: 0 0 auto;
+  min-height: 38px;
+  padding: 0 14px;
+}
+
+.filterRail svg,
+.moreFilters svg {
+  color: currentColor;
+  font-size: 16px;
+}
+
+.activeFilter {
+  background: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-on-primary) !important;
+}
+
+.moreFilters {
+  background: color-mix(in srgb, var(--color-card) 94%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px;
+}
+
+.moreFilters button {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-bg) 64%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-muted);
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 900;
+  gap: 8px;
+  min-height: 34px;
+  padding: 0 12px;
+}
+
+.momentsShell {
+  align-items: start;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.reelFeed {
+  display: grid;
+  gap: 14px;
+  max-height: calc(100vh - 184px);
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+  scroll-snap-type: y proximity;
+}
+
+.reelFeed::-webkit-scrollbar {
+  width: 6px;
+}
+
+.reelFeed::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-primary) 44%, transparent);
+  border-radius: 999px;
+}
+
+.reelCard {
+  align-items: center;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1fr) 74px;
+  padding: 12px;
+  scroll-snap-align: start;
+}
+
+.reelMedia {
+  aspect-ratio: 9 / 13;
+  border-radius: 22px;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.vertical {
+  aspect-ratio: 9 / 13;
+}
+
+.wide {
+  aspect-ratio: 16 / 9;
+}
+
+.square {
+  aspect-ratio: 1 / 1;
+}
+
+.playBadge {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-primary) 92%, #0ea5e9);
+  border-radius: 999px;
+  box-shadow: 0 18px 40px rgb(0 0 0 / 34%);
+  color: var(--color-on-primary);
+  display: flex;
+  height: 54px;
+  justify-content: center;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 54px;
+}
+
+.playBadge svg {
+  font-size: 25px;
+  margin-left: 2px;
+}
+
+.reelOverlay {
+  background: linear-gradient(to top, rgb(0 0 0 / 72%), rgb(0 0 0 / 0));
+  bottom: 0;
+  color: #fff;
+  display: grid;
+  gap: 6px;
+  left: 0;
+  padding: 86px 18px 18px;
+  position: absolute;
+  right: 0;
+}
+
+.reelOverlay span {
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.reelOverlay h2 {
+  font-size: 28px;
+  line-height: 1;
+  margin: 0;
+}
+
+.reelOverlay p,
+.reelOverlay small {
+  color: rgb(255 255 255 / 82%);
+  margin: 0;
+}
+
+.reelOverlay small {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+}
+
+.reelActions {
+  align-self: end;
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  padding-bottom: 10px;
+}
+
+.reelActions button {
+  align-items: center;
+  background: transparent;
+  border: none;
+  color: var(--color-muted);
+  cursor: pointer;
+  display: grid;
+  font-size: 11px;
+  font-weight: 900;
+  gap: 5px;
+  justify-items: center;
+}
+
+.reelActions svg {
+  background: color-mix(in srgb, var(--color-bg) 62%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  color: var(--color-primary-hover);
+  font-size: 42px;
+  padding: 11px;
+}
+
+.surf {
+  background: linear-gradient(155deg, #042033, #0aaee7 48%, #f5d15b);
+}
+
+.sunset {
+  background: linear-gradient(155deg, #160a31, #f16b36 48%, #ffd27a);
+}
+
+.stage {
+  background: linear-gradient(155deg, #150a35, #6d42ff 45%, #ff2fb1);
+}
+
+.sport {
+  background: linear-gradient(155deg, #142b1d, #45b65d 54%, #ffc928);
+}
+
+.city {
+  background: linear-gradient(155deg, #041223, #106dce 48%, #ff3fb6);
+}
+
+@media (max-width: 1320px) {
+  .momentsShell {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .page {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .filterButton {
+    justify-self: start;
+  }
+
+  .reelCard {
+    grid-template-columns: 1fr;
+  }
+
+  .reelMedia {
+    min-height: 0;
+  }
+
+  .reelFeed,
+  .momentsShell {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .reelActions {
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 0;
+  }
+
+  .trendPanel {
+    grid-template-columns: 1fr;
+  }
+}

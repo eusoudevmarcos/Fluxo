@@ -1,0 +1,1 @@
+export type ThemeId = "sunflow" | "ocean-blue" | "night-flow";

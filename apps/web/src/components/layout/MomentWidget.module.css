@@ -1,0 +1,147 @@
+.widget {
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, #10a8ff 12%, transparent), transparent 36%),
+    var(--color-card);
+  border: 1px solid color-mix(in srgb, var(--color-border) 86%, #0ea5e9);
+  border-radius: 16px;
+  box-shadow: var(--shadow-card);
+  padding: 13px;
+}
+
+.widgetHeader {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.widgetHeader strong {
+  color: var(--color-text);
+  display: block;
+  font-size: 17px;
+}
+
+.widgetHeader span {
+  color: var(--color-muted);
+  display: block;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.widgetHeader a {
+  background: transparent;
+  border: none;
+  color: #18b8ff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.track {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.momentCard {
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  color: var(--color-text);
+  cursor: pointer;
+  flex: 0 0 66px;
+  height: 130px;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+}
+
+.momentCard strong {
+  bottom: 9px;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  left: 7px;
+  line-height: 1.1;
+  position: absolute;
+  right: 6px;
+  text-shadow: 0 2px 8px rgb(0 0 0 / 60%);
+  z-index: 2;
+}
+
+.active {
+  box-shadow:
+    0 0 0 1px #18c9ff,
+    0 0 20px color-mix(in srgb, #18c9ff 42%, transparent);
+}
+
+.art {
+  display: block;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.art::after {
+  background: linear-gradient(180deg, transparent 35%, rgb(0 0 0 / 72%));
+  content: "";
+  inset: 0;
+  position: absolute;
+}
+
+.art i {
+  color: #18c9ff;
+  display: block;
+  font-size: 28px;
+  left: 15px;
+  position: absolute;
+  top: 18px;
+  z-index: 1;
+}
+
+.surf {
+  background:
+    radial-gradient(circle at 52% 70%, #03213f 0 10%, transparent 11%),
+    linear-gradient(135deg, #033a72, #0bd5ff 46%, #ffd48f);
+}
+
+.sunset {
+  background:
+    radial-gradient(circle at 62% 36%, #ffe0a5 0 12%, transparent 13%),
+    linear-gradient(135deg, #0a2444, #447db5 42%, #ef843d 70%, #ffe1a3);
+}
+
+.stage {
+  background:
+    radial-gradient(circle at 58% 34%, #f236b6 0 13%, transparent 14%),
+    linear-gradient(135deg, #12062d, #4038ee 48%, #17d8ff);
+}
+
+.sport {
+  background:
+    radial-gradient(circle at 58% 36%, #ffffff 0 9%, transparent 10%),
+    linear-gradient(135deg, #203318, #5bc44f 52%, #ffd478);
+}
+
+.next {
+  align-items: center;
+  align-self: center;
+  background: rgb(4 13 31 / 72%);
+  border: 1px solid color-mix(in srgb, var(--color-border) 76%, #0ea5e9);
+  border-radius: 50%;
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  flex: 0 0 32px;
+  height: 32px;
+  justify-content: center;
+  margin-left: -22px;
+  position: relative;
+  width: 32px;
+  z-index: 3;
+}

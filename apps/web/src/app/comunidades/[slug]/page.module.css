@@ -1,0 +1,235 @@
+.page {
+  display: grid;
+  gap: 16px;
+}
+
+.header,
+.tabs,
+.composer,
+.room,
+.rules,
+.notice,
+.error,
+.notFound {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.header {
+  overflow: hidden;
+}
+
+.cover {
+  align-items: center;
+  background:
+    radial-gradient(circle at 18% 18%, color-mix(in srgb, var(--color-primary) 42%, transparent), transparent 34%),
+    radial-gradient(circle at 82% 12%, color-mix(in srgb, var(--color-accent) 32%, transparent), transparent 36%),
+    linear-gradient(135deg, var(--color-bg), var(--color-card));
+  display: flex;
+  height: 168px;
+  justify-content: center;
+}
+
+.cover span {
+  color: var(--color-primary);
+  font-size: 64px;
+  font-weight: 900;
+}
+
+.headerContent {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+}
+
+.header h1 {
+  color: var(--color-text);
+  font-size: clamp(30px, 4vw, 48px);
+  letter-spacing: 0;
+  line-height: 1;
+  margin: 8px 0;
+}
+
+.header p,
+.notice,
+.error,
+.rules p,
+.room span {
+  color: var(--color-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.official,
+.communityMade,
+.localBadge,
+.stats span {
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-muted);
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 900;
+  gap: 6px;
+  padding: 7px 10px;
+}
+
+.official {
+  color: var(--color-primary-hover);
+}
+
+.localBadge {
+  color: var(--color-accent);
+}
+
+.stats,
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.actions button,
+.composer button,
+.room button,
+.notFound a {
+  align-items: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border: none;
+  border-radius: 15px;
+  color: var(--color-on-primary);
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 900;
+  gap: 8px;
+  justify-content: center;
+  padding: 12px 16px;
+}
+
+.actions button:nth-child(2),
+.room button {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+}
+
+.tabs button {
+  background: transparent;
+  border: none;
+  border-radius: 16px;
+  color: var(--color-muted);
+  cursor: pointer;
+  flex: 1;
+  font-weight: 900;
+  padding: 12px;
+}
+
+.activeTab {
+  background: color-mix(in srgb, var(--color-primary) 18%, transparent) !important;
+  color: var(--color-text) !important;
+}
+
+.contentTab {
+  display: grid;
+  gap: 14px;
+}
+
+.composer {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.composer textarea {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  color: var(--color-text);
+  font: inherit;
+  outline: none;
+  padding: 12px;
+  resize: vertical;
+}
+
+.composer button {
+  justify-self: end;
+}
+
+.rooms {
+  display: grid;
+  gap: 12px;
+}
+
+.room {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+  padding: 14px;
+}
+
+.room strong {
+  color: var(--color-text);
+  display: block;
+}
+
+.rules,
+.notice,
+.error,
+.notFound {
+  padding: 18px;
+}
+
+.rules ul {
+  color: var(--color-text);
+  display: grid;
+  gap: 10px;
+  margin: 14px 0 0;
+  padding-left: 20px;
+}
+
+.error {
+  border-color: rgba(248, 113, 113, 0.34);
+  color: #fecaca;
+}
+
+.notFound {
+  display: grid;
+  gap: 12px;
+}
+
+.notFound h1 {
+  color: var(--color-text);
+  margin: 0;
+}
+
+.notFound a {
+  justify-self: start;
+}
+
+@media (max-width: 760px) {
+  .room,
+  .actions {
+    align-items: stretch;
+    display: grid;
+  }
+
+  .tabs {
+    overflow-x: auto;
+  }
+}
