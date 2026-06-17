@@ -1,6 +1,6 @@
 .profile {
   display: grid;
-  gap: 22px;
+  gap: 14px;
 }
 
 .empty p,
@@ -147,13 +147,16 @@
 }
 
 .detailCard {
-  background: color-mix(in srgb, var(--color-card) 92%, var(--color-bg));
-  border: 1px solid var(--color-border);
-  border-radius: 18px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-card) 96%, transparent), color-mix(in srgb, var(--color-bg) 74%, transparent)),
+    color-mix(in srgb, var(--color-card) 92%, var(--color-bg));
+  border: 1px solid color-mix(in srgb, var(--color-border) 84%, transparent);
+  border-radius: 16px;
   box-shadow: var(--shadow-card);
   display: grid;
-  gap: 8px;
-  padding: 16px;
+  gap: 9px;
+  min-height: 146px;
+  padding: 14px;
 }
 
 .detailCard > span {
@@ -165,12 +168,14 @@
 
 .detailCard strong {
   color: var(--color-text);
-  font-size: 17px;
+  font-size: 16px;
+  line-height: 1.15;
 }
 
 .detailCard p {
   color: var(--color-muted);
-  line-height: 1.5;
+  font-size: 14px;
+  line-height: 1.45;
   margin: 0;
 }
 
@@ -192,19 +197,19 @@
 
 .profileContent {
   background: color-mix(in srgb, var(--color-card) 94%, var(--color-bg));
-  border: 1px solid var(--color-border);
-  border-radius: 28px;
+  border: 1px solid color-mix(in srgb, var(--color-border) 84%, transparent);
+  border-radius: 20px;
   box-shadow: var(--shadow-card);
   display: grid;
-  gap: 16px;
-  padding: 16px;
+  gap: 14px;
+  padding: 14px;
 }
 
 .tabs {
   align-items: center;
   border-bottom: 1px solid var(--color-border);
   display: flex;
-  gap: clamp(18px, 8vw, 48px);
+  gap: clamp(18px, 8vw, 54px);
   justify-content: center;
   overflow: hidden;
   padding: 0 8px;
@@ -249,9 +254,9 @@
 }
 
 .tiles article {
-  background: color-mix(in srgb, var(--color-card) 86%, var(--color-primary));
-  border: 1px solid var(--color-border);
-  border-radius: 22px;
+  background: color-mix(in srgb, var(--color-card) 90%, var(--color-primary));
+  border: 1px solid color-mix(in srgb, var(--color-border) 86%, transparent);
+  border-radius: 18px;
   display: grid;
   gap: 10px;
   overflow: hidden;
@@ -263,7 +268,7 @@
   background:
     radial-gradient(circle at 28% 24%, color-mix(in srgb, var(--color-primary) 44%, transparent), transparent 28%),
     linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 54%, var(--color-card)), var(--color-bg));
-  border-radius: 16px;
+  border-radius: 14px;
   overflow: hidden;
 }
 

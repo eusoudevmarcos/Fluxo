@@ -1,13 +1,13 @@
 .highlights {
   background:
-    radial-gradient(circle at top left, color-mix(in srgb, var(--color-primary) 12%, transparent), transparent 32%),
+    linear-gradient(180deg, color-mix(in srgb, var(--color-card) 96%, transparent), color-mix(in srgb, var(--color-bg) 72%, transparent)),
     color-mix(in srgb, var(--color-card) 94%, var(--color-bg));
-  border: 1px solid var(--color-border);
-  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--color-border) 84%, transparent);
+  border-radius: 20px;
   box-shadow: var(--shadow-card);
   display: grid;
-  gap: 14px;
-  padding: 16px;
+  gap: 12px;
+  padding: 14px;
 }
 
 .highlights header {
@@ -18,7 +18,7 @@
 
 .highlights h2 {
   color: var(--color-text);
-  font-size: 18px;
+  font-size: 16px;
   margin: 0;
 }
 
@@ -33,7 +33,7 @@
 
 .track {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   overflow-x: auto;
   padding-bottom: 2px;
 }
@@ -59,15 +59,15 @@
   color: var(--color-text);
   cursor: pointer;
   display: grid;
-  flex: 0 0 78px;
-  gap: 8px;
+  flex: 0 0 70px;
+  gap: 7px;
   justify-items: center;
   padding: 0;
 }
 
 .item strong {
-  font-size: 13px;
-  max-width: 86px;
+  font-size: 12px;
+  max-width: 76px;
   overflow: hidden;
   text-align: center;
   text-overflow: ellipsis;
@@ -77,11 +77,11 @@
 .thumb,
 .newThumb {
   aspect-ratio: 1;
-  border-radius: 22px;
+  border-radius: 18px;
   display: grid;
   overflow: hidden;
   place-items: center;
-  width: 78px;
+  width: 70px;
 }
 
 .newThumb {
@@ -90,7 +90,7 @@
     linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 70%, transparent), transparent) border-box;
   border: 1px dashed color-mix(in srgb, var(--color-primary) 58%, var(--color-border));
   color: var(--color-text);
-  font-size: 30px;
+  font-size: 28px;
 }
 
 .thumb {
@@ -131,12 +131,12 @@
   }
 
   .item {
-    flex-basis: 70px;
+    flex-basis: 66px;
   }
 
   .thumb,
   .newThumb {
-    border-radius: 20px;
-    width: 70px;
+    border-radius: 17px;
+    width: 66px;
   }
 }

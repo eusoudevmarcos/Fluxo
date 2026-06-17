@@ -4,7 +4,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
-import { HiPlay } from "react-icons/hi";
+import { HiLightningBolt, HiShieldCheck, HiSparkles, HiUserGroup } from "react-icons/hi";
 
 import { OceanLogo } from "@/components/brand/OceanLogo";
 import { ensureProfile } from "@/lib/profiles/ensure-profile";
@@ -57,6 +57,13 @@ function getFriendlyAuthError(error: unknown) {
 function hasExistingEmailIdentity(data: { user: { identities?: unknown[] | null } | null }) {
   return Boolean(data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0);
 }
+
+const previewHighlights = [
+  { icon: <HiLightningBolt />, title: "Flow", text: "Crie e acompanhe o agora." },
+  { icon: <HiSparkles />, title: "Aura", text: "Evolua com missões e recompensas." },
+  { icon: <HiUserGroup />, title: "Comunidades", text: "Encontre sua galera na Ocean." },
+  { icon: <HiShieldCheck />, title: "Segurança", text: "Termos, privacidade e onboarding." },
+];
 
 export function AuthScreen({ initialMode, initialError }: AuthScreenProps) {
   const router = useRouter();
@@ -257,8 +264,11 @@ export function AuthScreen({ initialMode, initialError }: AuthScreenProps) {
       <section className={styles.preview} aria-label="Previa do aplicativo Ocean">
         <div className={styles.previewText}>
           <OceanLogo size="lg" />
-          <h1>Viva o agora com presença.</h1>
-          <p>Flows, Moments, Waves, Fãs, Seletos e Aura em uma experiencia social imersiva.</p>
+          <h1>Entre no flow da Ocean.</h1>
+          <p>
+            Crie Flows, acompanhe Moments, participe de Comunidades e evolua sua Aura
+            em uma experiencia social imersiva.
+          </p>
         </div>
 
         <div className={styles.previewFrame}>
@@ -269,18 +279,18 @@ export function AuthScreen({ initialMode, initialError }: AuthScreenProps) {
             height={1024}
             priority
           />
-          <div className={styles.videoOverlay}>
-            <div>
-              <strong>Conheça a Ocean antes de entrar</strong>
-              <span>Flow, Moments e presença acontecendo em tempo real.</span>
-            </div>
-            <button type="button" aria-label="Assistir previa"><HiPlay /></button>
-          </div>
-          <div className={styles.previewLabels}>
-            {["Flow", "Moments", "Wave", "Presença", "Dahora"].map((label) => (
-              <span key={label}>{label}</span>
-            ))}
-          </div>
+        </div>
+
+        <div className={styles.previewHighlights}>
+          {previewHighlights.map((item) => (
+            <article key={item.title}>
+              <span>{item.icon}</span>
+              <div>
+                <strong>{item.title}</strong>
+                <p>{item.text}</p>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 

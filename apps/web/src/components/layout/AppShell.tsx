@@ -13,6 +13,7 @@ import {
 
 import { ProfileProvider, useProfile } from "@/components/profile/ProfileProvider";
 import { PrivsPanel } from "@/components/privs/PrivsPanel";
+import { CURRENT_LEGAL_VERSIONS } from "@/lib/legal/legal-versions";
 import { hasAcceptedCurrentLegalVersions } from "@/lib/services/legal.service";
 import { createClient } from "@/lib/supabase/client";
 import styles from "./AppShell.module.css";
@@ -24,6 +25,8 @@ import { Sidebar } from "./Sidebar";
 type AppShellProps = {
   children: React.ReactNode;
 };
+
+const LEGAL_ACCEPTANCE_CACHE_VALUE = JSON.stringify(CURRENT_LEGAL_VERSIONS);
 
 function LegalGate({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -41,6 +44,22 @@ function LegalGate({ children }: { children: ReactNode }) {
         return;
       }
 
+      if (
+        profile &&
+        (!profile.onboarding_completed || !profile.profile_required_completed)
+      ) {
+        router.replace("/onboarding");
+        return;
+      }
+
+      const cacheKey = `ocean:legal-accepted:${user.id}`;
+      if (window.sessionStorage.getItem(cacheKey) === LEGAL_ACCEPTANCE_CACHE_VALUE) {
+        setIsCheckingLegal(false);
+        return;
+      }
+
+      setIsCheckingLegal(true);
+
       hasAcceptedCurrentLegalVersions(supabase)
         .then((hasAccepted) => {
           if (!hasAccepted) {
@@ -48,14 +67,7 @@ function LegalGate({ children }: { children: ReactNode }) {
             return;
           }
 
-          if (
-            profile &&
-            (!profile.onboarding_completed || !profile.profile_required_completed)
-          ) {
-            router.replace("/onboarding");
-            return;
-          }
-
+          window.sessionStorage.setItem(cacheKey, LEGAL_ACCEPTANCE_CACHE_VALUE);
           setIsCheckingLegal(false);
         })
         .catch(() => {

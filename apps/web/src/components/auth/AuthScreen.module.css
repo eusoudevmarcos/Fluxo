@@ -16,8 +16,8 @@
     linear-gradient(135deg, var(--auth-bg) 0%, var(--auth-bg-soft) 52%, #020617 100%);
   color: var(--auth-text);
   display: grid;
-  gap: clamp(24px, 4vw, 70px);
-  grid-template-columns: minmax(320px, 760px) minmax(340px, 430px);
+  gap: clamp(24px, 4vw, 56px);
+  grid-template-columns: minmax(420px, 800px) minmax(350px, 440px);
   justify-content: center;
   min-height: 100svh;
   overflow: auto;
@@ -27,14 +27,14 @@
 .preview {
   align-items: center;
   display: grid;
-  gap: clamp(18px, 2.4vw, 30px);
+  gap: clamp(16px, 2vw, 24px);
   min-width: 0;
 }
 
 .previewText {
   display: grid;
-  gap: 12px;
-  max-width: 650px;
+  gap: 10px;
+  max-width: 620px;
 }
 
 .cardLogo {
@@ -44,11 +44,11 @@
 
 .previewText h1 {
   color: var(--auth-text);
-  font-size: clamp(38px, 4.8vw, 76px);
-  letter-spacing: -0.055em;
-  line-height: 0.96;
+  font-size: clamp(38px, 4.2vw, 66px);
+  letter-spacing: -0.04em;
+  line-height: 1;
   margin: 0;
-  max-width: 680px;
+  max-width: 640px;
 }
 
 .previewText p {
@@ -68,14 +68,16 @@
   box-shadow:
     0 34px 110px rgba(0, 0, 0, 0.48),
     0 0 90px rgba(14, 165, 233, 0.14);
-  max-height: min(58svh, 610px);
-  max-width: 760px;
+  max-height: min(54svh, 560px);
+  max-width: 800px;
   overflow: hidden;
   position: relative;
 }
 
 .previewFrame::after {
-  background: linear-gradient(90deg, rgba(2, 6, 23, 0.1), transparent 30%, rgba(2, 6, 23, 0.18));
+  background:
+    linear-gradient(90deg, rgba(2, 6, 23, 0.08), transparent 30%, rgba(2, 6, 23, 0.14)),
+    linear-gradient(180deg, transparent 72%, rgba(2, 6, 23, 0.22));
   content: "";
   inset: 0;
   pointer-events: none;
@@ -85,72 +87,56 @@
 .previewFrame img {
   display: block;
   height: 100%;
-  max-height: min(58svh, 610px);
-  object-fit: cover;
+  max-height: min(54svh, 560px);
+  object-fit: contain;
   object-position: center;
   width: 100%;
 }
 
-.videoOverlay {
-  align-items: end;
-  display: flex;
-  inset: auto 24px 24px 24px;
-  justify-content: space-between;
-  pointer-events: none;
-  position: absolute;
-  z-index: 2;
+.previewHighlights {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: 800px;
 }
 
-.videoOverlay strong {
-  color: var(--auth-text);
-  display: block;
-  font-size: clamp(20px, 2vw, 30px);
-  line-height: 1.1;
-  max-width: 360px;
-}
-
-.videoOverlay span {
-  color: var(--auth-muted);
-  display: block;
-  line-height: 1.4;
-  margin-top: 8px;
-  max-width: 380px;
-}
-
-.videoOverlay button {
-  align-items: center;
-  background: var(--auth-primary);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 50%;
-  color: var(--auth-bg);
-  display: flex;
-  flex-shrink: 0;
-  font-size: 22px;
-  height: 68px;
-  justify-content: center;
-  pointer-events: auto;
-  width: 68px;
-}
-
-.previewLabels {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  left: 22px;
-  position: absolute;
-  top: 22px;
-  z-index: 2;
-}
-
-.previewLabels span {
-  background: rgba(2, 6, 23, 0.58);
+.previewHighlights article {
+  align-items: start;
+  background: rgba(15, 23, 42, 0.58);
   border: 1px solid var(--auth-border);
-  border-radius: 999px;
-  color: var(--auth-text);
-  font-size: 12px;
-  font-weight: 900;
-  padding: 8px 10px;
+  border-radius: 18px;
+  display: grid;
+  gap: 8px;
+  min-height: 118px;
+  padding: 14px;
 }
+
+.previewHighlights article > span {
+  align-items: center;
+  background: rgba(14, 165, 233, 0.16);
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  border-radius: 13px;
+  color: var(--auth-blue-soft);
+  display: flex;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.previewHighlights strong {
+  color: var(--auth-text);
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.previewHighlights p {
+  color: var(--auth-muted);
+  font-size: 12px;
+  line-height: 1.35;
+  margin: 0;
+}
+
 .authArea {
   align-content: center;
   display: grid;
@@ -171,7 +157,7 @@
 .authCard {
   border-radius: 30px;
   display: grid;
-  gap: 18px;
+  gap: 16px;
   padding: clamp(22px, 2.2vw, 32px);
 }
 
@@ -381,12 +367,12 @@
 
 @media (min-width: 1500px) {
   .page {
-    grid-template-columns: minmax(640px, 860px) minmax(390px, 460px);
+    grid-template-columns: minmax(700px, 900px) minmax(390px, 460px);
   }
 
   .previewFrame,
   .previewFrame img {
-    max-height: 650px;
+    max-height: 610px;
   }
 }
 
@@ -410,7 +396,11 @@
 
   .previewFrame,
   .previewFrame img {
-    max-height: 42svh;
+    max-height: 40svh;
+  }
+
+  .previewHighlights {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .authArea {
@@ -437,7 +427,7 @@
 
   .previewFrame,
   .previewFrame img {
-    max-height: 31svh;
+    max-height: 28svh;
   }
 
   .authCard {
@@ -445,9 +435,9 @@
   }
 }
 
-@media (max-height: 760px) and (min-width: 1021px) {
+@media (max-height: 780px) and (min-width: 1021px) {
   .page {
-    grid-template-columns: minmax(360px, 620px) minmax(340px, 410px);
+    grid-template-columns: minmax(460px, 650px) minmax(340px, 410px);
     padding: 20px;
   }
 
@@ -457,35 +447,21 @@
 
   .previewFrame,
   .previewFrame img {
-    max-height: 46svh;
+    max-height: 42svh;
   }
 
   .authCard {
     gap: 12px;
     padding: 22px;
   }
+
+  .previewHighlights {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
-@media (max-width: 720px) {
-  .videoOverlay {
-    align-items: start;
-    inset: auto 14px 14px 14px;
-  }
 
-  .videoOverlay strong {
-    font-size: 17px;
-  }
-
-  .videoOverlay span {
-    display: none;
-  }
-
-  .videoOverlay button {
-    height: 48px;
-    width: 48px;
-  }
-
-  .previewLabels {
-    left: 12px;
-    top: 12px;
+@media (max-width: 520px) {
+  .previewHighlights {
+    grid-template-columns: 1fr;
   }
 }

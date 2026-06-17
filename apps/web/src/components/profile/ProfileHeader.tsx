@@ -1,5 +1,5 @@
 ﻿import Link from "next/link";
-import { HiEye, HiLocationMarker, HiPencilAlt, HiSparkles } from "react-icons/hi";
+import { HiEye, HiLocationMarker, HiPencilAlt, HiSparkles, HiSun } from "react-icons/hi";
 import type { UserGamification } from "@ocean/shared";
 
 import { AuraAvatar } from "@/components/aura/AuraAvatar";
@@ -53,6 +53,7 @@ export function ProfileHeader({
   const xpCurrent = gamification?.xp_current_level ?? 0;
   const xpNext = gamification?.xp_next_level ?? 1000;
   const xpProgress = Math.min(100, Math.round((xpCurrent / Math.max(1, xpNext)) * 100));
+  const flowId = username === "ocean" ? "1234" : username.slice(0, 4).toUpperCase();
   const location =
     profile.city && profile.state
       ? `${profile.city}, ${profile.state}`
@@ -81,98 +82,112 @@ export function ProfileHeader({
 
   return (
     <section className={styles.header}>
-      <div className={styles.avatarWrap}>
-        <AuraAvatar
-          aura={equippedAura}
-          fallback={getInitials(displayName)}
-          size="lg"
-          src={profile.avatar_url}
-        />
+      <div className={styles.cover} aria-hidden="true" />
+
+      <div className={styles.hero}>
+        <div className={styles.avatarWrap}>
+          <AuraAvatar
+            aura={equippedAura}
+            fallback={getInitials(displayName)}
+            size="lg"
+            src={profile.avatar_url}
+          />
+        </div>
+
+        <div className={styles.content}>
+          <div className={styles.identity}>
+            <h1>
+              <BadgeIcon badge={visibleBadge} size="md" />
+              {displayName}
+              {gamification?.is_founder && <em>Fundador Ocean</em>}
+            </h1>
+            <span>
+              @{username}
+              <b>Flow ID: {flowId}</b>
+            </span>
+          </div>
+
+          <p>{profile.bio || "Complete sua ficha para aumentar sua presença na Ocean."}</p>
+        </div>
+      </div>
+
+      <div className={styles.profileChips}>
         <span className={styles.locationBadge}>
           <HiLocationMarker />
           {location || "Localização nao informada"}
         </span>
+        <span className={styles.themeBadge}>
+          <HiSun />
+          Tema: {profile.theme || "sunflow"}
+        </span>
+      </div>
+
+      <div className={styles.meta}>
+        <Link className={styles.levelPill} href="/missoes">
+          <span className={styles.metaIcon}>
+            <HiSparkles />
+          </span>
+          <strong>Nível {level}</strong>
+          <i>
+            <span style={{ width: `${xpProgress}%` }} />
+          </i>
+        </Link>
+        <Link className={styles.auraPill} href="/auras">
+          <span className={styles.metaIcon}>
+            <HiSparkles />
+          </span>
+          <strong>Aura: {aura}</strong>
+        </Link>
         {gamification?.is_founder && (
           <span className={styles.founderSeal}>
-            <i>
+            <span className={styles.metaIcon}>
               <HiSparkles />
-            </i>
+            </span>
             <strong>Fundador Ocean</strong>
             <small>Perfil Oficial</small>
           </span>
         )}
       </div>
 
-      <div className={styles.content}>
-        <div className={styles.identity}>
-          <div>
-            <h1>
-              <BadgeIcon badge={visibleBadge} size="md" />
-              {displayName}
-            </h1>
-            <span>@{username}</span>
-          </div>
-
-          {(onEdit || showPublicLink) && (
-            <div className={styles.headerActions}>
-              {onEdit && (
-                <button type="button" onClick={onEdit}>
-                  <HiPencilAlt />
-                  Editar perfil
-                </button>
-              )}
-
-              {showPublicLink && profile.username ? (
-                <Link className={styles.secondaryButton} href={`/u/${profile.username}`}>
-                  <HiEye />
-                  Ver perfil público
-                </Link>
-              ) : showPublicLink ? (
-                <button type="button" className={styles.secondaryButton}>
-                  <HiEye />
-                  Ver como publico
-                </button>
-              ) : null}
-            </div>
+      {(onEdit || showPublicLink) && (
+        <div className={styles.headerActions}>
+          {onEdit && (
+            <button type="button" onClick={onEdit}>
+              <HiPencilAlt />
+              Editar perfil
+            </button>
           )}
-        </div>
 
-        <p>
-          <strong>Sobre seu flow</strong>
-          {profile.bio || "Complete sua ficha para aumentar sua presença na Ocean."}
-        </p>
+          {showPublicLink && profile.username ? (
+            <Link className={styles.secondaryButton} href={`/u/${profile.username}`}>
+              <HiEye />
+              Ver perfil público
+            </Link>
+          ) : showPublicLink ? (
+            <button type="button" className={styles.secondaryButton}>
+              <HiEye />
+              Ver como publico
+            </button>
+          ) : null}
 
-        <div className={styles.meta}>
-          <Link className={styles.levelPill} href="/missoes">
+          <Link className={styles.secondaryButton} href="/auras">
             <HiSparkles />
-            Nível {level}
-            <i>
-              <span style={{ width: `${xpProgress}%` }} />
-            </i>
+            Ver Auras
           </Link>
-          <span>
+          <Link className={styles.secondaryButton} href="/missoes">
             <HiSparkles />
-            Aura {aura}
-          </span>
-          <span>
-            <HiSparkles />
-            Tema {profile.theme || "sunflow"}
-          </span>
+            Minhas Missões
+          </Link>
         </div>
+      )}
 
-        <div className={styles.rewardLinks}>
-          <Link href="/auras">Ver Auras</Link>
-          <Link href="/missoes">Minhas Missões</Link>
-        </div>
-
-        <div className={styles.stats}>
-          {displayStats.map((stat) => (
-            <div key={stat.label}>
-              <strong>{stat.value}</strong>
-              <span>{stat.label}</span>
-            </div>
-          ))}
-        </div>
+      <div className={styles.stats}>
+        {displayStats.map((stat) => (
+          <div key={stat.label}>
+            <strong>{stat.value}</strong>
+            <span>{stat.label}</span>
+          </div>
+        ))}
       </div>
     </section>
   );

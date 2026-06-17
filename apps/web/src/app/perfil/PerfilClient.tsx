@@ -1,15 +1,14 @@
 ﻿"use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import type { UserGamification } from "@ocean/shared";
 
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { ProfileHighlights } from "@/components/profile/ProfileHighlights";
+import { useProfile } from "@/components/profile/ProfileProvider";
 import { ThemeSwitcher } from "@/components/theme/ThemeSwitcher";
 import {
-  ensureProfile,
   OceanProfile,
   updateProfile,
   getErrorMessage,
@@ -90,7 +89,11 @@ function profileToForm(profile: OceanProfile): ProfileForm {
 }
 
 export function PerfilClient() {
-  const router = useRouter();
+  const {
+    profile: shellProfile,
+    isLoading: isShellProfileLoading,
+    error: shellProfileError,
+  } = useProfile();
   const configError = useMemo(() => getSupabaseConfigError(), []);
   const supabase = useMemo(() => createClient(), []);
   const [profile, setProfile] = useState<OceanProfile | null>(null);
@@ -126,19 +129,27 @@ export function PerfilClient() {
       return;
     }
 
+    if (isShellProfileLoading) {
+      return;
+    }
+
     let isMounted = true;
 
     async function loadProfile() {
       try {
-        const ensuredProfile = await ensureProfile();
+        if (!shellProfile) {
+          setError(shellProfileError || "Não foi possível carregar seu perfil.");
+          setIsLoading(false);
+          return;
+        }
 
         if (isMounted) {
-          setProfile(ensuredProfile);
-          setForm(profileToForm(ensuredProfile));
-          const profileStats = await getProfileContentStats(supabase, ensuredProfile.user_id);
-          const [nextAura, nextBadge, nextGamification] = await Promise.all([
-            getEquippedAura(supabase, ensuredProfile.user_id).catch(() => null),
-            getEquippedBadge(supabase, ensuredProfile.user_id).catch(() => null),
+          setProfile(shellProfile);
+          setForm(profileToForm(shellProfile));
+          const [profileStats, nextAura, nextBadge, nextGamification] = await Promise.all([
+            getProfileContentStats(supabase, shellProfile.user_id),
+            getEquippedAura(supabase, shellProfile.user_id).catch(() => null),
+            getEquippedBadge(supabase, shellProfile.user_id).catch(() => null),
             getMyGamification(supabase).catch(() => null),
           ]);
           if (isMounted) {
@@ -158,16 +169,11 @@ export function PerfilClient() {
           setIsLoading(false);
         }
       } catch (profileError) {
-        if (isMounted) {
-          const message = getErrorMessage(
-            profileError,
-            "Não foi possível carregar seu perfil.",
-          );
-
-          if (message.toLowerCase().includes("autenticado")) {
-            router.replace("/auth?mode=login");
-            return;
-          }
+          if (isMounted) {
+            const message = getErrorMessage(
+              profileError,
+              "Não foi possível carregar seu perfil.",
+            );
 
           setError(
             message,
@@ -182,7 +188,7 @@ export function PerfilClient() {
     return () => {
       isMounted = false;
     };
-  }, [configError, router, supabase]);
+  }, [configError, isShellProfileLoading, shellProfile, shellProfileError, supabase]);
 
   useEffect(() => {
     if (!profile) {

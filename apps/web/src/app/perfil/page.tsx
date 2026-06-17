@@ -22,9 +22,12 @@ export default async function PerfilPage() {
     redirect("/auth?mode=login");
   }
 
-  const profile = await ensureProfileWithClient(supabase);
+  const [profile, hasLegalAcceptance] = await Promise.all([
+    ensureProfileWithClient(supabase),
+    hasAcceptedCurrentLegalVersions(supabase),
+  ]);
 
-  if (!(await hasAcceptedCurrentLegalVersions(supabase))) {
+  if (!hasLegalAcceptance) {
     redirect("/legal/accept");
   }
 
