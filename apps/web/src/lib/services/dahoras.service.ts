@@ -64,7 +64,7 @@ export async function toggleDahora(
   }
 
   if (!userData.user) {
-    throw new Error("Entre na Ocean para marcar Dahora.");
+    throw new Error("Entre na Wave para marcar Dahora.");
   }
 
   const { data: existing, error: existingError } = await supabase

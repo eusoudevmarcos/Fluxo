@@ -79,7 +79,7 @@ function LegalGate({ children }: { children: ReactNode }) {
   }, [isLoading, pathname, profile, router, supabase, user]);
 
   if (isLoading || isCheckingLegal) {
-    return <div className={styles.gateNotice}>Preparando sua entrada na Ocean...</div>;
+    return <div className={styles.gateNotice}>Preparando sua entrada na Wave...</div>;
   }
 
   return children;

@@ -8,7 +8,7 @@ import "@fontsource/quicksand/700.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Ocean",
+  title: "Wave",
   description: "Rede social brasileira para Flow, Moments, salas e comunidades em tempo real.",
 };
 

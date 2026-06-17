@@ -17,25 +17,25 @@ import styles from "./OceanEcosystem.module.css";
 
 const ecosystemItems = [
   {
-    title: "Ocean Date",
+    title: "Wave Date",
     description: "Conexões com vibe, localização, segurança e compatibilidade social.",
     status: "Em breve",
     Icon: HeartHandshake,
   },
   {
-    title: "Ocean Shop",
-    description: "Marketplace com reputação social, localização, reviews e integração futura com Ocean Coin.",
+    title: "Wave Shop",
+    description: "Marketplace com reputação social, localização, reviews e integração futura com Wave Coin.",
     status: "Em breve",
     Icon: ShoppingBag,
   },
   {
-    title: "Ocean Stream",
+    title: "Wave Stream",
     description: "Lives de jogos, música, dança, arte, lifestyle, eventos e criação original.",
     status: "Em breve",
     Icon: Radio,
   },
   {
-    title: "Ocean Academy",
+    title: "Wave Academy",
     description: "Cursos online por criadores, empresas, especialistas e comunidades.",
     status: "Em breve",
     Icon: GraduationCap,
@@ -53,7 +53,7 @@ const ecosystemItems = [
     Icon: Gamepad2,
   },
   {
-    title: "Ocean Coin",
+    title: "Wave Coin",
     description: "Visão futura para wallet, transações, marketplace, doações, recompensas e economia interna.",
     status: "Visão futura",
     Icon: Coins,
@@ -69,7 +69,7 @@ const innovationItems = [
   },
   {
     title: "WaveMap",
-    description: "A Ocean mostra como uma ideia se espalha, quem impulsionou e por onde passou.",
+    description: "A Wave mostra como uma ideia se espalha, quem impulsionou e por onde passou.",
     Icon: Map,
   },
   {
@@ -94,14 +94,14 @@ export function OceanEcosystem() {
     <div className={styles.ecosystem}>
       <section className={styles.hero}>
         <span>Mais</span>
-        <h1>O Ecossistema Ocean</h1>
+        <h1>O Ecossistema Wave</h1>
         <p>
-          A Ocean está nascendo como uma rede social, mas foi pensada para crescer como
+          A Wave está nascendo como uma rede social, mas foi pensada para crescer como
           um ecossistema de criação, conexão, comércio, aprendizado e presença.
         </p>
       </section>
 
-      <section className={styles.grid} aria-label="Recursos futuros da Ocean">
+      <section className={styles.grid} aria-label="Recursos futuros da Wave">
         {ecosystemItems.map(({ title, description, status, Icon, note }) => (
           <article className={styles.card} key={title}>
             <div className={styles.iconBox}>
@@ -125,7 +125,7 @@ export function OceanEcosystem() {
       <section className={styles.innovation}>
         <div className={styles.sectionTitle}>
           <span>Visão de produto</span>
-          <h2>O que torna a Ocean diferente</h2>
+          <h2>O que torna a Wave diferente</h2>
         </div>
 
         <div className={styles.innovationGrid}>

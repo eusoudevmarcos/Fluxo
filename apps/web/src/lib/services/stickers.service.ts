@@ -16,7 +16,7 @@ export async function listStickerPacks(supabase: SupabaseClient) {
 export async function getMyStickerPacks(supabase: SupabaseClient) {
   const { data: userData, error: userError } = await supabase.auth.getUser();
   if (userError) throw userError;
-  if (!userData.user) throw new Error("Entre na Ocean para ver seus stickers.");
+  if (!userData.user) throw new Error("Entre na Wave para ver seus stickers.");
 
   const { data, error } = await supabase
     .from("user_sticker_packs")

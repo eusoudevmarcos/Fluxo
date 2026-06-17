@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useMemo, useState } from "react";
 import { HiChevronRight, HiPlay, HiPlus, HiX } from "react-icons/hi";
@@ -9,18 +9,18 @@ import { createClient } from "@/lib/supabase/client";
 import styles from "./SwagCarousel.module.css";
 
 function getDisplayName(flow: FlowPreview) {
-  return flow.author?.display_name || flow.author?.username || "Ocean";
+  return flow.author?.display_name || flow.author?.username || "Wave";
 }
 
 function getInitial(name: string) {
-  return name.trim().charAt(0).toUpperCase() || "O";
+  return name.trim().charAt(0).toUpperCase() || "W";
 }
 
-function getFounderBadge(userId?: string, label = "Fundador Ocean"): EquippedBadge {
+function getFounderBadge(userId?: string, label = "Fundador Wave"): EquippedBadge {
   return {
     user_id: userId,
     badge_slug: "badge-founder",
-    badge_name: label || "Fundador Ocean",
+    badge_name: label || "Fundador Wave",
     category: "founder",
     rarity: "milenar",
     color_primary: "#ffd01a",
@@ -30,12 +30,12 @@ function getFounderBadge(userId?: string, label = "Fundador Ocean"): EquippedBad
 }
 
 const suggestedFlows = [
-  { name: "Lucas R.", time: "2 h atrás", tone: "surf" },
-  { name: "Marina Costa", time: "4 h atrás", tone: "sunset" },
-  { name: "Pedro Alves", time: "5 h atrás", tone: "city" },
-  { name: "Ana Clara", time: "7 h atrás", tone: "sport" },
-  { name: "Thiago Mendes", time: "9 h atrás", tone: "stage" },
-  { name: "Rafa Souza", time: "12 h atrás", tone: "night" },
+  { name: "Lucas R.", time: "2 h atrÃ¡s", tone: "surf" },
+  { name: "Marina Costa", time: "4 h atrÃ¡s", tone: "sunset" },
+  { name: "Pedro Alves", time: "5 h atrÃ¡s", tone: "city" },
+  { name: "Ana Clara", time: "7 h atrÃ¡s", tone: "sport" },
+  { name: "Thiago Mendes", time: "9 h atrÃ¡s", tone: "stage" },
+  { name: "Rafa Souza", time: "12 h atrÃ¡s", tone: "night" },
 ];
 
 export function SwagCarousel() {
@@ -66,7 +66,7 @@ export function SwagCarousel() {
           setError(
             flowError instanceof Error
               ? flowError.message
-              : "Não foi possível carregar os Flows.",
+              : "NÃ£o foi possÃ­vel carregar os Flows.",
           );
         }
       } finally {
@@ -90,7 +90,7 @@ export function SwagCarousel() {
           <div>
             <strong>Flows dos seus seletos</strong>
             {!isLoading && !error && !flows.length && (
-              <span>Sugestões para você sentir o ritmo da Ocean.</span>
+              <span>SugestÃµes para vocÃª sentir o ritmo da Wave.</span>
             )}
           </div>
           <button type="button">Ver todos</button>
@@ -116,7 +116,7 @@ export function SwagCarousel() {
             const flowBadge =
               flow.author?.equipped_badge ??
               (flow.author?.is_founder
-                ? getFounderBadge(flow.author.user_id, flow.author.official_label ?? "Fundador Ocean")
+                ? getFounderBadge(flow.author.user_id, flow.author.official_label ?? "Fundador Wave")
                 : null);
 
             return (
@@ -200,7 +200,7 @@ export function SwagCarousel() {
                       (selectedFlow.author?.is_founder
                         ? getFounderBadge(
                             selectedFlow.author.user_id,
-                            selectedFlow.author.official_label ?? "Fundador Ocean",
+                            selectedFlow.author.official_label ?? "Fundador Wave",
                           )
                         : null)
                     }

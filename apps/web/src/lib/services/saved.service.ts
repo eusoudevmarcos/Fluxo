@@ -1,4 +1,4 @@
-﻿import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 export type SavedState = {
   is_saved: boolean;
@@ -37,7 +37,7 @@ export async function toggleSaved(
   if (userError) throw userError;
 
   if (!userData.user) {
-    throw new Error("Entre na Ocean para salvar.");
+    throw new Error("Entre na Wave para salvar.");
   }
 
   const { data: existing, error: existingError } = await supabase
@@ -78,7 +78,7 @@ export async function saveContent(
   if (userError) throw userError;
 
   if (!userData.user) {
-    throw new Error("Entre na Ocean para salvar.");
+    throw new Error("Entre na Wave para salvar.");
   }
 
   const { error } = await supabase.from("saved_contents").upsert(

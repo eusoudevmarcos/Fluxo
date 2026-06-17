@@ -8,15 +8,15 @@ type OceanLogoProps = {
 };
 
 const logoSrc = {
-  yellow: "/brand/ocean-logo-yellow.svg",
-  blue: "/brand/ocean-logo-blue.svg",
-  white: "/brand/ocean-logo-yellow.svg",
+  yellow: "/brand/wave-icon.png",
+  blue: "/brand/wave-icon.png",
+  white: "/brand/wave-icon.png",
 } as const;
 
 const logoSize = {
-  sm: { width: 112, height: 28 },
-  md: { width: 168, height: 42 },
-  lg: { width: 232, height: 58 },
+  sm: { width: 28, height: 28 },
+  md: { width: 38, height: 38 },
+  lg: { width: 48, height: 48 },
 } as const;
 
 export function OceanLogo({
@@ -29,7 +29,7 @@ export function OceanLogo({
         <Image
           className={styles.yellowImage}
           src={logoSrc.yellow}
-          alt="ocean"
+          alt=""
           width={logoSize[size].width}
           height={logoSize[size].height}
           priority={size === "lg"}
@@ -37,11 +37,12 @@ export function OceanLogo({
         <Image
           className={styles.blueImage}
           src={logoSrc.blue}
-          alt="ocean"
+          alt=""
           width={logoSize[size].width}
           height={logoSize[size].height}
           priority={size === "lg"}
         />
+        <span className={styles.wordmark}>wave</span>
       </span>
     );
   }
@@ -50,11 +51,12 @@ export function OceanLogo({
     <span className={`${styles.logo} ${styles[variant]} ${styles[size]}`}>
       <Image
         src={logoSrc[variant]}
-        alt="ocean"
+        alt=""
         width={logoSize[size].width}
         height={logoSize[size].height}
         priority={size === "lg"}
       />
+      <span className={styles.wordmark}>wave</span>
     </span>
   );
 }

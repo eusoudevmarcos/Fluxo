@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useState } from "react";
@@ -150,9 +150,9 @@ export default function ComunidadesPage() {
         <section className={styles.hero}>
           <div>
             <span className={styles.eyebrow}>Comunidades</span>
-            <h1>Encontre sua galera na Ocean.</h1>
+            <h1>Encontre sua galera na Wave.</h1>
             <p>
-              Comunidades com alma de Orkut, visual Ocean e espaço para Criações,
+              Comunidades com alma de Orkut, visual Wave e espaço para Criações,
               Salas e Regras.
             </p>
           </div>

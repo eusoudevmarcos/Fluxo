@@ -1,4 +1,4 @@
-﻿import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 import { getEquippedAurasByUserIds } from "./auras.service";
 import { getEquippedBadgesByUserIds } from "./badges.service";
@@ -131,7 +131,7 @@ export async function createComment(
   }
 
   if (!userData.user) {
-    throw new Error("Entre na Ocean para comentar.");
+    throw new Error("Entre na Wave para comentar.");
   }
 
   const { error } = await supabase.from("comments").insert({

@@ -45,7 +45,7 @@ function getBadgeStatus(badge: BadgeDefinition) {
     return "Desbloqueado por criterios";
   }
 
-  return badge.unlock_type === "founder" ? "Liberacao manual" : "Conquista Ocean";
+  return badge.unlock_type === "founder" ? "Liberacao manual" : "Conquista Wave";
 }
 
 export default function SelosPage() {
@@ -131,7 +131,7 @@ function SelosContent() {
     <main className={styles.page}>
       <header className={styles.hero}>
         <div>
-          <span>Identidade Ocean</span>
+          <span>Identidade Wave</span>
           <h1>Sistema de Selos</h1>
           <p>Identidade, conquistas e reconhecimento social com medalhas discretas ao lado do nome.</p>
         </div>

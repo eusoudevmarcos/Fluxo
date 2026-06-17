@@ -31,7 +31,7 @@ type RoomMessageRow = {
 async function getCurrentUserId(supabase: SupabaseClient) {
   const { data, error } = await supabase.auth.getUser();
   if (error) throw error;
-  if (!data.user) throw new Error("Entre na Ocean para conversar na sala.");
+  if (!data.user) throw new Error("Entre na Wave para conversar na sala.");
   return data.user.id;
 }
 

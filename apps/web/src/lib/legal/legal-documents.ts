@@ -28,27 +28,27 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
     version: LEGAL_TERMS_VERSION,
     updatedAt: "17 de maio de 2026",
     summary:
-      "Define as regras gerais para usar a Ocean, criar conta, publicar conteudo, participar de comunidades e interagir com outras pessoas.",
+      "Define as regras gerais para usar a Wave, criar conta, publicar conteudo, participar de comunidades e interagir com outras pessoas.",
     sections: [
       {
         title: "Aceitacao",
         body: [
-          "Ao criar conta, entrar com Google, navegar logado ou usar recursos da Ocean, voce declara que leu, entendeu e aceitou estes Termos de Uso e os demais documentos legais da plataforma.",
-          "Se voce nao concordar com estes termos, nao deve criar conta nem utilizar a Ocean.",
+          "Ao criar conta, entrar com Google, navegar logado ou usar recursos da Wave, voce declara que leu, entendeu e aceitou estes Termos de Uso e os demais documentos legais da plataforma.",
+          "Se voce nao concordar com estes termos, nao deve criar conta nem utilizar a Wave.",
         ],
       },
       {
         title: "Conta e responsabilidade",
         body: [
           "Voce e responsavel pelas informacoes fornecidas, pela seguranca da sua conta e por toda atividade realizada a partir dela.",
-          "A Ocean pode exigir confirmacoes adicionais, limitar recursos ou suspender contas quando houver suspeita de abuso, fraude, violacao de regras ou exigencia legal.",
+          "A Wave pode exigir confirmacoes adicionais, limitar recursos ou suspender contas quando houver suspeita de abuso, fraude, violacao de regras ou exigencia legal.",
         ],
       },
       {
         title: "Idade e autorizacao",
         body: [
-          "A Ocean pode exigir idade minima, consentimento dos responsaveis ou verificacoes adicionais conforme a legislacao aplicavel e os recursos usados.",
-          "Recursos futuros como Date, monetizacao, wallet, Ocean Coin ou pagamentos poderao ter regras proprias e requisitos adicionais.",
+          "A Wave pode exigir idade minima, consentimento dos responsaveis ou verificacoes adicionais conforme a legislacao aplicavel e os recursos usados.",
+          "Recursos futuros como Date, monetizacao, wallet, Wave Coin ou pagamentos poderao ter regras proprias e requisitos adicionais.",
         ],
       },
       {
@@ -61,14 +61,14 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
       {
         title: "Licenca de uso do conteudo",
         body: [
-          "Voce mantem a titularidade do seu conteudo, mas concede a Ocean uma licenca nao exclusiva, mundial, gratuita, sublicenciavel e transferivel para hospedar, armazenar, reproduzir, exibir, adaptar tecnicamente, distribuir e divulgar o conteudo dentro da plataforma e em materiais relacionados a Ocean.",
-          "Essa licenca permite gerar miniaturas, previews, formatos tecnicos, cortes de compatibilidade, exibicao em feeds, comunidades, perfis, Discover e outras areas da Ocean.",
+          "Voce mantem a titularidade do seu conteudo, mas concede a Wave uma licenca nao exclusiva, mundial, gratuita, sublicenciavel e transferivel para hospedar, armazenar, reproduzir, exibir, adaptar tecnicamente, distribuir e divulgar o conteudo dentro da plataforma e em materiais relacionados a Wave.",
+          "Essa licenca permite gerar miniaturas, previews, formatos tecnicos, cortes de compatibilidade, exibicao em feeds, comunidades, perfis, Discover e outras areas da Wave.",
         ],
       },
       {
         title: "Proibicoes",
         body: [
-          "E proibido usar a Ocean para atividades ilegais, golpes, spam, perfis falsos, venda ilegal, assedio, ameacas, discurso de odio, exploracao sexual, abuso infantil, exposicao indevida de dados pessoais ou uso indevido de imagem de terceiros.",
+          "E proibido usar a Wave para atividades ilegais, golpes, spam, perfis falsos, venda ilegal, assedio, ameacas, discurso de odio, exploracao sexual, abuso infantil, exposicao indevida de dados pessoais ou uso indevido de imagem de terceiros.",
           "Tambem e proibido tentar burlar seguranca, RLS, sistemas de autenticacao, limites tecnicos, moderacao ou medidas antiabuso.",
         ],
       },
@@ -82,21 +82,21 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
       {
         title: "Moderacao",
         body: [
-          "A Ocean pode remover conteudo, limitar alcance, bloquear recursos, suspender ou banir contas quando entender que ha violacao destes termos, das diretrizes, de direitos de terceiros ou da legislacao aplicavel.",
-          "A Ocean pode cooperar com autoridades quando exigido por lei.",
+          "A Wave pode remover conteudo, limitar alcance, bloquear recursos, suspender ou banir contas quando entender que ha violacao destes termos, das diretrizes, de direitos de terceiros ou da legislacao aplicavel.",
+          "A Wave pode cooperar com autoridades quando exigido por lei.",
         ],
       },
       {
-        title: "Propriedade intelectual da Ocean",
+        title: "Propriedade intelectual da Wave",
         body: [
-          "Nome, marca, identidade visual, interface, codigo, textos, organizacao, recursos e demais elementos da Ocean pertencem a Ocean ou a seus licenciadores.",
-          "Nenhuma licenca sobre a marca Ocean e concedida sem autorizacao expressa.",
+          "Nome, marca, identidade visual, interface, codigo, textos, organizacao, recursos e demais elementos da Wave pertencem a Wave ou a seus licenciadores.",
+          "Nenhuma licenca sobre a marca Wave e concedida sem autorizacao expressa.",
         ],
       },
       {
         title: "Disponibilidade e limitacao de responsabilidade",
         body: [
-          "A Ocean esta em beta e pode conter instabilidades, indisponibilidades, mudancas, falhas ou recursos incompletos.",
+          "A Wave esta em beta e pode conter instabilidades, indisponibilidades, mudancas, falhas ou recursos incompletos.",
           "Empregamos medidas razoaveis para manter a plataforma segura e funcional, mas nao prometemos disponibilidade continua, ausencia absoluta de erros ou seguranca perfeita.",
         ],
       },
@@ -104,7 +104,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
         title: "Alteracoes e contato",
         body: [
           "Estes termos podem ser atualizados. Quando houver mudancas relevantes, poderemos solicitar novo aceite.",
-          "Contato: privacidade@ocean.app.br ou canal oficial que vier a ser informado pela Ocean.",
+          "Contato: privacidade@ocean.app.br ou canal oficial que vier a ser informado pela Wave.",
         ],
       },
     ],
@@ -115,7 +115,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
     version: LEGAL_PRIVACY_VERSION,
     updatedAt: "17 de maio de 2026",
     summary:
-      "Explica quais dados podem ser coletados, como sao usados e quais cuidados aplicamos na beta da Ocean.",
+      "Explica quais dados podem ser coletados, como sao usados e quais cuidados aplicamos na beta da Wave.",
     sections: [
       {
         title: "Dados que coletamos",
@@ -127,14 +127,14 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
       {
         title: "Localizacao e perfil",
         body: [
-          "Quando a Ocean solicitar localizacao, cidade, estado, preferencias ou dados para experiencias futuras, explicaremos o uso esperado na interface sempre que adequado.",
-          "Dados sensiveis nao devem ser exibidos publicamente sem necessidade. A Ocean pode limitar exibicoes para proteger usuarios.",
+          "Quando a Wave solicitar localizacao, cidade, estado, preferencias ou dados para experiencias futuras, explicaremos o uso esperado na interface sempre que adequado.",
+          "Dados sensiveis nao devem ser exibidos publicamente sem necessidade. A Wave pode limitar exibicoes para proteger usuarios.",
         ],
       },
       {
         title: "Conteudo, interacoes e Privs",
         body: [
-          "Conteudos publicos podem aparecer em feed, perfil, comunidades, Discover, buscas e outras areas publicas ou semipublicas da Ocean.",
+          "Conteudos publicos podem aparecer em feed, perfil, comunidades, Discover, buscas e outras areas publicas ou semipublicas da Wave.",
           "Privs e mensagens podem ser processados para entrega, seguranca, suporte, denuncia, prevencao de abuso e cumprimento legal. Nao prometemos criptografia ponta a ponta nesta beta.",
         ],
       },
@@ -169,7 +169,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
         title: "Direitos do titular",
         body: [
           "Voce pode solicitar acesso, correcao, exclusao, portabilidade, informacoes sobre compartilhamento, revisao de decisoes e outros direitos previstos na legislacao aplicavel.",
-          "Canal de privacidade: privacidade@ocean.app.br ou outro canal oficial informado pela Ocean.",
+          "Canal de privacidade: privacidade@ocean.app.br ou outro canal oficial informado pela Wave.",
         ],
       },
       {
@@ -196,7 +196,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
       "Define o comportamento esperado para manter Flow, Comunidades, comentarios e Privs seguros para a beta.",
     sections: [
       {
-        title: "O que a Ocean permite",
+        title: "O que a Wave permite",
         body: [
           "Permitimos debate, humor sem ataque, opiniao, critica respeitosa, comunidades, conteudo criativo, relatos pessoais, cultura, esportes, tecnologia e conversas autenticas.",
           "Divergencias sao bem-vindas quando preservam respeito, seguranca e direitos de terceiros.",
@@ -212,7 +212,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
       {
         title: "Seguranca e fraude",
         body: [
-          "Nao permitimos spam, golpes, phishing, perfis falsos, venda ilegal, manipulacao de engajamento, malware, automacao abusiva ou tentativa de burlar sistemas da Ocean.",
+          "Nao permitimos spam, golpes, phishing, perfis falsos, venda ilegal, manipulacao de engajamento, malware, automacao abusiva ou tentativa de burlar sistemas da Wave.",
           "Nao use imagem, voz, nome, marca ou dados de terceiros de forma enganosa, ofensiva ou sem autorizacao quando exigivel.",
         ],
       },
@@ -226,7 +226,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
       {
         title: "Consequencias",
         body: [
-          "A Ocean pode remover conteudo, restringir recursos, limitar alcance, bloquear comentarios, suspender conta, banir usuario ou preservar registros quando necessario.",
+          "A Wave pode remover conteudo, restringir recursos, limitar alcance, bloquear comentarios, suspender conta, banir usuario ou preservar registros quando necessario.",
           "Podemos cooperar com autoridades quando exigido por lei.",
         ],
       },
@@ -245,26 +245,26 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
     version: LEGAL_CONTENT_LICENSE_VERSION,
     updatedAt: "17 de maio de 2026",
     summary:
-      "Explica como a Ocean pode hospedar, exibir e adaptar tecnicamente conteudos, imagem, voz, avatar e Flow ID publicados voluntariamente.",
+      "Explica como a Wave pode hospedar, exibir e adaptar tecnicamente conteudos, imagem, voz, avatar e Flow ID publicados voluntariamente.",
     sections: [
       {
         title: "Titularidade",
         body: [
-          "Voce mantem a titularidade dos conteudos que cria, envia ou publica na Ocean, observados direitos de terceiros e leis aplicaveis.",
+          "Voce mantem a titularidade dos conteudos que cria, envia ou publica na Wave, observados direitos de terceiros e leis aplicaveis.",
           "Voce declara que possui direitos ou autorizacoes necessarias para publicar conteudos, imagem, voz, nome, avatar, marca, musica ou material de terceiros quando isso for exigivel.",
         ],
       },
       {
-        title: "Licenca concedida a Ocean",
+        title: "Licenca concedida a Wave",
         body: [
-          "Ao publicar ou enviar conteudo, voce concede a Ocean licenca nao exclusiva, mundial, gratuita, sublicenciavel, transferivel e pelo prazo necessario para hospedar, armazenar, reproduzir, exibir, adaptar tecnicamente, distribuir e divulgar esse conteudo dentro da plataforma e em materiais relacionados a Ocean.",
+          "Ao publicar ou enviar conteudo, voce concede a Wave licenca nao exclusiva, mundial, gratuita, sublicenciavel, transferivel e pelo prazo necessario para hospedar, armazenar, reproduzir, exibir, adaptar tecnicamente, distribuir e divulgar esse conteudo dentro da plataforma e em materiais relacionados a Wave.",
           "A licenca inclui imagem, voz, nome de exibicao, Flow ID, avatar, aparencia e elementos publicados voluntariamente.",
         ],
       },
       {
         title: "Adaptacoes tecnicas",
         body: [
-          "A Ocean pode gerar thumbnails, previews, formatos adaptados, compressao, cortes tecnicos, transcodificacao e ajustes de exibicao para compatibilidade, seguranca, desempenho e experiencia do usuario.",
+          "A Wave pode gerar thumbnails, previews, formatos adaptados, compressao, cortes tecnicos, transcodificacao e ajustes de exibicao para compatibilidade, seguranca, desempenho e experiencia do usuario.",
           "Recursos futuros com IA de cortes, edicao, filtros ou recomendacao deverao respeitar opcoes, direitos e controles do criador quando implementados.",
         ],
       },
@@ -272,14 +272,14 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
         title: "Terceiros",
         body: [
           "Nao publique imagem, voz, dados, obra, marca ou conteudo de terceiros sem autorizacao quando ela for exigivel.",
-          "Conteudos denunciados ou potencialmente irregulares podem ser removidos, restringidos ou analisados pela Ocean.",
+          "Conteudos denunciados ou potencialmente irregulares podem ser removidos, restringidos ou analisados pela Wave.",
         ],
       },
       {
         title: "Exclusao",
         body: [
           "A exclusao de conta ou conteudo pode remover exibicoes futuras, ressalvadas obrigacoes legais, backups tecnicos temporarios, registros de seguranca, disputas, auditorias e exigencias legais.",
-          "Conteudos compartilhados, republicados ou capturados por terceiros podem continuar fora do controle tecnico da Ocean.",
+          "Conteudos compartilhados, republicados ou capturados por terceiros podem continuar fora do controle tecnico da Wave.",
         ],
       },
     ],

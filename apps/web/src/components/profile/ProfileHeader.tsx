@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { HiEye, HiLocationMarker, HiPencilAlt, HiSparkles, HiSun } from "react-icons/hi";
 import type { UserGamification } from "@ocean/shared";
 
@@ -46,7 +46,7 @@ export function ProfileHeader({
   equippedBadge,
   gamification,
 }: ProfileHeaderProps) {
-  const displayName = profile.display_name || "Ocean User";
+  const displayName = profile.display_name || "Wave User";
   const username = profile.username || "ocean";
   const aura = equippedAura?.aura_name || profile.aura || "starter";
   const level = gamification?.level ?? 1;
@@ -99,7 +99,7 @@ export function ProfileHeader({
             <h1>
               <BadgeIcon badge={visibleBadge} size="md" />
               {displayName}
-              {gamification?.is_founder && <em>Fundador Ocean</em>}
+              {gamification?.is_founder && <em>Fundador Wave</em>}
             </h1>
             <span>
               @{username}
@@ -107,7 +107,7 @@ export function ProfileHeader({
             </span>
           </div>
 
-          <p>{profile.bio || "Complete sua ficha para aumentar sua presença na Ocean."}</p>
+          <p>{profile.bio || "Complete sua ficha para aumentar sua presença na Wave."}</p>
         </div>
       </div>
 
@@ -143,7 +143,7 @@ export function ProfileHeader({
             <span className={styles.metaIcon}>
               <HiSparkles />
             </span>
-            <strong>Fundador Ocean</strong>
+            <strong>Fundador Wave</strong>
             <small>Perfil Oficial</small>
           </span>
         )}

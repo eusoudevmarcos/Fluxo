@@ -1,4 +1,4 @@
-﻿import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 export type UploadedContentMedia = {
   publicUrl: string;
@@ -68,7 +68,7 @@ export async function uploadContentMedia(
   }
 
   if (!userData.user) {
-    throw new Error("Entre na Ocean para adicionar mídia.");
+    throw new Error("Entre na Wave para adicionar mídia.");
   }
 
   const mediaType = getAllowedMediaType(file);

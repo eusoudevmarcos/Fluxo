@@ -302,7 +302,7 @@ export function PerfilClient() {
 
           {!isLoading && !profile && !configError && (
             <div className={styles.empty}>
-              <p>Entre na Ocean para criar e visualizar seu perfil.</p>
+              <p>Entre na Wave para criar e visualizar seu perfil.</p>
               <Link href="/auth">Entrar ou criar conta</Link>
             </div>
           )}
@@ -323,7 +323,7 @@ export function PerfilClient() {
 
               <section className={styles.profileDetails}>
                 <div className={styles.detailCard}>
-                  <span>Ficha Ocean</span>
+                  <span>Ficha Wave</span>
                   <strong>{getDateIntentLabel(profile.date_intent)}</strong>
                   <p>{profile.looking_for || "Conte o que voce procura para melhorar conexoes no Date e no Flow."}</p>
                 </div>
@@ -341,7 +341,7 @@ export function PerfilClient() {
                 <div className={styles.detailCard}>
                   <span>Interesses</span>
                   <div className={styles.interests}>
-                    {(profile.interests?.length ? profile.interests : ["Flow", "Moments", "Ocean"]).map((interest) => (
+                    {(profile.interests?.length ? profile.interests : ["Flow", "Moments", "Wave"]).map((interest) => (
                       <span key={interest}>{interest}</span>
                     ))}
                   </div>

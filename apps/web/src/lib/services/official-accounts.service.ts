@@ -15,7 +15,7 @@ export async function listOfficialAccounts(supabase: SupabaseClient) {
 export async function applyDefaultOfficialFollowsForCurrentUser(supabase: SupabaseClient) {
   const { data: userData, error: userError } = await supabase.auth.getUser();
   if (userError) throw userError;
-  if (!userData.user) throw new Error("Entre na Ocean para seguir contas oficiais.");
+  if (!userData.user) throw new Error("Entre na Wave para seguir contas oficiais.");
 
   const { data, error } = await supabase.rpc("apply_default_official_follows", {
     new_user_id: userData.user.id,

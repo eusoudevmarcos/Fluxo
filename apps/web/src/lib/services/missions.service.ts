@@ -16,7 +16,7 @@ export async function listActiveMissions(supabase: SupabaseClient) {
 export async function getMyMissionProgress(supabase: SupabaseClient) {
   const { data: userData, error: userError } = await supabase.auth.getUser();
   if (userError) throw userError;
-  if (!userData.user) throw new Error("Entre na Ocean para ver suas Missões.");
+  if (!userData.user) throw new Error("Entre na Wave para ver suas Missões.");
 
   const { data, error } = await supabase
     .from("user_mission_progress")
@@ -37,7 +37,7 @@ export async function incrementMissionProgress(
 ) {
   const { data: userData, error: userError } = await supabase.auth.getUser();
   if (userError) throw userError;
-  if (!userData.user) throw new Error("Entre na Ocean para avançar Missões.");
+  if (!userData.user) throw new Error("Entre na Wave para avançar Missões.");
 
   const { data, error } = await supabase.rpc("increment_mission_progress", {
     target_user_id: userData.user.id,

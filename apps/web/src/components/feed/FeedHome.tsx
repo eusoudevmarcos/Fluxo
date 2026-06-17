@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useMemo, useState } from "react";
 
@@ -85,7 +85,7 @@ export function FeedHome() {
       {!isLoading && !error && !contents.length && (
         <section className={styles.empty}>
           <strong>Seu flow ainda está calmo.</strong>
-          <span>Crie a primeira criação para movimentar a Ocean.</span>
+          <span>Crie a primeira criação para movimentar a Wave.</span>
         </section>
       )}
 

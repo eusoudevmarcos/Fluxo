@@ -12,7 +12,7 @@ type MobileTopBarProps = {
 };
 
 function getInitial(name?: string | null) {
-  return (name || "Ocean").trim().charAt(0).toUpperCase() || "O";
+  return (name || "Wave").trim().charAt(0).toUpperCase() || "W";
 }
 
 export function MobileTopBar({ onTogglePrivs }: MobileTopBarProps) {
@@ -20,7 +20,7 @@ export function MobileTopBar({ onTogglePrivs }: MobileTopBarProps) {
 
   return (
     <header className={styles.topbar}>
-      <Link href="/" className={styles.logo} aria-label="Ocean Home">
+      <Link href="/" className={styles.logo} aria-label="Wave Home">
         <OceanLogo size="sm" />
       </Link>
 

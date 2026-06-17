@@ -11,7 +11,7 @@ export type GamificationAction =
 export async function getMyGamification(supabase: SupabaseClient) {
   const { data: userData, error: userError } = await supabase.auth.getUser();
   if (userError) throw userError;
-  if (!userData.user) throw new Error("Entre na Ocean para ver sua gamificação.");
+  if (!userData.user) throw new Error("Entre na Wave para ver sua gamificação.");
 
   const { data, error } = await supabase
     .from("user_gamification")
@@ -27,7 +27,7 @@ export async function getMyGamification(supabase: SupabaseClient) {
 export async function ensureMyGamification(supabase: SupabaseClient) {
   const { data: userData, error: userError } = await supabase.auth.getUser();
   if (userError) throw userError;
-  if (!userData.user) throw new Error("Entre na Ocean para ativar sua gamificação.");
+  if (!userData.user) throw new Error("Entre na Wave para ativar sua gamificação.");
 
   const { data, error } = await supabase.rpc("ensure_user_gamification", {
     target_user_id: userData.user.id,

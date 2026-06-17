@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -190,8 +190,8 @@ export function PublicProfileClient({ username }: PublicProfileClientProps) {
     return (
       <section className={styles.notFound}>
         <h1>Esse flow ainda não existe.</h1>
-        <p>Verifique o Flow ID ou descubra novos perfis na Ocean.</p>
-        <Link href="/">Voltar para Ocean</Link>
+        <p>Verifique o Flow ID ou descubra novos perfis na Wave.</p>
+        <Link href="/">Voltar para Wave</Link>
       </section>
     );
   }

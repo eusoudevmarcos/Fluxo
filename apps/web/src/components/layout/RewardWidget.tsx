@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -16,7 +16,7 @@ const week = [
   { label: "Qua", done: true },
   { label: "Qui", done: true },
   { label: "Sex", done: true },
-  { label: "Sáb", done: false },
+  { label: "SÃ¡b", done: false },
   { label: "Dom", done: false },
 ];
 
@@ -61,7 +61,7 @@ export function RewardWidget() {
   return (
     <section className={styles.rewardCard}>
       <header className={styles.header}>
-        <strong>Missões & recompensas</strong>
+        <strong>MissÃµes & recompensas</strong>
         <Link href="/missoes">Ver todas</Link>
       </header>
 
@@ -70,15 +70,15 @@ export function RewardWidget() {
           <HiSparkles />
         </span>
         <div>
-          <small>Nível {level}</small>
-          <strong>{gamification?.is_founder ? "Fundador Ocean" : "Oceaneiro"}</strong>
+          <small>NÃ­vel {level}</small>
+          <strong>{gamification?.is_founder ? "Fundador Wave" : "Waveiro"}</strong>
         </div>
         <span className={styles.xp}>
           {xpCurrent.toLocaleString("pt-BR")} / {xpNext.toLocaleString("pt-BR")} XP
         </span>
       </div>
 
-      <div className={styles.progress} aria-label="Progresso do nível">
+      <div className={styles.progress} aria-label="Progresso do nÃ­vel">
         <span style={{ width: `${xpPercent}%` }} />
       </div>
 
@@ -100,7 +100,7 @@ export function RewardWidget() {
       </div>
 
       <div className={styles.streakHeader}>
-        <span>Sequência de dias</span>
+        <span>SequÃªncia de dias</span>
         <strong>{gamification?.streak_days ?? 6} dias</strong>
       </div>
 

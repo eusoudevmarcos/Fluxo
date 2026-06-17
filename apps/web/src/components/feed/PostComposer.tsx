@@ -35,7 +35,7 @@ type SelectedMedia = {
 };
 
 function getInitial(name?: string | null) {
-  return (name || "Ocean").trim().charAt(0).toUpperCase() || "O";
+  return (name || "Wave").trim().charAt(0).toUpperCase() || "W";
 }
 
 function formatFileSize(size: number) {
@@ -56,7 +56,7 @@ function getContentTypeForDestination(destination: Destination): ContentType {
   return destination === "flow" || destination === "moments" ? "flow" : "post";
 }
 
-const quickEmojis = ["🌊", "🔥", "✨", "😂", "💛", "🎧", "⚡", "🌙"];
+const quickEmojis = ["??", "??", "?", "??", "??", "??", "?", "??"];
 
 export function PostComposer({ onCreated }: PostComposerProps) {
   const supabase = useMemo(() => createClient(), []);

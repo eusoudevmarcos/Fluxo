@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -27,10 +27,10 @@ const menuItems = [
   { id: "moments", href: "/moments", label: "Moments", icon: <HiLightningBolt /> },
   { id: "flows", href: "/flows", label: "Flows", icon: <HiPlay /> },
   { id: "communities", href: "/comunidades", label: "Comunidades", icon: <HiUserGroup /> },
-  { id: "stream", href: "/stream", label: "Ocean Stream", icon: <HiVideoCamera /> },
-  { id: "academy", href: "/academy", label: "Ocean Academy", icon: <HiAcademicCap /> },
-  { id: "shop", href: "/shop", label: "Ocean Shop", icon: <HiShoppingBag /> },
-  { id: "coin", href: "/mais", label: "Ocean Coin", icon: <HiCurrencyDollar /> },
+  { id: "stream", href: "/stream", label: "Wave Stream", icon: <HiVideoCamera /> },
+  { id: "academy", href: "/academy", label: "Wave Academy", icon: <HiAcademicCap /> },
+  { id: "shop", href: "/shop", label: "Wave Shop", icon: <HiShoppingBag /> },
+  { id: "coin", href: "/mais", label: "Wave Coin", icon: <HiCurrencyDollar /> },
   { id: "date", href: "/date", label: "Date", icon: <HiHeart /> },
   { id: "notifications", href: "/notificacoes", label: "Notificações", icon: <HiBell /> },
   { id: "badges", href: "/selos", label: "Selos", icon: <HiSparkles /> },
@@ -71,7 +71,7 @@ export function Sidebar() {
       </div>
 
       <div className={styles.search}>
-        <input placeholder="Buscar na Ocean" />
+        <input placeholder="Buscar na Wave" />
       </div>
 
       <nav className={styles.menu} aria-label="Menu principal">

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -114,8 +114,8 @@ export default function LegalAcceptPage() {
   return (
     <LegalShell>
       <form className={styles.acceptCard} onSubmit={handleSubmit}>
-        <span>Ocean Legal</span>
-        <h1>Antes de entrar na Ocean</h1>
+        <span>Wave Legal</span>
+        <h1>Antes de entrar na Wave</h1>
         <p>
           Para proteger voce, a comunidade e a beta, precisamos registrar seu aceite
           das versoes atuais dos documentos legais.
@@ -123,7 +123,7 @@ export default function LegalAcceptPage() {
 
         <ul>
           <li>Conteudos, imagem, voz, comentarios e comunidades seguem regras claras.</li>
-          <li>Privs e recursos futuros tambem ficam sujeitos a seguranca da Ocean.</li>
+          <li>Privs e recursos futuros tambem ficam sujeitos a seguranca da Wave.</li>
           <li>Podemos pedir novo aceite quando houver mudancas relevantes.</li>
         </ul>
 

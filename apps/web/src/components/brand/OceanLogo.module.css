@@ -1,13 +1,23 @@
 .logo {
+  align-items: center;
+  gap: 8px;
   display: inline-flex;
   line-height: 1;
 }
 
 .logo img {
   display: block;
-  height: auto;
+  height: 100%;
   object-fit: contain;
-  width: 100%;
+  width: auto;
+}
+
+.wordmark {
+  color: currentColor;
+  font-family: var(--font-ocean-brand);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
 .theme {
@@ -45,13 +55,16 @@
 }
 
 .sm {
-  width: 112px;
+  font-size: 26px;
+  height: 28px;
 }
 
 .md {
-  width: 168px;
+  font-size: 36px;
+  height: 38px;
 }
 
 .lg {
-  width: 232px;
+  font-size: 50px;
+  height: 48px;
 }

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -18,9 +18,9 @@ import styles from "./page.module.css";
 type MissionGroup = "daily" | "weekly" | "other";
 
 function getLevelTitle(gamification?: UserGamification | null) {
-  if (gamification?.is_founder) return "Fundador Ocean";
-  if ((gamification?.level ?? 1) >= 25) return "Oceaneiro Elite";
-  if ((gamification?.level ?? 1) >= 10) return "Oceaneiro";
+  if (gamification?.is_founder) return "Fundador Wave";
+  if ((gamification?.level ?? 1) >= 25) return "Waveiro Elite";
+  if ((gamification?.level ?? 1) >= 10) return "Waveiro";
   return "Novo Flow";
 }
 
@@ -66,7 +66,7 @@ export default function MissoesPage() {
         }
       } catch {
         if (isMounted) {
-          setError("Rode as migrations 026 a 033 para ativar Missões, XP e Auras.");
+          setError("Rode as migrations 026 a 033 para ativar MissÃµes, XP e Auras.");
         }
       } finally {
         if (isMounted) setIsLoading(false);
@@ -93,14 +93,14 @@ export default function MissoesPage() {
         <main className={styles.page}>
           <header className={styles.hero}>
             <div>
-              <span>Ocean Aura</span>
-              <h1>Missões & Recompensas</h1>
-              <p>Ganhe XP, desbloqueie Auras colecionáveis, mantenha sua sequência e evolua seu flow dentro da Ocean.</p>
+              <span>Wave Aura</span>
+              <h1>MissÃµes & Recompensas</h1>
+              <p>Ganhe XP, desbloqueie Auras colecionÃ¡veis, mantenha sua sequÃªncia e evolua seu flow dentro da Wave.</p>
             </div>
             <Link href="/auras">Ver minhas Auras</Link>
           </header>
 
-          {isLoading && <p className={styles.notice}>Carregando missões...</p>}
+          {isLoading && <p className={styles.notice}>Carregando missÃµes...</p>}
           {error && <p className={styles.error}>{error}</p>}
 
           {!isLoading && !error && (
@@ -110,9 +110,9 @@ export default function MissoesPage() {
                   <HiSparkles />
                 </span>
                 <div>
-                  <small>Nível {gamification?.level ?? 1}</small>
+                  <small>NÃ­vel {gamification?.level ?? 1}</small>
                   <strong>{getLevelTitle(gamification)}</strong>
-                  <div className={styles.progressBar} aria-label="Progresso do nível">
+                  <div className={styles.progressBar} aria-label="Progresso do nÃ­vel">
                     <span style={{ width: `${xpPercent}%` }} />
                   </div>
                 </div>
@@ -125,29 +125,29 @@ export default function MissoesPage() {
                 <MissionSection
                   missions={dailyMissions}
                   progress={progress}
-                  title="Missão diária"
+                  title="MissÃ£o diÃ¡ria"
                 />
                 <MissionSection
                   missions={weeklyMissions}
                   progress={progress}
-                  title="Missão semanal"
+                  title="MissÃ£o semanal"
                 />
               </section>
 
               <section className={styles.grid}>
                 <InfoCard
                   items={[
-                    "Nível 1-9: Aura Super Saiyajin Comum",
-                    "Nível 10-24: Aura Super Saiyajin Blue",
-                    "Nível 25-49: Aura Instinto Superior",
+                    "NÃ­vel 1-9: Aura Super Saiyajin Comum",
+                    "NÃ­vel 10-24: Aura Super Saiyajin Blue",
+                    "NÃ­vel 25-49: Aura Instinto Superior",
                     "500% da meta: Aura Ego Superior",
                   ]}
-                  title="Níveis & Auras"
+                  title="NÃ­veis & Auras"
                 />
                 <InfoCard
                   items={[
-                    "30 por mês: comuns",
-                    "5 por mês: especiais",
+                    "30 por mÃªs: comuns",
+                    "5 por mÃªs: especiais",
                     "5 a cada 2 meses: raras",
                     "2 a cada 5 meses: secretas",
                   ]}
@@ -215,7 +215,7 @@ function MissionSection({
             );
           })
         ) : (
-          <p className={styles.notice}>Missões aparecem aqui depois das migrations.</p>
+          <p className={styles.notice}>MissÃµes aparecem aqui depois das migrations.</p>
         )}
       </div>
     </section>

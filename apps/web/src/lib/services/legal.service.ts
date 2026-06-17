@@ -50,7 +50,7 @@ export async function acceptCurrentLegalVersions(supabase: SupabaseClient) {
   if (userError) throw userError;
 
   if (!userData.user) {
-    throw new Error("Entre na Ocean para aceitar os documentos.");
+    throw new Error("Entre na Wave para aceitar os documentos.");
   }
 
   const userAgent =

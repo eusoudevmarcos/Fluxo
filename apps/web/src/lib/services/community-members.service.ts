@@ -45,7 +45,7 @@ export async function joinCommunity(
   if (userError) throw userError;
 
   if (!userData.user) {
-    throw new Error("Entre na Ocean para participar da comunidade.");
+    throw new Error("Entre na Wave para participar da comunidade.");
   }
 
   const { error } = await supabase.from("community_members").upsert(
@@ -69,7 +69,7 @@ export async function leaveCommunity(supabase: SupabaseClient, communityId: stri
   if (userError) throw userError;
 
   if (!userData.user) {
-    throw new Error("Entre na Ocean para sair da comunidade.");
+    throw new Error("Entre na Wave para sair da comunidade.");
   }
 
   const { error } = await supabase

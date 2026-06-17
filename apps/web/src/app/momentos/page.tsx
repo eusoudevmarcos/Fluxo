@@ -43,7 +43,7 @@ const moments = [
     meta: "2,4k presenças",
     tone: "surf",
     tag: "Top do dia",
-    music: "Ocean Beat - Sol alto",
+    music: "Wave Beat - Sol alto",
     format: "vertical",
   },
   {

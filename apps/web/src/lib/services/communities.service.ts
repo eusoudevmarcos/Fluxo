@@ -158,7 +158,7 @@ export async function createCommunity(
   if (userError) throw userError;
 
   if (!userData.user) {
-    throw new Error("Entre na Ocean para criar uma comunidade.");
+    throw new Error("Entre na Wave para criar uma comunidade.");
   }
 
   const name = input.name.trim();
