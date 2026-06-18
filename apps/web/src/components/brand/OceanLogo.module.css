@@ -1,31 +1,31 @@
 .logo {
   align-items: center;
-  gap: 8px;
   display: inline-flex;
+  gap: clamp(6px, 0.6vw, 10px);
   line-height: 1;
+  vertical-align: middle;
 }
 
 .logo img {
   display: block;
+  flex: 0 0 auto;
   height: 100%;
   object-fit: contain;
   width: auto;
+  filter: drop-shadow(0 5px 14px rgba(14, 165, 233, 0.22));
 }
 
 .wordmark {
   color: currentColor;
   font-family: var(--font-ocean-brand);
   font-weight: 900;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
   line-height: 1;
+  transform: translateY(-1px);
 }
 
 .theme {
   position: relative;
-}
-
-.theme img {
-  flex: 0 0 100%;
 }
 
 .blueImage {
@@ -41,7 +41,7 @@
 }
 
 :global(.theme-night-flow) .theme .yellowImage {
-  filter: brightness(0) invert(1);
+  filter: drop-shadow(0 5px 14px rgba(255, 255, 255, 0.16));
 }
 
 .yellow,
@@ -51,7 +51,7 @@
 }
 
 .white img {
-  filter: brightness(0) invert(1);
+  filter: drop-shadow(0 5px 14px rgba(255, 255, 255, 0.18));
 }
 
 .sm {
@@ -60,11 +60,11 @@
 }
 
 .md {
-  font-size: 36px;
+  font-size: 35px;
   height: 38px;
 }
 
 .lg {
-  font-size: 50px;
-  height: 48px;
+  font-size: 48px;
+  height: 50px;
 }

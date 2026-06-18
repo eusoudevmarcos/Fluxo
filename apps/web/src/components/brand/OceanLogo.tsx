@@ -8,9 +8,9 @@ type OceanLogoProps = {
 };
 
 const logoSrc = {
-  yellow: "/brand/wave-icon.png",
-  blue: "/brand/wave-icon.png",
-  white: "/brand/wave-icon.png",
+  yellow: "/brand/wave-icon-transparent.png",
+  blue: "/brand/wave-icon-transparent.png",
+  white: "/brand/wave-icon-transparent.png",
 } as const;
 
 const logoSize = {
