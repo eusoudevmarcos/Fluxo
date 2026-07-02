@@ -38,6 +38,7 @@
   color: var(--color-text);
   display: block;
   font-size: 18px;
+  overflow-wrap: anywhere;
 }
 
 .header span {
@@ -45,6 +46,7 @@
   display: block;
   font-size: 12px;
   margin-top: 2px;
+  overflow-wrap: anywhere;
 }
 
 .messages {
@@ -114,6 +116,7 @@
 .notice,
 .error {
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .message time,

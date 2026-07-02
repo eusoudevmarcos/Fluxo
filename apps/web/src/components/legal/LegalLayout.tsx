@@ -35,7 +35,7 @@ export function LegalDocumentView({ document }: LegalDocumentViewProps) {
     <LegalShell>
       <article className={styles.document}>
         <div className={styles.hero}>
-          <span>Versao {document.version}</span>
+          <span>Versão {document.version}</span>
           <h1>{document.title}</h1>
           <p>{document.summary}</p>
           <small>

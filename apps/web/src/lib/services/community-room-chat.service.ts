@@ -1,5 +1,8 @@
 import type { RealtimeChannel, SupabaseClient } from "@supabase/supabase-js";
 
+export const COMMUNITY_ROOM_CHAT_SETUP_MESSAGE =
+  "As salas de chat precisam da migração Supabase de mensagens para enviar.";
+
 export type RoomChatProfile = {
   user_id: string;
   username: string | null;
@@ -27,6 +30,32 @@ type RoomMessageRow = {
   message_type: "text" | "system";
   created_at: string;
 };
+
+export function isCommunityRoomChatSetupError(error: unknown) {
+  if (!error || typeof error !== "object") return false;
+
+  const maybeError = error as { code?: string; message?: string };
+  const message = maybeError.message?.toLowerCase() ?? "";
+
+  return (
+    maybeError.code === "PGRST202" ||
+    maybeError.code === "PGRST205" ||
+    message.includes("community_room_messages") ||
+    message.includes("community_room_presence") ||
+    message.includes("join_community_room") ||
+    message.includes("leave_community_room") ||
+    message.includes("salas de chat precisam") ||
+    message.includes("schema cache")
+  );
+}
+
+function toRoomChatError(error: unknown) {
+  if (isCommunityRoomChatSetupError(error)) {
+    return new Error(COMMUNITY_ROOM_CHAT_SETUP_MESSAGE);
+  }
+
+  return error;
+}
 
 async function getCurrentUserId(supabase: SupabaseClient) {
   const { data, error } = await supabase.auth.getUser();
@@ -63,7 +92,7 @@ export async function listRoomMessages(supabase: SupabaseClient, roomId: string)
     .order("created_at", { ascending: true })
     .limit(100);
 
-  if (error) throw error;
+  if (error) throw toRoomChatError(error);
 
   const rows = (data ?? []) as RoomMessageRow[];
   const profiles = await getProfilesByUserId(
@@ -101,7 +130,7 @@ export async function sendRoomMessage(
     .select("id,room_id,community_id,sender_id,body,message_type,created_at")
     .single();
 
-  if (error) throw error;
+  if (error) throw toRoomChatError(error);
 
   return data as RoomMessageRow;
 }
@@ -111,7 +140,10 @@ export async function joinRoomPresence(supabase: SupabaseClient, roomId: string)
     room_id: roomId,
   });
 
-  if (error) throw error;
+  if (error) {
+    if (isCommunityRoomChatSetupError(error)) return null;
+    throw error;
+  }
 
   return data;
 }
@@ -121,7 +153,10 @@ export async function leaveRoomPresence(supabase: SupabaseClient, roomId: string
     room_id: roomId,
   });
 
-  if (error) throw error;
+  if (error) {
+    if (isCommunityRoomChatSetupError(error)) return;
+    throw error;
+  }
 }
 
 export async function getRoomPresenceCount(supabase: SupabaseClient, roomId: string) {
@@ -133,7 +168,10 @@ export async function getRoomPresenceCount(supabase: SupabaseClient, roomId: str
     .is("left_at", null)
     .gte("last_seen_at", cutoff);
 
-  if (error) throw error;
+  if (error) {
+    if (isCommunityRoomChatSetupError(error)) return 0;
+    throw error;
+  }
 
   return count ?? 0;
 }

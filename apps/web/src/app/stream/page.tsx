@@ -4,7 +4,7 @@ import { PageCard } from "@/components/ui/PageCard";
 
 const streamCards = [
   { title: "Criadores ao vivo", meta: "Em breve", description: "Lives de jogos, música, arte, lifestyle e eventos.", action: "Em breve" },
-  { title: "Salas de eventos", meta: "Planejamento", description: "Eventos podem virar salas e Moments quando o realtime avançado chegar.", action: "Em breve" },
+  { title: "Salas de eventos", meta: "Planejamento", description: "Eventos podem virar salas e Vibes quando o realtime avançado chegar.", action: "Em breve" },
   { title: "Recompensas", meta: "Futuro", description: "Auras, Selos e XP poderão se conectar a eventos ao vivo.", action: "Em breve" },
   { title: "Presença em tempo real", meta: "Visão futura", description: "A Wave vai priorizar presença viva sem implementar lives reais agora.", action: "Em breve" },
 ];

@@ -1,10 +1,11 @@
 .composer {
   background:
-    radial-gradient(circle at top left, color-mix(in srgb, #10a8ff 6%, transparent), transparent 36%),
-    var(--color-card);
-  border: 1px solid var(--color-border);
-  border-radius: 16px;
-  padding: 10px 12px;
+    linear-gradient(180deg, color-mix(in srgb, var(--color-card) 92%, transparent), color-mix(in srgb, var(--color-bg) 44%, var(--color-card))),
+    var(--surface-glass);
+  border: 1px solid color-mix(in srgb, var(--color-border) 82%, transparent);
+  border-radius: 20px;
+  box-shadow: 0 18px 54px rgb(0 0 0 / 28%);
+  padding: 12px;
   position: relative;
 }
 
@@ -12,11 +13,50 @@
   display: none;
 }
 
+.typeRail {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  overflow-x: auto;
+  padding-bottom: 1px;
+}
+
+.typeRail::-webkit-scrollbar {
+  display: none;
+}
+
+.typeRail button {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-bg) 64%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+  border-radius: 999px;
+  color: color-mix(in srgb, var(--color-text) 84%, var(--color-muted));
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 900;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 11px;
+}
+
+.typeRail svg {
+  color: var(--color-primary);
+  font-size: 15px;
+}
+
+.typeActive {
+  background: color-mix(in srgb, var(--color-primary) 16%, transparent) !important;
+  border-color: color-mix(in srgb, var(--color-primary) 56%, var(--color-border)) !important;
+  color: var(--color-text) !important;
+}
+
 .createRow {
   align-items: center;
   display: grid;
-  gap: 12px;
-  grid-template-columns: 42px minmax(0, 1fr) 38px 38px max-content;
+  gap: 10px;
+  grid-template-columns: 42px minmax(0, 1fr) 36px 36px max-content;
 }
 
 .avatar {
@@ -40,16 +80,16 @@
 }
 
 .createRow textarea {
-  background: color-mix(in srgb, var(--color-bg) 64%, transparent);
-  border: 1px solid var(--color-border);
-  border-radius: 18px;
+  background: color-mix(in srgb, var(--color-bg) 66%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-border) 86%, transparent);
+  border-radius: 16px;
   color: var(--color-text);
   font-size: 13px;
-  height: 46px;
-  min-height: 46px;
+  height: 44px;
+  min-height: 44px;
   outline: none;
   overflow: hidden;
-  padding: 13px 16px;
+  padding: 12px 15px;
   resize: none;
   width: 100%;
 }
@@ -74,9 +114,9 @@
   background: color-mix(in srgb, var(--color-bg) 64%, transparent);
   border: 1px solid var(--color-border);
   color: var(--color-muted);
-  height: 38px;
+  height: 36px;
   padding: 0;
-  width: 38px;
+  width: 36px;
 }
 
 .iconButton:hover {
@@ -197,14 +237,14 @@
   align-items: center;
   background: var(--color-card);
   border: 1px solid var(--color-border);
-  border-radius: 14px;
+  border-radius: 13px;
   color: var(--color-text);
   cursor: pointer;
   display: inline-flex;
   font-weight: 800;
   gap: 8px;
   justify-content: flex-start;
-  padding: 10px;
+  padding: 9px 10px;
   text-align: left;
 }
 
@@ -260,7 +300,7 @@
   border-radius: 18px;
   display: grid;
   gap: 14px;
-  grid-template-columns: 112px 1fr max-content;
+  grid-template-columns: 104px 1fr max-content;
   margin-top: 12px;
   padding: 10px;
 }
@@ -307,15 +347,15 @@
 }
 
 .createButton {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  background: linear-gradient(135deg, #ffd94a, var(--color-primary));
   border: none;
   color: var(--color-on-primary);
-  border-radius: 12px;
+  border-radius: 13px;
   cursor: pointer;
   font-weight: 900;
   height: 42px;
   min-width: 76px;
-  padding: 0 24px;
+  padding: 0 20px;
 }
 
 .error {
@@ -339,6 +379,18 @@
 @media (max-width: 700px) {
   .composer {
     padding: 12px;
+  }
+
+  .typeRail {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+  }
+
+  .typeRail button {
+    justify-content: center;
+    min-width: 0;
+    padding: 0 8px;
   }
 
   .createRow {
@@ -374,5 +426,11 @@
 
   .mediaPreview > button {
     width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .typeRail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

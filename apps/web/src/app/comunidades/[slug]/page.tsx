@@ -28,7 +28,7 @@ type CommunityPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-type Tab = "criacoes" | "salas" | "regras";
+type Tab = "drops" | "salas" | "regras";
 
 export default function CommunityPage({ params }: CommunityPageProps) {
   const supabase = useMemo(() => createClient(), []);
@@ -42,7 +42,7 @@ export default function CommunityPage({ params }: CommunityPageProps) {
   const [rooms, setRooms] = useState<CommunityRoom[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<CommunityRoom | null>(null);
   const [contents, setContents] = useState<FeedContent[]>([]);
-  const [activeTab, setActiveTab] = useState<Tab>("criacoes");
+  const [activeTab, setActiveTab] = useState<Tab>("drops");
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isJoining, setIsJoining] = useState(false);
@@ -136,7 +136,7 @@ export default function CommunityPage({ params }: CommunityPageProps) {
 
     if (!community) return;
     if (!membership.is_member) {
-      setError("Entre na comunidade para criar algo aqui.");
+      setError("Entre na comunidade para dropar aqui.");
       return;
     }
 
@@ -155,7 +155,7 @@ export default function CommunityPage({ params }: CommunityPageProps) {
       setError(
         createError instanceof Error
           ? createError.message
-          : "Não foi possível criar na comunidade.",
+          : "Não foi possível dropar na comunidade.",
       );
     } finally {
       setIsCreating(false);
@@ -252,10 +252,10 @@ export default function CommunityPage({ params }: CommunityPageProps) {
         <nav className={styles.tabs} aria-label="Comunidade">
           <button
             type="button"
-            className={activeTab === "criacoes" ? styles.activeTab : ""}
-            onClick={() => setActiveTab("criacoes")}
+            className={activeTab === "drops" ? styles.activeTab : ""}
+            onClick={() => setActiveTab("drops")}
           >
-            Criações
+            Drops
           </button>
           <button
             type="button"
@@ -273,26 +273,26 @@ export default function CommunityPage({ params }: CommunityPageProps) {
           </button>
         </nav>
 
-        {activeTab === "criacoes" && (
+        {activeTab === "drops" && (
           <section className={styles.contentTab}>
             {membership.is_member ? (
               <form className={styles.composer} onSubmit={handleCreateContent}>
                 <textarea
-                  placeholder="Crie algo para essa comunidade..."
+                  placeholder="O que vai dropar nessa comunidade?"
                   rows={3}
                   value={text}
                   onChange={(event) => setText(event.target.value)}
                 />
                 <button type="submit" disabled={isCreating}>
-                  {isCreating ? "Criando..." : "Criar"}
+                  {isCreating ? "Dropando..." : "Drop"}
                 </button>
               </form>
             ) : (
-              <p className={styles.notice}>Entre na comunidade para criar algo aqui.</p>
+              <p className={styles.notice}>Entre na comunidade para dropar aqui.</p>
             )}
 
             {!contents.length && (
-              <p className={styles.notice}>Nenhuma criação nessa comunidade ainda.</p>
+              <p className={styles.notice}>Nenhum Drop nessa comunidade ainda.</p>
             )}
 
             {contents.map((content) => (

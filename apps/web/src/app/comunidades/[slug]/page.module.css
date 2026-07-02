@@ -60,6 +60,7 @@
   color: var(--color-muted);
   line-height: 1.5;
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .badges {
@@ -186,6 +187,7 @@
 .room strong {
   color: var(--color-text);
   display: block;
+  overflow-wrap: anywhere;
 }
 
 .rules,

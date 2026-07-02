@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
-import { HiChatAlt2, HiHome, HiPlus, HiTrendingUp, HiUser } from "react-icons/hi";
+import { HiChatAlt2, HiHome, HiPlus, HiSearch, HiUser } from "react-icons/hi";
 
 import { MobileCreateSheet } from "@/components/mobile/MobileCreateSheet";
 import styles from "./MobileNav.module.css";
@@ -17,7 +17,7 @@ export function MobileNav({ onOpenPrivs }: MobileNavProps) {
   const pathname = usePathname();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const isHome = pathname === "/";
-  const isWaves = pathname.startsWith("/momentos") || pathname.startsWith("/moments");
+  const isSearch = pathname.startsWith("/discover");
   const isProfile = pathname.startsWith("/perfil");
 
   return (
@@ -30,15 +30,17 @@ export function MobileNav({ onOpenPrivs }: MobileNavProps) {
           title="Início"
         >
           <HiHome />
+          <span>Início</span>
         </Link>
 
         <Link
-          href="/momentos"
-          className={isWaves ? styles.active : ""}
-          aria-label="Waves"
-          title="Waves"
+          href="/discover"
+          className={isSearch ? styles.active : ""}
+          aria-label="Buscar"
+          title="Buscar"
         >
-          <HiTrendingUp />
+          <HiSearch />
+          <span>Buscar</span>
         </Link>
 
         <button
@@ -58,6 +60,7 @@ export function MobileNav({ onOpenPrivs }: MobileNavProps) {
           onClick={onOpenPrivs}
         >
           <HiChatAlt2 />
+          <span>Mensagens</span>
         </button>
 
         <Link
@@ -67,6 +70,7 @@ export function MobileNav({ onOpenPrivs }: MobileNavProps) {
           title="Perfil"
         >
           <HiUser />
+          <span>Perfil</span>
         </Link>
       </nav>
 

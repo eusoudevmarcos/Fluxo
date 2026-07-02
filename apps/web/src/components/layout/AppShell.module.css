@@ -1,11 +1,10 @@
 .app {
   min-height: 100vh;
-  background: var(--color-bg);
   display: grid;
-  grid-template-columns: minmax(280px, 300px) minmax(560px, 760px) minmax(360px, 390px);
+  grid-template-columns: minmax(260px, 292px) minmax(560px, 680px) minmax(320px, 360px);
   justify-content: center;
-  gap: 22px;
-  padding: 18px;
+  gap: 16px;
+  padding: 18px 18px 28px;
 }
 
 .feed {
@@ -19,21 +18,24 @@
 .topMenu {
   align-self: center;
   align-items: center;
-  background: color-mix(in srgb, var(--color-card) 94%, transparent);
-  border: 1px solid var(--color-border);
-  border-radius: 18px;
+  background: color-mix(in srgb, var(--surface-glass) 92%, transparent);
+  backdrop-filter: blur(22px);
+  border: 1px solid color-mix(in srgb, var(--color-border) 86%, transparent);
+  border-radius: 999px;
   display: flex;
-  gap: 10px;
+  gap: 6px;
   justify-content: center;
-  max-width: 500px;
-  padding: 7px 18px;
-  position: relative;
-  width: min(100%, 500px);
+  max-width: 430px;
+  padding: 6px;
+  position: sticky;
+  top: 14px;
+  width: min(100%, 430px);
+  z-index: 40;
 }
 
 .topMenu a {
   align-items: center;
-  border-radius: 14px;
+  border-radius: 999px;
   color: var(--color-muted);
   display: inline-flex;
   font-size: 20px;
@@ -54,14 +56,14 @@
 
 .topMenu a:hover,
 .topActive {
-  background: color-mix(in srgb, var(--color-primary) 8%, transparent);
-  color: var(--color-primary-hover) !important;
+  background: color-mix(in srgb, var(--color-primary) 14%, transparent);
+  color: var(--color-primary) !important;
 }
 
 .topActive::after {
   background: var(--color-primary);
   border-radius: 999px;
-  bottom: -8px;
+  bottom: -6px;
   content: "";
   height: 3px;
   left: 12px;
@@ -99,14 +101,14 @@
 
 @media (max-width: 1400px) {
   .app {
-    grid-template-columns: minmax(250px, 270px) minmax(520px, 680px) minmax(310px, 340px);
+    grid-template-columns: minmax(238px, 270px) minmax(520px, 650px) minmax(300px, 330px);
     gap: 16px;
   }
 }
 
 @media (max-width: 1280px) {
   .app {
-    grid-template-columns: 230px minmax(500px, 620px) 290px;
+    grid-template-columns: 220px minmax(500px, 620px) 280px;
     gap: 14px;
     padding: 14px;
   }
@@ -116,7 +118,7 @@
   .app {
     grid-template-columns: 1fr;
     padding-top: 82px;
-    padding-bottom: 110px;
+    padding-bottom: 104px;
   }
 
   .topMenu {

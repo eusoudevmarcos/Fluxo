@@ -1,14 +1,14 @@
 .page {
   display: grid;
-  gap: 16px;
+  gap: 14px;
 }
 
 .hero,
 .auraCard,
 .examples {
   background: color-mix(in srgb, var(--color-card) 94%, var(--color-bg));
-  border: 1px solid var(--color-border);
-  border-radius: 22px;
+  border: 1px solid color-mix(in srgb, var(--color-border) 86%, transparent);
+  border-radius: 20px;
   box-shadow: var(--shadow-card);
 }
 
@@ -64,16 +64,23 @@
 
 .grid {
   display: grid;
-  gap: 14px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .auraCard {
-  align-items: center;
+  align-items: stretch;
   display: grid;
-  gap: 14px;
-  grid-template-columns: max-content 1fr max-content;
-  padding: 16px;
+  gap: 16px;
+  grid-template-columns: 1fr;
+  min-height: 340px;
+  padding: 18px;
+}
+
+.auraCard > span {
+  justify-self: center;
+  margin: 22px 0 12px;
+  transform: scale(1.45);
 }
 
 .auraCard span {
@@ -106,6 +113,7 @@
   font-style: normal;
   font-weight: 950;
   gap: 6px;
+  align-self: end;
   justify-content: center;
   padding: 11px 13px;
   white-space: nowrap;
@@ -148,7 +156,7 @@
   align-items: center;
   background: color-mix(in srgb, var(--color-bg) 58%, transparent);
   border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
-  border-radius: 18px;
+  border-radius: 16px;
   display: flex;
   gap: 12px;
   padding: 12px;
@@ -189,6 +197,10 @@
 @media (max-width: 900px) {
   .hero,
   .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero {
     grid-template-columns: 1fr;
   }
 
@@ -198,12 +210,16 @@
 }
 
 @media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
   .auraCard {
-    grid-template-columns: max-content 1fr;
+    min-height: 280px;
   }
 
   .auraCard button,
   .auraCard em {
-    grid-column: 1 / -1;
+    grid-column: auto;
   }
 }

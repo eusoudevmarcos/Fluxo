@@ -1,40 +1,51 @@
 .nav {
   position: fixed;
   left: 50%;
-  bottom: 16px;
+  bottom: 12px;
   transform: translateX(-50%);
-  width: calc(100% - 28px);
-  max-width: 520px;
-  height: 66px;
-  background: color-mix(in srgb, var(--color-card) 94%, transparent);
-  backdrop-filter: blur(18px);
-  border: 1px solid var(--color-border);
-  border-radius: 26px;
+  width: min(100% - 22px, 430px);
+  height: var(--nav-height-mobile);
+  background: color-mix(in srgb, var(--surface-glass) 92%, transparent);
+  backdrop-filter: blur(24px);
+  border: 1px solid color-mix(in srgb, var(--color-border) 84%, transparent);
+  border-radius: 24px;
   display: none;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 0 13px;
   z-index: 999;
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 20px 70px rgb(0 0 0 / 52%);
 }
 
 .nav a,
 .navButton,
 .createButton {
-  width: 46px;
-  height: 46px;
+  width: 58px;
+  height: 58px;
   border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  gap: 4px;
   color: color-mix(in srgb, var(--color-text) 84%, var(--color-muted));
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 900;
   transition:
     background 160ms ease,
     color 160ms ease,
     transform 160ms ease,
     box-shadow 160ms ease;
+}
+
+.nav span {
+  font-size: 10px;
+  font-weight: 850;
+  line-height: 1;
+  max-width: 66px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .navButton {
@@ -51,10 +62,12 @@
   color: var(--color-on-primary);
   cursor: pointer;
   font-size: 36px;
-  height: 62px;
-  transform: translateY(-12px);
-  width: 62px;
-  box-shadow: 0 12px 28px color-mix(in srgb, var(--color-primary) 28%, transparent);
+  height: 64px;
+  transform: translateY(-14px);
+  width: 64px;
+  box-shadow:
+    0 14px 30px color-mix(in srgb, var(--color-primary) 30%, transparent),
+    inset 0 -8px 20px rgb(0 0 0 / 18%);
 }
 
 .active {
@@ -80,9 +93,9 @@
 @media (max-width: 390px) {
   .nav a,
   .navButton {
-    width: 42px;
-    height: 42px;
-    font-size: 22px;
+    width: 54px;
+    height: 56px;
+    font-size: 21px;
   }
 
   .createButton {

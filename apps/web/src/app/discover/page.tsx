@@ -1,30 +1,23 @@
 import { AppShell } from "@/components/layout/AppShell";
-import { FeaturePage } from "@/components/pages/FeaturePage";
 import { PageCard } from "@/components/ui/PageCard";
+import { PeopleDiscoverClient } from "./PeopleDiscoverClient";
 
-const discoverItems = [
-  { title: "Em alta", meta: "Preview", description: "Descubra criações, Flows e Moments que começam a ganhar presença.", action: "Em breve" },
-  { title: "Comunidades crescendo", meta: "Beta", description: "Atalho para encontrar comunidades oficiais e criadas pela galera.", action: "Explorar" },
-  { title: "Novos creators", meta: "Em breve", description: "Sugestões reais entram quando Fãs, Seletos e ranking estiverem maduros.", action: "Em breve" },
-  { title: "Moments do dia", meta: "Visual", description: "Entrada para o que está viralizando agora na Wave.", action: "Ver Moments" },
-];
+type DiscoverPageProps = {
+  searchParams?: Promise<{
+    q?: string | string[];
+  }>;
+};
 
-export default function DiscoverPage() {
+export const dynamic = "force-dynamic";
+
+export default async function DiscoverPage({ searchParams }: DiscoverPageProps) {
+  const params = await searchParams;
+  const rawQuery = Array.isArray(params?.q) ? params?.q[0] : params?.q;
+
   return (
     <AppShell>
       <PageCard>
-        <FeaturePage
-          eyebrow="Discover"
-          title="Descubra flows, comunidades, creators e moments"
-          description="Um ponto de entrada para achar o que está se espalhando na Wave."
-          stats={[
-            { label: "Flows", value: "beta" },
-            { label: "Moments", value: "ativo" },
-            { label: "comunidades", value: "base" },
-            { label: "ranking", value: "em breve" },
-          ]}
-          items={discoverItems}
-        />
+        <PeopleDiscoverClient initialQuery={rawQuery ?? ""} />
       </PageCard>
     </AppShell>
   );

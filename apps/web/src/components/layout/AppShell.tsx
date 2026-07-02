@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   HiHome,
   HiLightningBolt,
+  HiSearch,
   HiShoppingBag,
   HiUserGroup,
   HiVideoCamera,
@@ -91,8 +92,9 @@ export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
 
   const topItems = [
-    { href: "/", label: "Home", icon: <HiHome /> },
-    { href: "/moments", label: "Moments", icon: <HiLightningBolt /> },
+    { href: "/", label: "Wave", icon: <HiHome /> },
+    { href: "/discover", label: "Discover", icon: <HiSearch /> },
+    { href: "/moments", label: "Vibes", icon: <HiLightningBolt /> },
     { href: "/stream", label: "Ao vivo", icon: <HiVideoCamera /> },
     { href: "/shop", label: "Shop", icon: <HiShoppingBag /> },
     { href: "/comunidades", label: "Comunidades", icon: <HiUserGroup /> },
@@ -108,7 +110,7 @@ export function AppShell({ children }: AppShellProps) {
           <Sidebar />
 
           <section className={styles.feed}>
-            <nav className={styles.topMenu} aria-label="Menu rapido">
+            <nav className={styles.topMenu} aria-label="Menu rápido">
               {topItems.map((item) => {
                 const isActive =
                   item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);

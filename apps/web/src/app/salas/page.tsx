@@ -5,7 +5,7 @@ import { PageCard } from "@/components/ui/PageCard";
 const rooms = [
   { title: "Salas nas Comunidades", meta: "Beta", description: "As salas reais vivem dentro das comunidades e já têm chat básico por texto.", action: "Abrir Comunidades" },
   { title: "Até 200 pessoas", meta: "Capacidade", description: "Cada sala mostra capacidade e presença aproximada para organizar conversas.", action: "Em breve" },
-  { title: "Eventos e Moments", meta: "Visão futura", description: "Salas públicas separadas entram depois, conectadas a eventos e Moments.", action: "Em breve" },
+  { title: "Eventos e Vibes", meta: "Visão futura", description: "Salas públicas separadas entram depois, conectadas a eventos e Vibes.", action: "Em breve" },
   { title: "Moderação", meta: "Próxima fase", description: "Antes de escala, salas terão denúncias, limites e regras mais fortes.", action: "Em breve" },
 ];
 

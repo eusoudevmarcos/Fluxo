@@ -59,6 +59,11 @@
   padding: 13px 16px;
 }
 
+.actions button:disabled {
+  cursor: wait;
+  opacity: 0.68;
+}
+
 .actions {
   display: flex;
   justify-content: flex-end;

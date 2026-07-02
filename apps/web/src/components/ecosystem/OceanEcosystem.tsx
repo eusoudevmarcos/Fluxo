@@ -30,7 +30,7 @@ const ecosystemItems = [
   },
   {
     title: "Wave Stream",
-    description: "Lives de jogos, música, dança, arte, lifestyle, eventos e criação original.",
+    description: "Lives de jogos, música, dança, arte, lifestyle, eventos e conteúdo original.",
     status: "Em breve",
     Icon: Radio,
   },
@@ -73,7 +73,7 @@ const innovationItems = [
     Icon: Map,
   },
   {
-    title: "Maré do Feed",
+    title: "Maré da Wave",
     description: "Você escolhe a experiência que quer viver, em vez de ser refém do algoritmo.",
     Icon: Waves,
   },
@@ -97,7 +97,7 @@ export function OceanEcosystem() {
         <h1>O Ecossistema Wave</h1>
         <p>
           A Wave está nascendo como uma rede social, mas foi pensada para crescer como
-          um ecossistema de criação, conexão, comércio, aprendizado e presença.
+          um ecossistema de conteúdo, conexão, comércio, aprendizado e presença.
         </p>
       </section>
 

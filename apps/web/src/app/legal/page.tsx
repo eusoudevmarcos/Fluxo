@@ -13,7 +13,7 @@ export default function LegalIndexPage() {
           <h1>Documentos legais da Wave</h1>
           <p>
             Antes de criar conta ou continuar usando a beta, leia os documentos que
-            protegem voce, a comunidade e a plataforma.
+            protegem você, a comunidade e a plataforma.
           </p>
         </div>
 
@@ -22,7 +22,7 @@ export default function LegalIndexPage() {
             <Link key={document.slug} href={`/legal/${document.slug}`}>
               <strong>{document.title}</strong>
               <span>{document.summary}</span>
-              <span>Versao {document.version}</span>
+              <span>Versão {document.version}</span>
             </Link>
           ))}
         </div>

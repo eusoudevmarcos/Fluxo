@@ -24,12 +24,18 @@ export async function registerPresence(
     return getPresenceCount(supabase, contentId);
   }
 
-  const { error } = await supabase.from("presences").insert({
-    content_id: contentId,
-    user_id: userData.user.id,
-  });
+  const { error } = await supabase.from("presences").upsert(
+    {
+      content_id: contentId,
+      user_id: userData.user.id,
+    },
+    {
+      ignoreDuplicates: true,
+      onConflict: "user_id,content_id",
+    },
+  );
 
-  if (error && error.code !== "23505") {
+  if (error) {
     throw error;
   }
 

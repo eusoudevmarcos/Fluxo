@@ -111,7 +111,7 @@ function SelosContent() {
       setError(
         equipError instanceof Error
           ? equipError.message
-          : "Nao foi possivel equipar esse selo.",
+          : "Não foi possível equipar esse selo.",
       );
     } finally {
       setEquippingSlug("");
@@ -246,7 +246,7 @@ function SelosContent() {
 
       <section className={styles.examples}>
         <h2>Onde aparecem</h2>
-        {["No perfil", "Em uma criacao", "Em um comentario"].map((label) => (
+        {["No perfil", "Em um Drop", "Em um comentário"].map((label) => (
           <article key={label}>
             <BadgeIcon
               badge={{
@@ -262,14 +262,14 @@ function SelosContent() {
             />
             <div>
               <strong>{label}</strong>
-              <p>O selo fica pequeno ao lado do nome e nao compete com a Aura do avatar.</p>
+              <p>O selo fica pequeno ao lado do nome e não compete com a Aura do avatar.</p>
             </div>
           </article>
         ))}
       </section>
 
       <p className={styles.legalNotice}>
-        Selos nao sao transferiveis. O uso indevido pode resultar em remocao.
+        Selos não são transferíveis. O uso indevido pode resultar em remoção.
       </p>
     </main>
   );

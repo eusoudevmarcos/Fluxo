@@ -302,4 +302,25 @@
   .tiles {
     grid-template-columns: 1fr;
   }
+
+  .profileContent {
+    padding: 12px;
+  }
+
+  .tabs {
+    gap: 8px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 0 2px;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tabs button {
+    min-width: auto;
+    padding: 0 14px 14px;
+  }
 }

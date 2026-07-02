@@ -281,7 +281,6 @@ export function PrivsPanel({ onClose }: PrivsPanelProps) {
             value={search}
             onChange={(event) => setSearch(event.target.value)}
           />
-          <kbd>⌘K</kbd>
         </label>
 
         <div className={styles.tabs}>
@@ -391,7 +390,7 @@ export function PrivsPanel({ onClose }: PrivsPanelProps) {
                 )}
               </span>
               <strong>{activeConversation.title}</strong>
-              <span>Privs básico ativo. Realtime com fallback por atualização.</span>
+              <span>Conversa privada ativa na Wave.</span>
             </div>
 
             <div className={styles.messages}>

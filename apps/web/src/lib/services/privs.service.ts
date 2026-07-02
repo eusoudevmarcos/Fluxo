@@ -305,8 +305,13 @@ export function subscribeToConversation(
   conversationId: string,
   callback: () => void,
 ): RealtimeChannel {
+  const channelId =
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
   return supabase
-    .channel(`privs:${conversationId}`)
+    .channel(`privs:${conversationId}:${channelId}`)
     .on(
       "postgres_changes",
       {

@@ -16,7 +16,7 @@ const week = [
   { label: "Qua", done: true },
   { label: "Qui", done: true },
   { label: "Sex", done: true },
-  { label: "SÃ¡b", done: false },
+  { label: "Sáb", done: false },
   { label: "Dom", done: false },
 ];
 
@@ -55,13 +55,13 @@ export function RewardWidget() {
     100,
     Math.round((missionCurrent / Math.max(1, missionTarget)) * 100),
   );
-  const missionTitle = mainMission?.mission?.title ?? "Publicar 3 flows esta semana";
+  const missionTitle = mainMission?.mission?.title ?? "Dropar 3 flows esta semana";
   const missionXp = mainMission?.mission?.xp_reward ?? 250;
 
   return (
     <section className={styles.rewardCard}>
       <header className={styles.header}>
-        <strong>MissÃµes & recompensas</strong>
+        <strong>Missões & recompensas</strong>
         <Link href="/missoes">Ver todas</Link>
       </header>
 
@@ -70,7 +70,7 @@ export function RewardWidget() {
           <HiSparkles />
         </span>
         <div>
-          <small>NÃ­vel {level}</small>
+          <small>Nível {level}</small>
           <strong>{gamification?.is_founder ? "Fundador Wave" : "Waveiro"}</strong>
         </div>
         <span className={styles.xp}>
@@ -78,7 +78,7 @@ export function RewardWidget() {
         </span>
       </div>
 
-      <div className={styles.progress} aria-label="Progresso do nÃ­vel">
+      <div className={styles.progress} aria-label="Progresso do nível">
         <span style={{ width: `${xpPercent}%` }} />
       </div>
 
@@ -100,7 +100,7 @@ export function RewardWidget() {
       </div>
 
       <div className={styles.streakHeader}>
-        <span>SequÃªncia de dias</span>
+        <span>Sequência de dias</span>
         <strong>{gamification?.streak_days ?? 6} dias</strong>
       </div>
 

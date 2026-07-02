@@ -56,7 +56,16 @@ function getContentTypeForDestination(destination: Destination): ContentType {
   return destination === "flow" || destination === "moments" ? "flow" : "post";
 }
 
-const quickEmojis = ["??", "??", "?", "??", "??", "??", "?", "??"];
+const quickEmojis = [
+  "\u{1F30A}",
+  "\u{1F525}",
+  "\u{2728}",
+  "\u{1F499}",
+  "\u{1F4AA}",
+  "\u{1F3B5}",
+  "\u{2600}\u{FE0F}",
+  "\u{1F3C4}",
+];
 
 export function PostComposer({ onCreated }: PostComposerProps) {
   const supabase = useMemo(() => createClient(), []);
@@ -224,6 +233,60 @@ export function PostComposer({ onCreated }: PostComposerProps) {
         onChange={handleFileChange}
       />
 
+      <div className={styles.typeRail} aria-label="Tipo de Drop">
+        <button
+          type="button"
+          className={destination === "flow" ? styles.typeActive : ""}
+          onClick={() => setDestination("flow")}
+        >
+          <HiPlay />
+          Flow
+        </button>
+        <button
+          type="button"
+          className={destination === "moments" ? styles.typeActive : ""}
+          onClick={() => setDestination("moments")}
+        >
+          <HiLightningBolt />
+          Vibes
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setDestination("creation");
+            mediaInputRef.current?.click();
+          }}
+        >
+          <HiPhotograph />
+          Foto
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setDestination("moments");
+            mediaInputRef.current?.click();
+          }}
+        >
+          <HiPlay />
+          Vídeo
+        </button>
+        <button
+          type="button"
+          className={destination === "creation" && !selectedMedia ? styles.typeActive : ""}
+          onClick={() => setDestination("creation")}
+        >
+          <HiTag />
+          Texto
+        </button>
+        <button
+          type="button"
+          aria-label="Mais opções de Drop"
+          onClick={() => mediaInputRef.current?.click()}
+        >
+          +
+        </button>
+      </div>
+
       <div className={styles.createRow}>
         <div className={styles.avatar}>
           {profile?.avatar_url ? (
@@ -235,7 +298,7 @@ export function PostComposer({ onCreated }: PostComposerProps) {
         </div>
 
         <textarea
-          placeholder="O que você quer criar no seu flow?"
+          placeholder="O que vai dropar hoje?"
           value={text}
           onChange={(event) => {
             setText(event.target.value);
@@ -274,7 +337,7 @@ export function PostComposer({ onCreated }: PostComposerProps) {
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Enviando..." : "Criar"}
+          {isSubmitting ? "Dropando..." : "Drop"}
         </button>
       </div>
 
@@ -288,10 +351,10 @@ export function PostComposer({ onCreated }: PostComposerProps) {
             ))}
           </div>
           <button type="button" onClick={() => handleTodo("Stickers exclusivos entram em breve.")}>
-            Stickers
+            Aura Drops
           </button>
-          <button type="button" onClick={() => handleTodo("Memes rápidos entram em breve.")}>
-            Memes
+          <button type="button" onClick={() => handleTodo("Reações rápidas entram em breve.")}>
+            Reações
           </button>
         </div>
       )}
@@ -325,8 +388,8 @@ export function PostComposer({ onCreated }: PostComposerProps) {
       {selectedMedia && (
         <section className={styles.destinationPanel}>
           <div className={styles.destinationHeader}>
-            <strong>Onde você quer compartilhar?</strong>
-            <span>Depois vamos abrir editor com texto, emojis, músicas, stickers e memes.</span>
+            <strong>Onde vai dropar?</strong>
+            <span>Escolha o destino visual antes de enviar.</span>
           </div>
 
           <div className={styles.destinationGrid}>
@@ -336,7 +399,7 @@ export function PostComposer({ onCreated }: PostComposerProps) {
               onClick={() => setDestination("creation")}
             >
               <HiPhotograph />
-              Publicar como Criação
+              Dropar na Wave
             </button>
             <button
               type="button"
@@ -344,7 +407,7 @@ export function PostComposer({ onCreated }: PostComposerProps) {
               onClick={() => setDestination("flow")}
             >
               <HiPlay />
-              Publicar no Flow
+              Dropar no Flow
             </button>
             <button
               type="button"
@@ -352,7 +415,7 @@ export function PostComposer({ onCreated }: PostComposerProps) {
               onClick={() => setDestination("moments")}
             >
               <HiLightningBolt />
-              Publicar em Moments
+              Dropar em Vibes
             </button>
             <button
               type="button"
@@ -368,7 +431,7 @@ export function PostComposer({ onCreated }: PostComposerProps) {
               onClick={() => setDestination("edit")}
             >
               <HiSparkles />
-              Editar antes
+              Aura Drop
             </button>
             <button
               type="button"
@@ -390,15 +453,15 @@ export function PostComposer({ onCreated }: PostComposerProps) {
 
           {destination === "moments" && (
             <div className={styles.momentsOptions}>
-              <strong>Opções de Moments</strong>
+              <strong>Opções de Vibes</strong>
               <div>
-                <button type="button" onClick={() => handleTodo("Escolher Moment existente entra em breve.")}>
+                <button type="button" onClick={() => handleTodo("Escolher Vibe existente entra em breve.")}>
                   <HiTag />
-                  Escolher Moment existente
+                  Escolher Vibe existente
                 </button>
-                <button type="button" onClick={() => handleTodo("Criar novo Moment entra em breve.")}>
+                <button type="button" onClick={() => handleTodo("Criar nova Vibe entra em breve.")}>
                   <HiSparkles />
-                  Criar novo Moment
+                  Criar nova Vibe
                 </button>
               </div>
               <span>Duração sugerida: 1 min, 3 min, 5 min ou até 8 min.</span>

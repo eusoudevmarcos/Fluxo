@@ -1,30 +1,41 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import {
-  HiBell,
   HiAcademicCap,
+  HiBell,
+  HiCheck,
   HiCurrencyDollar,
   HiHeart,
   HiHome,
   HiLightningBolt,
   HiPlay,
+  HiSearch,
   HiShoppingBag,
   HiSparkles,
   HiUser,
+  HiUserAdd,
   HiUserGroup,
   HiVideoCamera,
   HiViewGrid,
 } from "react-icons/hi";
 
 import { OceanLogo } from "@/components/brand/OceanLogo";
+import {
+  listPeopleSuggestions,
+  searchProfiles,
+  toggleFollowProfile,
+  type PublicProfileSummary,
+} from "@/lib/services/profiles.service";
+import { createClient } from "@/lib/supabase/client";
 import styles from "./Sidebar.module.css";
 
 const menuItems = [
   { id: "home", href: "/", label: "Início", icon: <HiHome /> },
-  { id: "moments", href: "/moments", label: "Moments", icon: <HiLightningBolt /> },
+  { id: "discover", href: "/discover", label: "Discover", icon: <HiSearch /> },
+  { id: "moments", href: "/moments", label: "Vibes", icon: <HiLightningBolt /> },
   { id: "flows", href: "/flows", label: "Flows", icon: <HiPlay /> },
   { id: "communities", href: "/comunidades", label: "Comunidades", icon: <HiUserGroup /> },
   { id: "stream", href: "/stream", label: "Wave Stream", icon: <HiVideoCamera /> },
@@ -38,30 +49,120 @@ const menuItems = [
   { id: "more", href: "/mais", label: "Mais", icon: <HiViewGrid /> },
 ];
 
-const suggestions = [
-  { name: "Lucas Nunes", username: "lucasnunes" },
-  { name: "Marina Souza", username: "marinasouza" },
-  { name: "Gabriel Lima", username: "gabriellima" },
-  { name: "Carol Oliveira", username: "carololiveira" },
-];
+function getDisplayName(profile: PublicProfileSummary) {
+  return profile.display_name || profile.username || "Wave User";
+}
+
+function getInitial(profile: PublicProfileSummary) {
+  return getDisplayName(profile).trim().charAt(0).toUpperCase() || "W";
+}
 
 export function Sidebar() {
   const pathname = usePathname();
-  const [following, setFollowing] = useState<Set<string>>(new Set());
+  const router = useRouter();
+  const supabase = useMemo(() => createClient(), []);
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState<PublicProfileSummary[]>([]);
+  const [results, setResults] = useState<PublicProfileSummary[]>([]);
+  const [pendingUserId, setPendingUserId] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
   const [notice, setNotice] = useState("");
 
-  function toggleFollow(username: string) {
-    setFollowing((current) => {
-      const next = new Set(current);
-      if (next.has(username)) {
-        next.delete(username);
-        setNotice(`Você deixou de seguir @${username}.`);
-      } else {
-        next.add(username);
-        setNotice(`Você começou a seguir @${username}.`);
-      }
-      return next;
-    });
+  useEffect(() => {
+    let isMounted = true;
+
+    listPeopleSuggestions(supabase, 4)
+      .then((profiles) => {
+        if (isMounted) setSuggestions(profiles);
+      })
+      .catch((error) => {
+        if (isMounted) {
+          setNotice(error instanceof Error ? error.message : "Não foi possível carregar sugestões.");
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [supabase]);
+
+  useEffect(() => {
+    const searchTerm = query.trim();
+    let isMounted = true;
+
+    if (searchTerm.length < 2) {
+      queueMicrotask(() => {
+        if (!isMounted) return;
+        setResults([]);
+        setIsSearching(false);
+      });
+
+      return () => {
+        isMounted = false;
+      };
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      if (!isMounted) return;
+
+      setIsSearching(true);
+
+      searchProfiles(supabase, searchTerm, 5)
+        .then((profiles) => {
+          if (isMounted) setResults(profiles);
+        })
+        .catch((error) => {
+          if (isMounted) {
+            setNotice(error instanceof Error ? error.message : "Não foi possível buscar pessoas.");
+          }
+        })
+        .finally(() => {
+          if (isMounted) setIsSearching(false);
+        });
+    }, 250);
+
+    return () => {
+      isMounted = false;
+      window.clearTimeout(timeoutId);
+    };
+  }, [query, supabase]);
+
+  function updateProfileState(userId: string, isFollowing: boolean) {
+    const update = (profile: PublicProfileSummary) =>
+      profile.user_id === userId ? { ...profile, is_following: isFollowing } : profile;
+
+    setSuggestions((current) => current.map(update));
+    setResults((current) => current.map(update));
+  }
+
+  async function handleToggleFollow(profile: PublicProfileSummary) {
+    setPendingUserId(profile.user_id);
+    setNotice("");
+
+    try {
+      const isFollowing = await toggleFollowProfile(
+        supabase,
+        profile.user_id,
+        profile.is_following,
+      );
+      updateProfileState(profile.user_id, isFollowing);
+      setNotice(
+        isFollowing
+          ? `Você agora é fã de @${profile.username}.`
+          : `Você deixou de ser fã de @${profile.username}.`,
+      );
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Não foi possível atualizar esse perfil.");
+    } finally {
+      setPendingUserId("");
+    }
+  }
+
+  function handleSearchSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const searchTerm = query.trim();
+
+    router.push(searchTerm ? `/discover?q=${encodeURIComponent(searchTerm)}` : "/discover");
   }
 
   return (
@@ -70,9 +171,55 @@ export function Sidebar() {
         <OceanLogo />
       </div>
 
-      <div className={styles.search}>
-        <input placeholder="Buscar na Wave" />
-      </div>
+      <form className={styles.search} onSubmit={handleSearchSubmit}>
+        <HiSearch />
+        <input
+          aria-label="Buscar pessoas na Wave"
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Buscar pessoas"
+          value={query}
+        />
+        {query.trim().length >= 2 && (
+          <div className={styles.searchResults}>
+            {isSearching && <p>Buscando...</p>}
+            {!isSearching && !results.length && <p>Nenhum perfil encontrado.</p>}
+            {!isSearching &&
+              results.map((profile) => (
+                <div className={styles.searchResult} key={profile.user_id}>
+                  <Link href={`/u/${profile.username}`}>
+                    <span className={styles.smallAvatar}>
+                      {profile.avatar_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={profile.avatar_url} alt="" />
+                      ) : (
+                        getInitial(profile)
+                      )}
+                    </span>
+                    <span>
+                      <strong>{getDisplayName(profile)}</strong>
+                      <small>@{profile.username}</small>
+                    </span>
+                  </Link>
+                  {profile.can_follow && (
+                    <button
+                      aria-label={
+                        profile.is_following
+                          ? `Deixar de ser fã de @${profile.username}`
+                          : `Ser fã de @${profile.username}`
+                      }
+                      disabled={pendingUserId === profile.user_id}
+                      onClick={() => handleToggleFollow(profile)}
+                      title={profile.is_following ? "Fã" : "Ser fã"}
+                      type="button"
+                    >
+                      {profile.is_following ? <HiCheck /> : <HiUserAdd />}
+                    </button>
+                  )}
+                </div>
+              ))}
+          </div>
+        )}
+      </form>
 
       <nav className={styles.menu} aria-label="Menu principal">
         {menuItems.map((item) => {
@@ -94,27 +241,42 @@ export function Sidebar() {
 
       <section className={styles.followBox}>
         <div className={styles.followHeader}>
-          <strong>Quem seguir</strong>
+          <strong>Seletos para conhecer</strong>
           <Link href="/discover">Ver todos</Link>
         </div>
 
         {suggestions.map((person) => (
-          <div className={styles.followItem} key={person.username}>
-            <div className={styles.avatar}></div>
+          <div className={styles.followItem} key={person.user_id}>
+            <Link className={styles.avatar} href={`/u/${person.username}`}>
+              {person.avatar_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={person.avatar_url} alt="" />
+              ) : (
+                getInitial(person)
+              )}
+            </Link>
 
             <div>
-              <strong>{person.name}</strong>
+              <strong>{getDisplayName(person)}</strong>
               <span>@{person.username}</span>
             </div>
 
-            <button type="button" onClick={() => toggleFollow(person.username)}>
-              {following.has(person.username) ? "Seguindo" : "Seguir"}
-            </button>
+            {person.can_follow && (
+              <button
+                disabled={pendingUserId === person.user_id}
+                type="button"
+                onClick={() => handleToggleFollow(person)}
+              >
+                {person.is_following ? "Fã" : "Ser fã"}
+              </button>
+            )}
           </div>
         ))}
+        {!suggestions.length && !notice && (
+          <p className={styles.empty}>Nenhuma sugestão por enquanto.</p>
+        )}
         {notice && <p className={styles.notice}>{notice}</p>}
       </section>
     </aside>
   );
 }
-

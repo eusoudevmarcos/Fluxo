@@ -3,10 +3,10 @@ import { FeaturePage } from "@/components/pages/FeaturePage";
 import { PageCard } from "@/components/ui/PageCard";
 
 const notifications = [
-  { title: "Gabriel deu dahora", meta: "agora", description: "Seu flow recebeu uma nova reacao e entrou em uma conversa ativa." },
-  { title: "Marina marcou presenca", meta: "5 min atras", description: "Uma pessoa apareceu no seu momentum e pode virar conexao." },
-  { title: "Nova recompensa disponivel", meta: "hoje", description: "Complete sua ficha para melhorar seu rate engage inicial." },
-  { title: "Sala recomendada", meta: "ao vivo", description: "Uma sala combina com seus interesses e esta movimentada agora." },
+  { title: "Gabriel deu Dahora", meta: "agora", description: "Seu Flow recebeu uma nova reação e entrou em uma conversa ativa." },
+  { title: "Marina marcou Presença", meta: "5 min atrás", description: "Uma pessoa apareceu no seu momentum e pode virar conexão." },
+  { title: "Nova recompensa disponível", meta: "hoje", description: "Complete sua ficha para melhorar seu engage inicial." },
+  { title: "Sala recomendada", meta: "ao vivo", description: "Uma sala combina com seus interesses e está movimentada agora." },
 ];
 
 export default function NotificacoesPage() {
@@ -14,10 +14,10 @@ export default function NotificacoesPage() {
     <AppShell>
       <PageCard>
         <FeaturePage
-          eyebrow="Notificacoes"
+          eyebrow="Notificações"
           title="Tudo que mexe com seu flow"
-          description="Curtidas, respostas, seguidores, recompensas e presencas organizadas para voce nao perder o agora."
-          stats={[{ label: "novas", value: "3" }, { label: "presencas", value: "18" }, { label: "waves", value: "6" }, { label: "recompensas", value: "1" }]}
+          description="Dahoras, respostas, fãs, recompensas e Presenças organizadas para você não perder o agora."
+          stats={[{ label: "novas", value: "3" }, { label: "presenças", value: "18" }, { label: "waves", value: "6" }, { label: "recompensas", value: "1" }]}
           items={notifications}
         />
       </PageCard>

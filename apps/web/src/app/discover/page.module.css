@@ -1,0 +1,238 @@
+.discover {
+  display: grid;
+  gap: 18px;
+}
+
+.header {
+  display: grid;
+  gap: 6px;
+}
+
+.header span {
+  color: var(--color-primary-hover);
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.header h1 {
+  color: var(--color-text);
+  font-size: 30px;
+  line-height: 1.08;
+  margin: 0;
+}
+
+.searchPanel {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-card) 96%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  padding: 10px;
+}
+
+.searchPanel svg {
+  color: var(--color-muted);
+  font-size: 20px;
+  justify-self: center;
+}
+
+.searchPanel input {
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font: inherit;
+  font-size: 15px;
+  min-width: 0;
+  outline: none;
+}
+
+.searchPanel button,
+.cardActions button,
+.cardActions a {
+  align-items: center;
+  border-radius: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 900;
+  gap: 8px;
+  justify-content: center;
+  min-height: 40px;
+  text-decoration: none;
+}
+
+.searchPanel button {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border: none;
+  color: var(--color-on-primary);
+  padding: 0 16px;
+}
+
+.success,
+.error,
+.notice {
+  border-radius: 16px;
+  line-height: 1.45;
+  margin: 0;
+  padding: 12px 14px;
+}
+
+.success {
+  background: color-mix(in srgb, var(--color-primary) 14%, var(--color-card));
+  border: 1px solid color-mix(in srgb, var(--color-primary) 32%, var(--color-border));
+  color: var(--color-text);
+}
+
+.error {
+  background: rgba(127, 29, 29, 0.26);
+  border: 1px solid rgba(248, 113, 113, 0.34);
+  color: #fecaca;
+}
+
+.notice {
+  background: color-mix(in srgb, var(--color-card) 88%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  color: var(--color-muted);
+}
+
+.sectionHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sectionHeader strong {
+  color: var(--color-text);
+  font-size: 18px;
+}
+
+.sectionHeader span {
+  color: var(--color-muted);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.peopleGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.personCard {
+  background: color-mix(in srgb, var(--color-card) 94%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding: 14px;
+}
+
+.identity {
+  align-items: center;
+  color: var(--color-text);
+  display: flex;
+  gap: 12px;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.avatar {
+  align-items: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border-radius: 16px;
+  color: var(--color-on-primary);
+  display: inline-flex;
+  flex-shrink: 0;
+  font-weight: 950;
+  height: 52px;
+  justify-content: center;
+  overflow: hidden;
+  width: 52px;
+}
+
+.avatar img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.identity strong,
+.identity small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.identity strong {
+  font-size: 15px;
+}
+
+.identity small {
+  color: var(--color-muted);
+  font-size: 13px;
+  font-weight: 750;
+  margin-top: 2px;
+}
+
+.personCard p {
+  color: var(--color-muted);
+  display: -webkit-box;
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 0;
+  min-height: 38px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.cardActions {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr auto;
+}
+
+.cardActions button {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border: none;
+  color: var(--color-on-primary);
+  padding: 0 12px;
+}
+
+.cardActions button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.cardActions a {
+  background: color-mix(in srgb, var(--color-card) 84%, transparent);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  padding: 0 12px;
+}
+
+@media (max-width: 760px) {
+  .header h1 {
+    font-size: 25px;
+  }
+
+  .peopleGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .searchPanel {
+    grid-template-columns: 22px minmax(0, 1fr);
+  }
+
+  .searchPanel button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}

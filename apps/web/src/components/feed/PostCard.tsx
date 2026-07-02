@@ -269,11 +269,11 @@ export function PostCard({ content, onChange, onDelete }: PostCardProps) {
       );
     } catch {
       setStickers([
-        { label: "Rindo", value: "??" },
-        { label: "Admirado", value: "?" },
-        { label: "Tirando onda", value: "??" },
-        { label: "Medo", value: "??" },
-        { label: "Estressado", value: "??" },
+        { label: "Rindo", value: "\u{1F602}" },
+        { label: "Admirado", value: "\u{1F929}" },
+        { label: "Tirando onda", value: "\u{1F30A}" },
+        { label: "Medo", value: "\u{1F631}" },
+        { label: "Estressado", value: "\u{1F624}" },
       ]);
     } finally {
       setIsLoadingStickers(false);
@@ -309,7 +309,7 @@ export function PostCard({ content, onChange, onDelete }: PostCardProps) {
   async function handleDeletePost() {
     setIsOptionsOpen(false);
 
-    if (!window.confirm("Essa criação será removida da Wave.")) {
+    if (!window.confirm("Esse Drop será removido da Wave.")) {
       return;
     }
 
@@ -426,7 +426,7 @@ export function PostCard({ content, onChange, onDelete }: PostCardProps) {
               {isAuthor ? (
                 <>
                   <button type="button" onClick={handleDeletePost}>
-                    Apagar criação
+                    Apagar Drop
                   </button>
                   <button
                     type="button"
@@ -461,7 +461,7 @@ export function PostCard({ content, onChange, onDelete }: PostCardProps) {
       {content.text && <p className={styles.text}>{content.text}</p>}
 
       <div className={styles.meta}>
-        <span>{content.content_type === "flow" ? "Flow" : "Criação"}</span>
+        <span>{content.content_type === "flow" ? "Flow" : "Drop"}</span>
       </div>
 
       {content.media_url && (

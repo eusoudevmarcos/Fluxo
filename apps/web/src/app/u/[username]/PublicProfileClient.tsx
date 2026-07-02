@@ -21,7 +21,13 @@ import {
   listContentsByIds,
   type ProfileContent,
 } from "@/lib/services/contents.service";
-import { getPublicProfileByUsername } from "@/lib/services/profiles.service";
+import {
+  getPublicProfileByUsername,
+  getRelationshipState,
+  getRelationshipStats,
+  toggleFollowProfile,
+  type RelationshipState,
+} from "@/lib/services/profiles.service";
 import { listWavedContentsByUser } from "@/lib/services/waves.service";
 import { createClient } from "@/lib/supabase/client";
 import styles from "./page.module.css";
@@ -30,22 +36,22 @@ type PublicProfileClientProps = {
   username: string;
 };
 
-type PublicTab = "Criações" | "Waves";
+type PublicTab = "Drops" | "Vibes" | "Waves" | "Salvos";
 
-const publicTabs: PublicTab[] = ["Criações", "Waves"];
+const publicTabs: PublicTab[] = ["Drops", "Vibes", "Waves", "Salvos"];
 
 function normalizeRouteUsername(value: string) {
   return decodeURIComponent(value).replace(/^~/, "").trim().toLowerCase();
 }
 
 function getContentTitle(content: ProfileContent) {
-  return content.text?.trim() || (content.content_type === "flow" ? "Flow sem legenda" : "Criação sem legenda");
+  return content.text?.trim() || (content.content_type === "flow" ? "Vibe sem legenda" : "Drop sem legenda");
 }
 
 function getContentMeta(content: ProfileContent) {
   if (content.media_type === "video") return "Vídeo";
   if (content.media_type === "image") return "Foto";
-  return content.content_type === "flow" ? "Flow" : "Criação";
+  return content.content_type === "flow" ? "Vibe" : "Drop";
 }
 
 export function PublicProfileClient({ username }: PublicProfileClientProps) {
@@ -61,12 +67,17 @@ export function PublicProfileClient({ username }: PublicProfileClientProps) {
     seletos: 0,
     engage: "0%",
   });
-  const [activeTab, setActiveTab] = useState<PublicTab>("Criações");
+  const [relationship, setRelationship] = useState<RelationshipState>({
+    isFollowing: false,
+    canFollow: false,
+  });
+  const [activeTab, setActiveTab] = useState<PublicTab>("Drops");
   const [contents, setContents] = useState<ProfileContent[]>([]);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingContents, setIsLoadingContents] = useState(false);
+  const [isUpdatingRelationship, setIsUpdatingRelationship] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -86,8 +97,17 @@ export function PublicProfileClient({ username }: PublicProfileClientProps) {
         setProfile(nextProfile);
 
         if (nextProfile) {
-          const [profileStats, nextAura, nextBadge, gamificationResult] = await Promise.all([
+          const [
+            profileStats,
+            relationshipStats,
+            relationshipState,
+            nextAura,
+            nextBadge,
+            gamificationResult,
+          ] = await Promise.all([
             getProfileContentStats(supabase, nextProfile.user_id),
+            getRelationshipStats(supabase, nextProfile.user_id),
+            getRelationshipState(supabase, nextProfile.user_id),
             getEquippedAura(supabase, nextProfile.user_id).catch(() => null),
             getEquippedBadge(supabase, nextProfile.user_id).catch(() => null),
             supabase
@@ -99,14 +119,15 @@ export function PublicProfileClient({ username }: PublicProfileClientProps) {
           if (isMounted) {
             setEquippedAura(nextAura);
             setEquippedBadge(nextBadge);
+            setRelationship(relationshipState);
             setGamification(
               gamificationResult.error ? null : (gamificationResult.data as UserGamification | null),
             );
             setStats({
               flows: profileStats.contentCount,
               dahoras: profileStats.dahorasReceived,
-              fas: 0,
-              seletos: 0,
+              fas: relationshipStats.fans,
+              seletos: relationshipStats.seletos,
               engage: profileStats.contentCount
                 ? `${Math.min(100, Math.round((profileStats.dahorasReceived / profileStats.contentCount) * 10))}%`
                 : "0%",
@@ -135,6 +156,40 @@ export function PublicProfileClient({ username }: PublicProfileClientProps) {
     };
   }, [supabase, username]);
 
+  async function handleToggleFan() {
+    if (!profile) return;
+
+    setIsUpdatingRelationship(true);
+    setMessage("");
+    setError("");
+
+    try {
+      const isFollowing = await toggleFollowProfile(
+        supabase,
+        profile.user_id,
+        relationship.isFollowing,
+      );
+      setRelationship((current) => ({ ...current, isFollowing }));
+      setStats((current) => ({
+        ...current,
+        fas: Math.max(0, current.fas + (isFollowing ? 1 : -1)),
+      }));
+      setMessage(
+        isFollowing
+          ? `Você agora é fã de @${profile.username}.`
+          : `Você deixou de ser fã de @${profile.username}.`,
+      );
+    } catch (relationshipError) {
+      setError(
+        relationshipError instanceof Error
+          ? relationshipError.message
+          : "Não foi possível atualizar esse perfil.",
+      );
+    } finally {
+      setIsUpdatingRelationship(false);
+    }
+  }
+
   useEffect(() => {
     if (!profile) return;
 
@@ -148,14 +203,22 @@ export function PublicProfileClient({ username }: PublicProfileClientProps) {
 
       try {
         const nextContents =
-          activeTab === "Criações"
-            ? await listContentsByAuthorId(supabase, profile.user_id)
-            : await listContentsByIds(
+          activeTab === "Drops"
+            ? (await listContentsByAuthorId(supabase, profile.user_id)).filter(
+                (content) => content.content_type !== "flow",
+              )
+            : activeTab === "Vibes"
+              ? (await listContentsByAuthorId(supabase, profile.user_id)).filter(
+                  (content) => content.content_type === "flow",
+                )
+              : activeTab === "Waves"
+                ? await listContentsByIds(
                 supabase,
                 (await listWavedContentsByUser(supabase, profile.user_id)).map(
                   (wave) => wave.content_id,
                 ),
-              );
+              )
+                : [];
 
         if (isMounted) {
           setContents(nextContents);
@@ -165,7 +228,7 @@ export function PublicProfileClient({ username }: PublicProfileClientProps) {
           setError(
             contentsError instanceof Error
               ? contentsError.message
-              : "Não foi possível carregar as criações.",
+              : "Não foi possível carregar os Drops.",
           );
         }
       } finally {
@@ -189,7 +252,7 @@ export function PublicProfileClient({ username }: PublicProfileClientProps) {
   if (!profile) {
     return (
       <section className={styles.notFound}>
-        <h1>Esse flow ainda não existe.</h1>
+        <h1>Esse Flow ID ainda não existe.</h1>
         <p>Verifique o Flow ID ou descubra novos perfis na Wave.</p>
         <Link href="/">Voltar para Wave</Link>
       </section>
@@ -211,14 +274,21 @@ export function PublicProfileClient({ username }: PublicProfileClientProps) {
 
       <ProfileHighlights />
 
-      <section className={styles.actions}>
-        <button
-          type="button"
-          onClick={() => setMessage("Fãs reais entram na próxima rodada.")}
-        >
-          Ser fã
-        </button>
-      </section>
+      {relationship.canFollow && (
+        <section className={styles.actions}>
+          <button
+            disabled={isUpdatingRelationship}
+            type="button"
+            onClick={handleToggleFan}
+          >
+            {isUpdatingRelationship
+              ? "Atualizando..."
+              : relationship.isFollowing
+                ? "Deixar de ser fã"
+                : "Ser fã"}
+          </button>
+        </section>
+      )}
 
       <section className={styles.profileContent}>
         <div className={styles.tabs}>
@@ -238,9 +308,13 @@ export function PublicProfileClient({ username }: PublicProfileClientProps) {
 
         {!isLoadingContents && !contents.length && (
           <p className={styles.notice}>
-            {activeTab === "Criações"
-              ? "Nenhuma criação pública ainda."
-              : "Nenhuma Wave por enquanto."}
+            {activeTab === "Drops"
+              ? "Nenhum Drop público ainda."
+              : activeTab === "Vibes"
+                ? "Nenhuma Vibe por enquanto."
+                : activeTab === "Waves"
+                  ? "Nenhuma Wave por enquanto."
+                  : "Nada salvo visível por enquanto."}
           </p>
         )}
 

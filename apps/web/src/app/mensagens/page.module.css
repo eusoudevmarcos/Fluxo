@@ -1,0 +1,52 @@
+.page {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+}
+
+.header {
+  display: grid;
+  gap: 6px;
+}
+
+.header span {
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.header h1 {
+  color: var(--color-text);
+  font-size: clamp(26px, 4vw, 42px);
+  line-height: 1.05;
+  margin: 0;
+}
+
+.header p {
+  color: var(--color-muted);
+  font-size: 15px;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 680px;
+}
+
+.panelFrame {
+  min-width: 0;
+}
+
+@media (max-width: 700px) {
+  .page {
+    gap: 14px;
+    padding-bottom: 80px;
+  }
+
+  .header h1 {
+    font-size: 28px;
+  }
+
+  .header p {
+    font-size: 14px;
+  }
+}

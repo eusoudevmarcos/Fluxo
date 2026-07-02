@@ -266,8 +266,8 @@ export function AuthScreen({ initialMode, initialError }: AuthScreenProps) {
           <OceanLogo size="lg" />
           <h1>Entre no flow da Wave.</h1>
           <p>
-            Crie Flows, acompanhe Moments, participe de Comunidades e evolua sua Aura
-            em uma experiencia social imersiva.
+            Crie Flows, acompanhe Vibes, participe de Comunidades e evolua sua Aura
+            em uma experiência social imersiva.
           </p>
         </div>
 

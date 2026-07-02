@@ -232,7 +232,7 @@ export async function ensureProfileWithClient(supabase: SupabaseClient) {
   const { data: userData, error: userError } = await supabase.auth.getUser();
 
   if (userError) throw userError;
-  if (!userData.user) throw new Error("Usuario nao autenticado.");
+  if (!userData.user) throw new Error("Usuário não autenticado.");
 
   const user = userData.user;
   const { data: existingProfile, error: profileError } = await selectProfileByUserId(
@@ -332,7 +332,7 @@ export async function updateProfile(input: ProfileUpdateInput) {
   const { data: userData, error: userError } = await supabase.auth.getUser();
 
   if (userError) throw userError;
-  if (!userData.user) throw new Error("Usuario nao autenticado.");
+  if (!userData.user) throw new Error("Usuário não autenticado.");
 
   const username = normalizeUsername(input.username);
   const displayName = input.display_name.trim();
@@ -356,7 +356,7 @@ export async function updateProfile(input: ProfileUpdateInput) {
     .single();
 
   if (error) {
-    if (error.code === "23505") throw new Error("Esse username ja esta em uso.");
+    if (error.code === "23505") throw new Error("Esse username já está em uso.");
     throw error;
   }
 
@@ -395,7 +395,7 @@ export async function updateProfileRequiredInfo(input: ProfileRequiredOnboarding
   const { data: userData, error: userError } = await supabase.auth.getUser();
 
   if (userError) throw userError;
-  if (!userData.user) throw new Error("Usuario nao autenticado.");
+  if (!userData.user) throw new Error("Usuário não autenticado.");
 
   const username = normalizeUsername(input.username);
   const displayName = input.display_name.trim();

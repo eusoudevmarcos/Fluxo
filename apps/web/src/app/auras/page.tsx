@@ -118,7 +118,7 @@ function AurasContent() {
             <div>
               <span>Auras colecionáveis</span>
               <h1>Suas Auras na Wave</h1>
-              <p>Equipe uma Aura sutil no avatar e leve sua identidade para perfil, criações e comentários.</p>
+              <p>Equipe uma Aura sutil no avatar e leve sua identidade para perfil, Drops e comentários.</p>
             </div>
             <div className={styles.preview}>
               <AuraAvatar
@@ -202,7 +202,7 @@ function AurasContent() {
                 <header>
                   <h2>Veja suas Auras em todo o Wave</h2>
                 </header>
-                {["Perfil", "Criação", "Comentários"].map((label, index) => (
+                {["Perfil", "Drop", "Comentários"].map((label, index) => (
                   <article key={label}>
                     <AuraAvatar
                       aura={equippedAura}

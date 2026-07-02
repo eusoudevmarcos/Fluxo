@@ -16,7 +16,7 @@ const notifications = [
   {
     id: "2",
     title: "Marina comentou",
-    text: "Ela respondeu na sua criação.",
+    text: "Ela respondeu no seu Drop.",
     time: "5 min",
     icon: <HiChatAlt2 />,
   },

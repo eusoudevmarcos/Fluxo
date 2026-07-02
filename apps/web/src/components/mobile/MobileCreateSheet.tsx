@@ -31,9 +31,9 @@ type SelectedMedia = {
 };
 
 const modes: Array<{ id: CreateMode; label: string }> = [
-  { id: "creation", label: "Criação" },
   { id: "flow", label: "Flow" },
-  { id: "moments", label: "Moments" },
+  { id: "moments", label: "Vibes" },
+  { id: "creation", label: "Texto" },
 ];
 
 function getMediaType(file: File): SelectedMedia["mediaType"] | null {
@@ -144,7 +144,7 @@ export function MobileCreateSheet({ isOpen, onClose }: MobileCreateSheetProps) {
       setError(
         createError instanceof Error
           ? createError.message
-          : "Não foi possível criar agora.",
+          : "Não foi possível dropar agora.",
       );
     } finally {
       setIsSubmitting(false);
@@ -160,8 +160,8 @@ export function MobileCreateSheet({ isOpen, onClose }: MobileCreateSheetProps) {
 
         <header>
           <div>
-            <strong>Criar</strong>
-            <span>Câmera, foto, vídeo ou texto rápido.</span>
+            <strong>Drop</strong>
+            <span>Flow, Vibes, foto, vídeo, texto ou câmera.</span>
           </div>
           <button type="button" onClick={closeSheet} aria-label="Fechar">
             <HiX />
@@ -197,7 +197,7 @@ export function MobileCreateSheet({ isOpen, onClose }: MobileCreateSheetProps) {
         </div>
 
         <textarea
-          placeholder="Texto rápido"
+          placeholder="O que vai dropar hoje?"
           rows={3}
           value={text}
           onChange={(event) => {
@@ -220,11 +220,11 @@ export function MobileCreateSheet({ isOpen, onClose }: MobileCreateSheetProps) {
 
         {hasDraft && (
           <div className={styles.destinations}>
-            <strong>Compartilhar em</strong>
+            <strong>Dropar em</strong>
             <div>
               <button type="button" className={destination === "creation" ? styles.activeMode : ""} onClick={() => setDestination("creation")}>
                 <HiPhotograph />
-                Criação
+                Wave
               </button>
               <button type="button" className={destination === "flow" ? styles.activeMode : ""} onClick={() => setDestination("flow")}>
                 <HiPlay />
@@ -232,7 +232,7 @@ export function MobileCreateSheet({ isOpen, onClose }: MobileCreateSheetProps) {
               </button>
               <button type="button" className={destination === "moments" ? styles.activeMode : ""} onClick={() => setDestination("moments")}>
                 <HiSparkles />
-                Moments
+                Vibes
               </button>
               <button type="button" className={destination === "privs" ? styles.activeMode : ""} onClick={() => setDestination("privs")}>
                 <HiLockClosed />
@@ -250,7 +250,7 @@ export function MobileCreateSheet({ isOpen, onClose }: MobileCreateSheetProps) {
         {error && <p className={styles.error}>{error}</p>}
 
         <button className={styles.createButton} type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Enviando..." : "Criar"}
+          {isSubmitting ? "Dropando..." : "Drop"}
         </button>
       </form>
     </div>

@@ -20,7 +20,7 @@ export function ProfileHighlights() {
   function handleHighlight(label: string) {
     setNotice(
       label === "Novo"
-        ? "Criacao de novos Destaques entra na proxima rodada."
+        ? "Novo Destaque entra na próxima rodada."
         : `Destaque ${label} preparado para receber seus Flows fixados.`,
     );
   }

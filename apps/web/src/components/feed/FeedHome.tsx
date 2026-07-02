@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 import { useProfile } from "@/components/profile/ProfileProvider";
@@ -30,7 +31,7 @@ export function FeedHome() {
       setError(
         feedError instanceof Error
           ? feedError.message
-          : "Não foi possível carregar o feed.",
+          : "Não foi possível carregar a Wave.",
       );
     } finally {
       setIsLoading(false);
@@ -70,22 +71,22 @@ export function FeedHome() {
   return (
     <div className={styles.feed}>
       <nav className={styles.mobileTabs} aria-label="Experiência mobile">
-        <button className={styles.mobileTabActive} type="button">Flow</button>
-        <button type="button">Moments</button>
-        <button type="button">Discover</button>
+        <Link className={styles.mobileTabActive} href="/flows">Flow</Link>
+        <Link href="/moments">Vibes</Link>
+        <Link href="/discover">Discover</Link>
       </nav>
 
       <PostComposer onCreated={refreshFeed} />
 
       <SwagCarousel />
 
-      {isLoading && <p className={styles.notice}>Carregando flows...</p>}
+      {isLoading && <p className={styles.notice}>Carregando Wave...</p>}
       {error && <p className={styles.error}>{error}</p>}
 
       {!isLoading && !error && !contents.length && (
         <section className={styles.empty}>
           <strong>Seu flow ainda está calmo.</strong>
-          <span>Crie a primeira criação para movimentar a Wave.</span>
+          <span>Faça o primeiro Drop para movimentar a Wave.</span>
         </section>
       )}
 

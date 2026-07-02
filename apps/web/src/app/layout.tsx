@@ -9,7 +9,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Wave",
-  description: "Rede social brasileira para Flow, Moments, salas e comunidades em tempo real.",
+  description: "Rede social brasileira para Flow, Vibes, salas e comunidades em tempo real.",
 };
 
 export default function RootLayout({

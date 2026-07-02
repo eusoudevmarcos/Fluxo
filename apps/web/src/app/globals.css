@@ -18,17 +18,20 @@
     "Nunito Sans",
     system-ui,
     sans-serif;
-  --color-bg: #020617;
-  --color-card: #090d12;
+  --color-bg: #020711;
+  --color-card: #08111f;
   --color-text: #f8fafc;
-  --color-muted: #a7a7ad;
+  --color-muted: #aeb4c2;
   --color-primary: #ffc700;
   --color-primary-hover: #ffb800;
-  --color-accent: #ffc700;
+  --color-accent: #1db8ff;
   --color-on-primary: #050505;
-  --color-border: rgba(255, 199, 0, 0.15);
-  --shadow-card: 0 18px 56px rgba(255, 199, 0, 0.08);
-  --radius-card: 28px;
+  --color-border: rgba(142, 181, 220, 0.18);
+  --shadow-card: 0 22px 70px rgba(0, 0, 0, 0.42);
+  --radius-card: 20px;
+  --surface-glass: rgba(8, 17, 31, 0.76);
+  --surface-deep: rgba(2, 7, 17, 0.9);
+  --nav-height-mobile: 76px;
 }
 
 .theme-ocean-blue {
@@ -65,9 +68,23 @@ body {
 }
 
 body {
-  background: var(--color-bg);
+  background:
+    linear-gradient(180deg, rgba(7, 18, 34, 0.92), var(--color-bg) 34%),
+    var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-ocean);
+}
+
+body::before {
+  background:
+    linear-gradient(115deg, rgba(255, 199, 0, 0.08), transparent 24%),
+    linear-gradient(250deg, rgba(29, 184, 255, 0.12), transparent 30%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 5px);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: fixed;
+  z-index: -1;
 }
 
 a {

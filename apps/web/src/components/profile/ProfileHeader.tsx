@@ -114,7 +114,7 @@ export function ProfileHeader({
       <div className={styles.profileChips}>
         <span className={styles.locationBadge}>
           <HiLocationMarker />
-          {location || "Localização nao informada"}
+          {location || "Localização não informada"}
         </span>
         <span className={styles.themeBadge}>
           <HiSun />
@@ -166,7 +166,7 @@ export function ProfileHeader({
           ) : showPublicLink ? (
             <button type="button" className={styles.secondaryButton}>
               <HiEye />
-              Ver como publico
+              Ver como público
             </button>
           ) : null}
 

@@ -1,26 +1,30 @@
-import { AppShell } from "@/components/layout/AppShell";
-import { FeaturePage } from "@/components/pages/FeaturePage";
-import { PageCard } from "@/components/ui/PageCard";
+"use client";
 
-const conversations = [
-  { title: "Marcos Wave", meta: "online agora", description: "Conversa preparada para mensagens privadas da Wave." },
-  { title: "Grupo Surf Brasil", meta: "12 novas", description: "Comunidade chamando para um role perto de voce." },
-  { title: "Marina Souza", meta: "ha 20 min", description: "Respondeu sobre uma vibe em comum no Date." },
-  { title: "Wave Creators", meta: "sala vinculada", description: "Troca rapida para criadores e perfis em crescimento." },
-];
+import { useRouter } from "next/navigation";
+
+import { AppShell } from "@/components/layout/AppShell";
+import { PrivsPanel } from "@/components/privs/PrivsPanel";
+import styles from "./page.module.css";
 
 export default function PrivsPage() {
+  const router = useRouter();
+
   return (
     <AppShell>
-      <PageCard>
-        <FeaturePage
-          eyebrow="Privs"
-          title="Privs da Wave"
-          description="Base visual para conversas privadas, grupos e trocas que nascem de Flows, comunidades, salas e Date."
-          stats={[{ label: "abertas", value: "4" }, { label: "nao lidas", value: "12" }, { label: "grupos", value: "2" }, { label: "online", value: "8" }]}
-          items={conversations}
-        />
-      </PageCard>
+      <main className={styles.page}>
+        <header className={styles.header}>
+          <span>Privs</span>
+          <h1>Conversas privadas da Wave</h1>
+          <p>
+            Inicie conversas, acompanhe grupos e mantenha os contatos da Wave
+            em um painel real de mensagens.
+          </p>
+        </header>
+
+        <div className={styles.panelFrame}>
+          <PrivsPanel onClose={() => router.push("/")} />
+        </div>
+      </main>
     </AppShell>
   );
 }

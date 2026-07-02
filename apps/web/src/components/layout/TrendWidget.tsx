@@ -5,9 +5,9 @@ import styles from "./TrendWidget.module.css";
 
 const activities = [
   { name: "Pedro Alves", action: "comentou no Flow de Lucas R.", time: "2 min atrás", icon: "comment", tone: "ocean" },
-  { name: "Ana Clara", action: "deu Wave no post de Marina Costa", time: "15 min atrás", icon: "wave", tone: "rose" },
+  { name: "Ana Clara", action: "deu Wave no Drop de Marina Costa", time: "15 min atrás", icon: "wave", tone: "rose" },
   { name: "Rafa Souza", action: "entrou na comunidade Surf & Nature", time: "1 h atrás", icon: "group", tone: "sun" },
-  { name: "Beatriz Lima", action: "começou a seguir você", time: "2 h atrás", icon: "follow", tone: "rose" },
+  { name: "Beatriz Lima", action: "virou sua fã", time: "2 h atrás", icon: "follow", tone: "rose" },
 ];
 
 export function TrendWidget() {

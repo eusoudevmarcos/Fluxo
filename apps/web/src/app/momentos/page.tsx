@@ -36,7 +36,7 @@ const extraFilters = [
   "Esportes",
 ];
 
-const moments = [
+const vibes = [
   {
     title: "#VibesDoDia",
     author: "Marina Costa",
@@ -84,7 +84,7 @@ const moments = [
   },
 ];
 
-export default function MomentsPage() {
+export default function VibesPage() {
   const [activeFilter, setActiveFilter] = useState(filters[0]);
   const [showMoreFilters, setShowMoreFilters] = useState(false);
 
@@ -99,18 +99,16 @@ export default function MomentsPage() {
 
   return (
     <AppShell>
-      <section className={styles.page} aria-label="Moments">
+      <section className={styles.page} aria-label="Vibes">
         <header className={styles.hero}>
           <div>
-            <span>Moments</span>
-            <h1>Moments acontecendo agora</h1>
-            <p>
-              Vídeos curtos, reacts, análises e trends em movimento.
-            </p>
+            <span>Vibes</span>
+            <h1>Vibes acontecendo agora</h1>
+            <p>Vídeos curtos, reacts, análises e trends em movimento.</p>
           </div>
         </header>
 
-        <div className={styles.filterRail} aria-label="Filtros de Moments">
+        <div className={styles.filterRail} aria-label="Filtros de Vibes">
           {filters.map((filter) => (
             <button
               className={
@@ -123,9 +121,7 @@ export default function MomentsPage() {
               type="button"
             >
               {filter === "Perto de mim" ? <HiLocationMarker /> : null}
-              {filter === "Top do dia" || filter === "Top semanal" ? (
-                <HiTrendingUp />
-              ) : null}
+              {filter === "Top do dia" || filter === "Top semanal" ? <HiTrendingUp /> : null}
               {filter === "Mais filtros..." ? <HiAdjustments /> : null}
               {filter}
             </button>
@@ -133,7 +129,7 @@ export default function MomentsPage() {
         </div>
 
         {showMoreFilters && (
-          <div className={styles.moreFilters} aria-label="Mais filtros de Moments">
+          <div className={styles.moreFilters} aria-label="Mais filtros de Vibes">
             {extraFilters.map((filter) => (
               <button
                 className={filter === activeFilter ? styles.activeFilter : ""}
@@ -151,25 +147,27 @@ export default function MomentsPage() {
         )}
 
         <div className={styles.momentsShell}>
-          <div className={styles.reelFeed} aria-label="Feed de Moments">
-            {moments.map((moment, index) => (
-              <article className={styles.reelCard} key={moment.title}>
-                <div className={`${styles.reelMedia} ${styles[moment.format]} ${styles[moment.tone]}`}>
+          <div className={styles.reelFeed} aria-label="Lista de Vibes">
+            {vibes.map((vibe, index) => (
+              <article className={styles.reelCard} key={vibe.title}>
+                <div className={`${styles.reelMedia} ${styles[vibe.format]} ${styles[vibe.tone]}`}>
                   <div className={styles.playBadge}>
                     <HiPlay />
                   </div>
                   <div className={styles.reelOverlay}>
-                    <span>{moment.tag}</span>
-                    <h2>{moment.title}</h2>
-                    <p>{moment.author} · {moment.meta}</p>
+                    <span>{vibe.tag}</span>
+                    <h2>{vibe.title}</h2>
+                    <p>
+                      {vibe.author} - {vibe.meta}
+                    </p>
                     <small>
                       <HiMusicNote />
-                      {moment.music}
+                      {vibe.music}
                     </small>
                   </div>
                 </div>
 
-                <aside className={styles.reelActions} aria-label={`Ações de ${moment.title}`}>
+                <aside className={styles.reelActions} aria-label={`Ações de ${vibe.title}`}>
                   <button type="button" title="Dahora">
                     <HiOutlineHeart />
                     <span>{index === 0 ? "8,2k" : "Dahora"}</span>

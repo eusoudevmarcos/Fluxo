@@ -6,7 +6,9 @@ import { HiArrowLeft, HiPaperAirplane, HiRefresh } from "react-icons/hi";
 import type { Community } from "@/lib/services/communities.service";
 import type { CommunityRoom } from "@/lib/services/community-rooms.service";
 import {
+  COMMUNITY_ROOM_CHAT_SETUP_MESSAGE,
   getRoomPresenceCount,
+  isCommunityRoomChatSetupError,
   joinRoomPresence,
   leaveRoomPresence,
   listRoomMessages,
@@ -16,6 +18,9 @@ import {
 } from "@/lib/services/community-room-chat.service";
 import { createClient } from "@/lib/supabase/client";
 import styles from "./CommunityRoomChat.module.css";
+
+const isRoomChatEnabled =
+  process.env.NEXT_PUBLIC_ENABLE_COMMUNITY_ROOM_CHAT === "true";
 
 type CommunityRoomChatProps = {
   community: Community;
@@ -52,19 +57,32 @@ export function CommunityRoomChat({
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
+  const [isChatUnavailable, setIsChatUnavailable] = useState(!isRoomChatEnabled);
   const [error, setError] = useState("");
 
   async function refreshMessages() {
+    if (!isRoomChatEnabled) {
+      setIsChatUnavailable(true);
+      setError(COMMUNITY_ROOM_CHAT_SETUP_MESSAGE);
+      setIsLoading(false);
+      return;
+    }
+
     setError("");
 
     try {
       const nextMessages = await listRoomMessages(supabase, room.id);
       setMessages(nextMessages);
+      setIsChatUnavailable(false);
       const nextPresence = await getRoomPresenceCount(supabase, room.id).catch(
         () => room.online_count,
       );
       setPresenceCount(Math.max(room.online_count, nextPresence));
     } catch (loadError) {
+      if (isCommunityRoomChatSetupError(loadError)) {
+        setIsChatUnavailable(true);
+      }
+
       setError(
         loadError instanceof Error
           ? loadError.message
@@ -77,6 +95,19 @@ export function CommunityRoomChat({
 
   useEffect(() => {
     let isMounted = true;
+
+    if (!isRoomChatEnabled) {
+      queueMicrotask(() => {
+        if (!isMounted) return;
+        setIsChatUnavailable(true);
+        setError(COMMUNITY_ROOM_CHAT_SETUP_MESSAGE);
+        setIsLoading(false);
+      });
+
+      return () => {
+        isMounted = false;
+      };
+    }
 
     supabase.auth.getUser().then(({ data }) => {
       if (isMounted) {
@@ -113,6 +144,12 @@ export function CommunityRoomChat({
 
     if (!text || isSending) return;
 
+    if (!isRoomChatEnabled) {
+      setIsChatUnavailable(true);
+      setError(COMMUNITY_ROOM_CHAT_SETUP_MESSAGE);
+      return;
+    }
+
     if (!isMember) {
       setError("Entre na comunidade para conversar nessa sala.");
       return;
@@ -123,9 +160,14 @@ export function CommunityRoomChat({
 
     try {
       await sendRoomMessage(supabase, room.id, community.id, text);
+      setIsChatUnavailable(false);
       setDraft("");
       await refreshMessages();
     } catch (sendError) {
+      if (isCommunityRoomChatSetupError(sendError)) {
+        setIsChatUnavailable(true);
+      }
+
       setError(
         sendError instanceof Error
           ? sendError.message
@@ -183,12 +225,22 @@ export function CommunityRoomChat({
 
       <form className={styles.composer} onSubmit={handleSubmit}>
         <input
-          placeholder={isMember ? "Conversar na sala..." : "Entre na comunidade para falar"}
+          placeholder={
+            isChatUnavailable
+              ? "Sala aguardando migração Supabase"
+              : isMember
+                ? "Conversar na sala..."
+                : "Entre na comunidade para falar"
+          }
           value={draft}
-          disabled={!isMember}
+          disabled={!isMember || isChatUnavailable}
           onChange={(event) => setDraft(event.target.value)}
         />
-        <button type="submit" disabled={!isMember || isSending} aria-label="Enviar">
+        <button
+          type="submit"
+          disabled={!isMember || isSending || isChatUnavailable}
+          aria-label="Enviar"
+        >
           <HiPaperAirplane />
         </button>
       </form>

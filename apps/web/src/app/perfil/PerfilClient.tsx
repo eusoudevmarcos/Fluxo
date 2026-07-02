@@ -28,6 +28,7 @@ import {
   type PublicEquippedBadge,
 } from "@/lib/services/badges.service";
 import { getMyGamification } from "@/lib/services/gamification.service";
+import { getRelationshipStats } from "@/lib/services/profiles.service";
 import { listSavedContentsByCurrentUser } from "@/lib/services/saved.service";
 import { listWavedContentsByUser } from "@/lib/services/waves.service";
 import { uploadAvatar } from "@/lib/storage/avatars";
@@ -54,27 +55,27 @@ type ProfileStats = {
 
 function getDateIntentLabel(value?: string | null) {
   const labels: Record<string, string> = {
-    amizade: "Amizades e conexoes",
+    amizade: "Amizades e conexões",
     date: "Date com calma",
     networking: "Networking criativo",
-    comunidade: "Comunidades e roles",
+    comunidade: "Comunidades e rolês",
   };
 
-  return value ? labels[value] ?? value : "Ainda nao informado";
+  return value ? labels[value] ?? value : "Ainda não informado";
 }
 
-type ProfileTab = "Criações" | "Waves" | "Salvos";
+type ProfileTab = "Drops" | "Vibes" | "Waves" | "Salvos";
 
-const profileTabs: ProfileTab[] = ["Criações", "Waves", "Salvos"];
+const profileTabs: ProfileTab[] = ["Drops", "Vibes", "Waves", "Salvos"];
 
 function getContentTitle(content: ProfileContent) {
-  return content.text?.trim() || (content.content_type === "flow" ? "Flow sem legenda" : "Criação sem legenda");
+  return content.text?.trim() || (content.content_type === "flow" ? "Vibe sem legenda" : "Drop sem legenda");
 }
 
 function getContentMeta(content: ProfileContent) {
   if (content.media_type === "video") return "Vídeo";
   if (content.media_type === "image") return "Foto";
-  return content.content_type === "flow" ? "Flow" : "Criação";
+  return content.content_type === "flow" ? "Vibe" : "Drop";
 }
 
 function profileToForm(profile: OceanProfile): ProfileForm {
@@ -110,7 +111,7 @@ export function PerfilClient() {
   });
   const [isLoading, setIsLoading] = useState(!configError);
   const [isEditing, setIsEditing] = useState(false);
-  const [activeTab, setActiveTab] = useState<ProfileTab>("Criações");
+  const [activeTab, setActiveTab] = useState<ProfileTab>("Drops");
   const [profileContents, setProfileContents] = useState<ProfileContent[]>([]);
   const [isLoadingContents, setIsLoadingContents] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -146,8 +147,9 @@ export function PerfilClient() {
         if (isMounted) {
           setProfile(shellProfile);
           setForm(profileToForm(shellProfile));
-          const [profileStats, nextAura, nextBadge, nextGamification] = await Promise.all([
+          const [profileStats, relationshipStats, nextAura, nextBadge, nextGamification] = await Promise.all([
             getProfileContentStats(supabase, shellProfile.user_id),
+            getRelationshipStats(supabase, shellProfile.user_id),
             getEquippedAura(supabase, shellProfile.user_id).catch(() => null),
             getEquippedBadge(supabase, shellProfile.user_id).catch(() => null),
             getMyGamification(supabase).catch(() => null),
@@ -159,8 +161,8 @@ export function PerfilClient() {
             setStats({
               flows: profileStats.contentCount,
               dahoras: profileStats.dahorasReceived,
-              fas: 0,
-              seletos: 0,
+              fas: relationshipStats.fans,
+              seletos: relationshipStats.seletos,
               engage: profileStats.contentCount
                 ? `${Math.min(100, Math.round((profileStats.dahorasReceived / profileStats.contentCount) * 10))}%`
                 : "0%",
@@ -205,8 +207,14 @@ export function PerfilClient() {
       try {
         let nextContents: ProfileContent[] = [];
 
-        if (activeTab === "Criações") {
-          nextContents = await listContentsByAuthorId(supabase, profile.user_id);
+        if (activeTab === "Drops") {
+          nextContents = (await listContentsByAuthorId(supabase, profile.user_id)).filter(
+            (content) => content.content_type !== "flow",
+          );
+        } else if (activeTab === "Vibes") {
+          nextContents = (await listContentsByAuthorId(supabase, profile.user_id)).filter(
+            (content) => content.content_type === "flow",
+          );
         } else if (activeTab === "Waves") {
           const waves = await listWavedContentsByUser(supabase, profile.user_id);
           nextContents = await listContentsByIds(
@@ -226,7 +234,7 @@ export function PerfilClient() {
         }
       } catch (contentsError) {
         if (isMounted) {
-          setError(getErrorMessage(contentsError, "Não foi possível carregar suas criações."));
+          setError(getErrorMessage(contentsError, "Não foi possível carregar seus Drops."));
         }
       } finally {
         if (isMounted) {
@@ -325,12 +333,12 @@ export function PerfilClient() {
                 <div className={styles.detailCard}>
                   <span>Ficha Wave</span>
                   <strong>{getDateIntentLabel(profile.date_intent)}</strong>
-                  <p>{profile.looking_for || "Conte o que voce procura para melhorar conexoes no Date e no Flow."}</p>
+                  <p>{profile.looking_for || "Conte o que você procura para melhorar conexões no Date e no Flow."}</p>
                 </div>
 
                 <div className={styles.detailCard}>
                   <span>Vibe</span>
-                  <strong>{profile.vibe || "Ainda nao definida"}</strong>
+                  <strong>{profile.vibe || "Ainda não definida"}</strong>
                   <p>
                     {profile.city && profile.state
                       ? `${profile.city}, ${profile.state}`
@@ -341,7 +349,7 @@ export function PerfilClient() {
                 <div className={styles.detailCard}>
                   <span>Interesses</span>
                   <div className={styles.interests}>
-                    {(profile.interests?.length ? profile.interests : ["Flow", "Moments", "Wave"]).map((interest) => (
+                    {(profile.interests?.length ? profile.interests : ["Flow", "Vibes", "Wave"]).map((interest) => (
                       <span key={interest}>{interest}</span>
                     ))}
                   </div>
@@ -366,9 +374,11 @@ export function PerfilClient() {
 
                 {!isLoadingContents && !profileContents.length && (
                   <p className={styles.notice}>
-                    {activeTab === "Criações"
-                      ? "Nenhuma criação ainda."
-                      : activeTab === "Waves"
+                    {activeTab === "Drops"
+                      ? "Nenhum Drop ainda."
+                      : activeTab === "Vibes"
+                        ? "Nenhuma Vibe ainda."
+                        : activeTab === "Waves"
                         ? "Nenhuma Wave por enquanto."
                         : "Nada salvo ainda."}
                   </p>
@@ -433,7 +443,7 @@ export function PerfilClient() {
                   </label>
 
                   <label>
-                    Avatar URL
+                    Link da foto
                     <input
                       type="url"
                       value={form.avatar_url}

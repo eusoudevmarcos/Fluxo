@@ -66,7 +66,7 @@ export default function MissoesPage() {
         }
       } catch {
         if (isMounted) {
-          setError("Rode as migrations 026 a 033 para ativar MissÃµes, XP e Auras.");
+          setError("Rode as migrations 026 a 033 para ativar Missões, XP e Auras.");
         }
       } finally {
         if (isMounted) setIsLoading(false);
@@ -94,13 +94,13 @@ export default function MissoesPage() {
           <header className={styles.hero}>
             <div>
               <span>Wave Aura</span>
-              <h1>MissÃµes & Recompensas</h1>
-              <p>Ganhe XP, desbloqueie Auras colecionÃ¡veis, mantenha sua sequÃªncia e evolua seu flow dentro da Wave.</p>
+              <h1>Missões & Recompensas</h1>
+              <p>Ganhe XP, desbloqueie Auras colecionáveis, mantenha sua sequência e evolua seu flow dentro da Wave.</p>
             </div>
             <Link href="/auras">Ver minhas Auras</Link>
           </header>
 
-          {isLoading && <p className={styles.notice}>Carregando missÃµes...</p>}
+          {isLoading && <p className={styles.notice}>Carregando missões...</p>}
           {error && <p className={styles.error}>{error}</p>}
 
           {!isLoading && !error && (
@@ -110,9 +110,9 @@ export default function MissoesPage() {
                   <HiSparkles />
                 </span>
                 <div>
-                  <small>NÃ­vel {gamification?.level ?? 1}</small>
+                  <small>Nível {gamification?.level ?? 1}</small>
                   <strong>{getLevelTitle(gamification)}</strong>
-                  <div className={styles.progressBar} aria-label="Progresso do nÃ­vel">
+                  <div className={styles.progressBar} aria-label="Progresso do nível">
                     <span style={{ width: `${xpPercent}%` }} />
                   </div>
                 </div>
@@ -125,29 +125,29 @@ export default function MissoesPage() {
                 <MissionSection
                   missions={dailyMissions}
                   progress={progress}
-                  title="MissÃ£o diÃ¡ria"
+                  title="Missão diária"
                 />
                 <MissionSection
                   missions={weeklyMissions}
                   progress={progress}
-                  title="MissÃ£o semanal"
+                  title="Missão semanal"
                 />
               </section>
 
               <section className={styles.grid}>
                 <InfoCard
                   items={[
-                    "NÃ­vel 1-9: Aura Super Saiyajin Comum",
-                    "NÃ­vel 10-24: Aura Super Saiyajin Blue",
-                    "NÃ­vel 25-49: Aura Instinto Superior",
+                    "Nível 1-9: Aura Super Saiyajin Comum",
+                    "Nível 10-24: Aura Super Saiyajin Blue",
+                    "Nível 25-49: Aura Instinto Superior",
                     "500% da meta: Aura Ego Superior",
                   ]}
-                  title="NÃ­veis & Auras"
+                  title="Níveis & Auras"
                 />
                 <InfoCard
                   items={[
-                    "30 por mÃªs: comuns",
-                    "5 por mÃªs: especiais",
+                    "30 por mês: comuns",
+                    "5 por mês: especiais",
                     "5 a cada 2 meses: raras",
                     "2 a cada 5 meses: secretas",
                   ]}
@@ -215,7 +215,7 @@ function MissionSection({
             );
           })
         ) : (
-          <p className={styles.notice}>MissÃµes aparecem aqui depois das migrations.</p>
+          <p className={styles.notice}>Missões aparecem aqui depois das migrations.</p>
         )}
       </div>
     </section>

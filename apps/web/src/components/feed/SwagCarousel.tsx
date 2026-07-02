@@ -1,6 +1,7 @@
 ﻿"use client";
 
-import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { HiChevronRight, HiPlay, HiPlus, HiX } from "react-icons/hi";
 
 import { BadgeIcon, type EquippedBadge } from "@/components/badges/BadgeIcon";
@@ -30,16 +31,17 @@ function getFounderBadge(userId?: string, label = "Fundador Wave"): EquippedBadg
 }
 
 const suggestedFlows = [
-  { name: "Lucas R.", time: "2 h atrÃ¡s", tone: "surf" },
-  { name: "Marina Costa", time: "4 h atrÃ¡s", tone: "sunset" },
-  { name: "Pedro Alves", time: "5 h atrÃ¡s", tone: "city" },
-  { name: "Ana Clara", time: "7 h atrÃ¡s", tone: "sport" },
-  { name: "Thiago Mendes", time: "9 h atrÃ¡s", tone: "stage" },
-  { name: "Rafa Souza", time: "12 h atrÃ¡s", tone: "night" },
+  { name: "Lucas R.", time: "2 h atrás", tone: "surf" },
+  { name: "Marina Costa", time: "4 h atrás", tone: "sunset" },
+  { name: "Pedro Alves", time: "5 h atrás", tone: "city" },
+  { name: "Ana Clara", time: "7 h atrás", tone: "sport" },
+  { name: "Thiago Mendes", time: "9 h atrás", tone: "stage" },
+  { name: "Rafa Souza", time: "12 h atrás", tone: "night" },
 ];
 
 export function SwagCarousel() {
   const supabase = useMemo(() => createClient(), []);
+  const trackRef = useRef<HTMLDivElement>(null);
   const [flows, setFlows] = useState<FlowPreview[]>([]);
   const [selectedFlow, setSelectedFlow] = useState<FlowPreview | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -47,6 +49,10 @@ export function SwagCarousel() {
 
   function openFlowCreate() {
     window.dispatchEvent(new Event("ocean-open-flow-create"));
+  }
+
+  function scrollNext() {
+    trackRef.current?.scrollBy({ left: 240, behavior: "smooth" });
   }
 
   useEffect(() => {
@@ -66,7 +72,7 @@ export function SwagCarousel() {
           setError(
             flowError instanceof Error
               ? flowError.message
-              : "NÃ£o foi possÃ­vel carregar os Flows.",
+              : "Não foi possível carregar os Flows.",
           );
         }
       } finally {
@@ -88,15 +94,15 @@ export function SwagCarousel() {
       <section className={styles.flows} aria-label="Flows ativos">
         <div className={styles.header}>
           <div>
-            <strong>Flows dos seus seletos</strong>
+            <strong>Flows dos Seletos</strong>
             {!isLoading && !error && !flows.length && (
-              <span>SugestÃµes para vocÃª sentir o ritmo da Wave.</span>
+              <span>Sugestões para você sentir o ritmo da Wave.</span>
             )}
           </div>
-          <button type="button">Ver todos</button>
+          <Link href="/flows">Ver todos</Link>
         </div>
 
-        <div className={styles.track}>
+        <div className={styles.track} ref={trackRef}>
           <button
             className={`${styles.swagCard} ${styles.createFlowCard}`}
             type="button"
@@ -105,7 +111,7 @@ export function SwagCarousel() {
             <div className={styles.swagImage}>
               <HiPlus />
             </div>
-            <strong>Criar flow</strong>
+            <strong>Criar Flow</strong>
           </button>
 
           {isLoading && <p className={styles.notice}>Carregando Flows...</p>}
@@ -164,7 +170,7 @@ export function SwagCarousel() {
             </button>
           ))}
 
-          <button className={styles.nextButton} type="button" aria-label="Ver mais Flows">
+          <button className={styles.nextButton} type="button" aria-label="Ver mais Flows" onClick={scrollNext}>
             <HiChevronRight />
           </button>
         </div>

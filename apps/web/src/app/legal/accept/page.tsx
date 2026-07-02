@@ -31,7 +31,7 @@ const requiredChecks = [
   },
   {
     id: "content",
-    label: "Li e aceito o Termo de Conteudo, Imagem e Voz.",
+    label: "Li e aceito o Termo de Conteúdo, Imagem e Voz.",
     href: "/legal/conteudo-imagem",
   },
 ] as const;
@@ -75,7 +75,7 @@ export default function LegalAcceptPage() {
           setError(
             loadError instanceof Error
               ? loadError.message
-              : "Nao foi possivel preparar o aceite.",
+              : "Não foi possível preparar o aceite.",
           );
           setIsLoading(false);
         });
@@ -89,7 +89,7 @@ export default function LegalAcceptPage() {
     setError("");
 
     if (!allChecked) {
-      setError("Voce precisa aceitar todos os documentos para continuar.");
+      setError("Você precisa aceitar todos os documentos para continuar.");
       return;
     }
 
@@ -104,7 +104,7 @@ export default function LegalAcceptPage() {
       setError(
         acceptError instanceof Error
           ? acceptError.message
-          : "Nao foi possivel registrar seu aceite agora.",
+          : "Não foi possível registrar seu aceite agora.",
       );
     } finally {
       setIsSubmitting(false);
@@ -117,13 +117,13 @@ export default function LegalAcceptPage() {
         <span>Wave Legal</span>
         <h1>Antes de entrar na Wave</h1>
         <p>
-          Para proteger voce, a comunidade e a beta, precisamos registrar seu aceite
+          Para proteger você, a comunidade e a beta, precisamos registrar seu aceite
           das versoes atuais dos documentos legais.
         </p>
 
         <ul>
-          <li>Conteudos, imagem, voz, comentarios e comunidades seguem regras claras.</li>
-          <li>Privs e recursos futuros tambem ficam sujeitos a seguranca da Wave.</li>
+          <li>Conteúdos, imagem, voz, comentários e comunidades seguem regras claras.</li>
+          <li>Privs e recursos futuros também ficam sujeitos à segurança da Wave.</li>
           <li>Podemos pedir novo aceite quando houver mudancas relevantes.</li>
         </ul>
 

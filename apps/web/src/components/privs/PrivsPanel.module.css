@@ -1,10 +1,10 @@
 .panel {
   background:
-    radial-gradient(circle at top right, color-mix(in srgb, #1aa7ff 10%, transparent), transparent 36%),
-    var(--color-card);
+    linear-gradient(180deg, color-mix(in srgb, var(--color-card) 94%, transparent), color-mix(in srgb, var(--color-bg) 38%, var(--color-card))),
+    var(--surface-glass);
   border: 1px solid color-mix(in srgb, var(--color-border) 86%, var(--color-primary));
-  border-radius: 18px;
-  box-shadow: var(--shadow-card);
+  border-radius: 20px;
+  box-shadow: 0 22px 70px rgb(0 0 0 / 42%);
   display: grid;
   gap: 14px;
   padding: 13px;
@@ -22,7 +22,7 @@
   color: var(--color-text);
   display: flex;
   gap: 7px;
-  font-size: 17px;
+  font-size: 20px;
 }
 
 .header strong svg {
@@ -124,43 +124,31 @@
   width: 100%;
 }
 
-.search kbd {
-  background: color-mix(in srgb, var(--color-card) 70%, transparent);
-  border-radius: 7px;
-  color: var(--color-muted);
-  font-size: 11px;
-  padding: 2px 6px;
-}
-
 .tabs {
-  border-bottom: 1px solid var(--color-border);
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  border-bottom: none;
+  display: flex;
+  gap: 8px;
 }
 
 .tabs button {
-  background: transparent;
-  border: none;
+  background: color-mix(in srgb, var(--color-bg) 62%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-border) 74%, transparent);
+  border-radius: 999px;
   color: var(--color-muted);
   cursor: pointer;
   font-weight: 800;
-  padding: 9px 4px;
+  padding: 8px 12px;
   position: relative;
 }
 
 .activeTab {
-  color: var(--color-text) !important;
+  background: color-mix(in srgb, #0b66d8 86%, var(--color-primary)) !important;
+  border-color: color-mix(in srgb, #2784ff 72%, var(--color-border)) !important;
+  color: #fff !important;
 }
 
 .activeTab::after {
-  background: var(--color-primary);
-  border-radius: 999px;
-  bottom: -1px;
-  content: "";
-  height: 3px;
-  left: 0;
-  position: absolute;
-  right: 0;
+  content: none;
 }
 
 .list {
@@ -179,18 +167,19 @@
   align-items: center;
   background: transparent;
   border: none;
-  border-radius: 14px;
+  border-radius: 16px;
   color: var(--color-text);
   cursor: pointer;
   display: grid;
   gap: 10px;
   grid-template-columns: 42px 1fr max-content;
-  padding: 8px;
+  padding: 10px;
   text-align: left;
 }
 
 .activeConversation {
-  background: color-mix(in srgb, #18a8ff 12%, transparent) !important;
+  background: color-mix(in srgb, #0b66d8 20%, transparent) !important;
+  box-shadow: inset 3px 0 0 #168cff;
 }
 
 .avatar,
@@ -206,8 +195,8 @@
 }
 
 .avatar {
-  height: 42px;
-  width: 42px;
+  height: 46px;
+  width: 46px;
 }
 
 .avatar i {
@@ -330,7 +319,7 @@
 }
 
 .chat {
-  background: var(--color-bg);
+  background: color-mix(in srgb, var(--color-bg) 74%, transparent);
   border: 1px solid var(--color-border);
   border-radius: 18px;
   display: grid;
@@ -455,7 +444,7 @@
 }
 
 .composer input {
-  background: var(--color-card);
+  background: color-mix(in srgb, var(--color-card) 78%, transparent);
   border: 1px solid var(--color-border);
   border-radius: 14px;
   color: var(--color-text);

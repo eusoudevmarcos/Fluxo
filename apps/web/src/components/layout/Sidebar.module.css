@@ -12,10 +12,21 @@
 
 
 .search {
+  align-items: center;
   background: var(--color-card);
   border: 1px solid var(--color-border);
   border-radius: 18px;
+  display: flex;
+  gap: 9px;
   padding: 12px 14px;
+  position: relative;
+  z-index: 20;
+}
+
+.search svg {
+  color: var(--color-muted);
+  flex-shrink: 0;
+  font-size: 18px;
 }
 
 .search input {
@@ -25,6 +36,111 @@
   outline: none;
   color: var(--color-text);
   font-size: 15px;
+}
+
+.searchResults {
+  background: color-mix(in srgb, var(--color-card) 98%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: 4px;
+  left: 0;
+  padding: 8px;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+}
+
+.searchResults p,
+.empty {
+  color: var(--color-muted);
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.4;
+  margin: 0;
+  padding: 8px 4px;
+}
+
+.searchResult {
+  align-items: center;
+  border-radius: 14px;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(0, 1fr) 34px;
+  min-width: 0;
+  padding: 6px;
+}
+
+.searchResult:hover {
+  background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+}
+
+.searchResult a {
+  align-items: center;
+  color: var(--color-text);
+  display: flex;
+  gap: 9px;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.searchResult strong,
+.searchResult small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.searchResult strong {
+  font-size: 13px;
+}
+
+.searchResult small {
+  color: var(--color-muted);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.searchResult button {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 38%, var(--color-border));
+  border-radius: 12px;
+  color: var(--color-text);
+  cursor: pointer;
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.searchResult button:disabled,
+.followItem button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.smallAvatar {
+  align-items: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border-radius: 12px;
+  color: var(--color-on-primary);
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 900;
+  height: 34px;
+  justify-content: center;
+  overflow: hidden;
+  width: 34px;
+}
+
+.smallAvatar img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
 }
 
 .menu {
@@ -115,11 +231,24 @@
 }
 
 .avatar {
+  align-items: center;
   width: 44px;
   height: 44px;
   border-radius: 15px;
   background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  color: var(--color-on-primary);
+  display: flex;
   flex-shrink: 0;
+  font-weight: 900;
+  justify-content: center;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.avatar img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
 }
 
 .followItem strong {

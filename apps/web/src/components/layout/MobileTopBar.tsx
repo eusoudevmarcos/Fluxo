@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
-import { HiBell, HiChatAlt2, HiUser } from "react-icons/hi";
+import { HiBell, HiChatAlt2, HiSearch, HiUser } from "react-icons/hi";
 
 import { OceanLogo } from "@/components/brand/OceanLogo";
 import { useProfile } from "@/components/profile/ProfileProvider";
@@ -25,6 +25,9 @@ export function MobileTopBar({ onTogglePrivs }: MobileTopBarProps) {
       </Link>
 
       <div className={styles.actions}>
+        <Link href="/discover" aria-label="Buscar pessoas">
+          <HiSearch />
+        </Link>
         <Link href="/notificacoes" aria-label="Notificações">
           <HiBell />
         </Link>
