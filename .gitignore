@@ -21,11 +21,13 @@
 
 # production
 /build
+local-artifacts/
 
 # misc
 .DS_Store
 *.pem
 **/.expo/
+.tmp-*/
 
 # debug
 npm-debug.log*
