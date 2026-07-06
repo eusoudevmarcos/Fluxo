@@ -1,23 +1,27 @@
 {
-    "name":  "ocean-monorepo",
-    "version":  "0.1.0",
-    "private":  true,
-    "workspaces":  [
-                       "apps/*",
-                       "packages/*"
-                   ],
-    "scripts":  {
-                    "dev":  "npm run dev:web",
-                    "dev:web":  "npm run dev -w apps/web",
-                    "build":  "npm run build:web && node scripts/copy-web-next-output.mjs",
-                    "build:web":  "npm run build -w apps/web",
-                    "lint":  "npm run lint:web",
-                    "lint:web":  "npm run lint -w apps/web",
-                    "typecheck":  "npm run typecheck:web",
-                    "typecheck:web":  "npm run typecheck -w apps/web",
-                    "dev:mobile":  "npm run start -w apps/mobile",
-                    "dev:api":  "npm run dev -w apps/api",
-                    "build:api":  "npm run build -w apps/api",
-                    "seed:marcos":  "node scripts/create-marcos-ocean.mjs"
-                }
+    "name": "ocean-monorepo",
+    "version": "0.1.0",
+    "private": true,
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "overrides": {
+        "react": "19.2.3",
+        "react-dom": "19.2.3"
+    },
+    "scripts": {
+        "dev": "npm run dev:web",
+        "dev:web": "npm run dev -w apps/web",
+        "build": "npm run build:web && node scripts/copy-web-next-output.mjs",
+        "build:web": "npm run build -w apps/web",
+        "lint": "npm run lint:web",
+        "lint:web": "npm run lint -w apps/web",
+        "typecheck": "npm run typecheck:web",
+        "typecheck:web": "npm run typecheck -w apps/web",
+        "dev:mobile": "npm run start -w apps/mobile",
+        "dev:api": "npm run dev -w apps/api",
+        "build:api": "npm run build -w apps/api",
+        "seed:marcos": "node scripts/create-marcos-ocean.mjs"
+    }
 }

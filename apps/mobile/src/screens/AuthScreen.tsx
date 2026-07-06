@@ -1,26 +1,130 @@
-import { APP_NAME } from "@ocean/shared";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+
+import { createMobileSupabaseClient } from "../lib/supabase/client";
 import { oceanMobileTheme } from "../styles/theme";
 
 export function AuthScreen() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState("");
+
+  async function handleSubmit() {
+    const normalizedEmail = email.trim().toLowerCase();
+
+    if (!normalizedEmail || !password) {
+      setMessage("Informe email e senha.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setMessage("");
+
+    try {
+      const supabase = createMobileSupabaseClient();
+      const { error } =
+        mode === "login"
+          ? await supabase.auth.signInWithPassword({
+              email: normalizedEmail,
+              password,
+            })
+          : await supabase.auth.signUp({
+              email: normalizedEmail,
+              password,
+            });
+
+      if (error) throw error;
+
+      if (mode === "signup") {
+        setMessage("Conta criada. Confirme o email se o Supabase pedir validacao.");
+      }
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Nao foi possivel entrar.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
-    <View style={styles.screen}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      style={styles.screen}
+    >
       <View style={styles.card}>
-        <Text style={styles.logo}>{APP_NAME.toLowerCase()}</Text>
-        <Text style={styles.title}>A Ocean mobile esta chegando.</Text>
+        <Text style={styles.logo}>wave</Text>
+        <Text style={styles.title}>Entre no beta mobile.</Text>
         <Text style={styles.subtitle}>
-          Uma experiencia social imersiva para Flow, Moments, Wave e Aura.
+          Use a mesma conta da Wave. Esta tela ja conversa com o Supabase real.
         </Text>
+
+        <View style={styles.form}>
+          <TextInput
+            autoCapitalize="none"
+            autoComplete="email"
+            keyboardType="email-address"
+            onChangeText={setEmail}
+            placeholder="Email"
+            placeholderTextColor={oceanMobileTheme.muted}
+            style={styles.input}
+            textContentType="emailAddress"
+            value={email}
+          />
+          <TextInput
+            onChangeText={setPassword}
+            placeholder="Senha"
+            placeholderTextColor={oceanMobileTheme.muted}
+            secureTextEntry
+            style={styles.input}
+            textContentType="password"
+            value={password}
+          />
+        </View>
+
+        {!!message && <Text style={styles.message}>{message}</Text>}
+
         <View style={styles.actions}>
-          <Pressable style={styles.primaryButton}>
-            <Text style={styles.primaryText}>Entrar</Text>
+          <Pressable
+            disabled={isSubmitting}
+            onPress={handleSubmit}
+            style={({ pressed }) => [
+              styles.primaryButton,
+              (pressed || isSubmitting) && styles.buttonPressed,
+            ]}
+          >
+            {isSubmitting ? (
+              <ActivityIndicator color="#020617" />
+            ) : (
+              <Text style={styles.primaryText}>
+                {mode === "login" ? "Entrar" : "Criar conta"}
+              </Text>
+            )}
           </Pressable>
-          <Pressable style={styles.secondaryButton}>
-            <Text style={styles.secondaryText}>Criar conta</Text>
+          <Pressable
+            disabled={isSubmitting}
+            onPress={() => {
+              setMode((currentMode) => (currentMode === "login" ? "signup" : "login"));
+              setMessage("");
+            }}
+            style={styles.secondaryButton}
+          >
+            <Text style={styles.secondaryText}>
+              {mode === "login" ? "Criar conta" : "Ja tenho conta"}
+            </Text>
           </Pressable>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -35,7 +139,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: oceanMobileTheme.card,
     borderColor: oceanMobileTheme.border,
-    borderRadius: 28,
+    borderRadius: 24,
     borderWidth: 1,
     gap: 18,
     padding: 24,
@@ -45,7 +149,6 @@ const styles = StyleSheet.create({
     color: oceanMobileTheme.primary,
     fontSize: 42,
     fontWeight: "900",
-    letterSpacing: -2,
   },
   title: {
     color: oceanMobileTheme.text,
@@ -57,6 +160,24 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 24,
   },
+  form: {
+    gap: 12,
+  },
+  input: {
+    backgroundColor: "rgba(2, 6, 23, 0.62)",
+    borderColor: oceanMobileTheme.border,
+    borderRadius: 16,
+    borderWidth: 1,
+    color: oceanMobileTheme.text,
+    fontSize: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+  },
+  message: {
+    color: oceanMobileTheme.primary,
+    fontSize: 14,
+    lineHeight: 20,
+  },
   actions: {
     gap: 12,
   },
@@ -65,6 +186,9 @@ const styles = StyleSheet.create({
     backgroundColor: oceanMobileTheme.primary,
     borderRadius: 18,
     padding: 16,
+  },
+  buttonPressed: {
+    opacity: 0.75,
   },
   primaryText: {
     color: "#020617",

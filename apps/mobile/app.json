@@ -1,11 +1,30 @@
 {
   "expo": {
-    "name": "Ocean",
-    "slug": "ocean-mobile",
+    "name": "Wave",
+    "slug": "wave-mobile",
     "version": "0.1.0",
     "orientation": "portrait",
-    "scheme": "ocean",
+    "scheme": "wave",
     "userInterfaceStyle": "dark",
-    "assetBundlePatterns": ["**/*"]
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "br.com.wavesocial.app",
+      "supportsTablet": false
+    },
+    "android": {
+      "package": "br.com.wavesocial.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#020617"
+      }
+    },
+    "extra": {
+      "appName": "Wave",
+      "eas": {
+        "projectId": "48bb0ac4-0fdd-4b4c-a4f3-b3dc0c08f5e2"
+      }
+    },
+    "owner": "aura_labs"
   }
 }
