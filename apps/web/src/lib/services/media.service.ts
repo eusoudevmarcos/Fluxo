@@ -68,7 +68,7 @@ export async function uploadContentMedia(
   }
 
   if (!userData.user) {
-    throw new Error("Entre na Wave para adicionar mídia.");
+    throw new Error("Entre na Fluxo para adicionar mídia.");
   }
 
   const mediaType = getAllowedMediaType(file);

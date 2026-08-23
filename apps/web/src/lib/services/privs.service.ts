@@ -61,7 +61,7 @@ type MessageRow = {
 async function getCurrentUserId(supabase: SupabaseClient) {
   const { data, error } = await supabase.auth.getUser();
   if (error) throw error;
-  if (!data.user) throw new Error("Entre na Wave para usar o Privs.");
+  if (!data.user) throw new Error("Entre na Fluxo para usar o Privs.");
   return data.user.id;
 }
 
@@ -85,7 +85,7 @@ async function getProfilesByUserId(supabase: SupabaseClient, userIds: string[]) 
 }
 
 function getProfileName(profile?: PrivProfile | null) {
-  return profile?.display_name || profile?.username || "Wave User";
+  return profile?.display_name || profile?.username || "Fluxo User";
 }
 
 function formatConversation(
@@ -99,7 +99,7 @@ function formatConversation(
   const otherMembers = members.filter((member) => member.user_id !== currentUserId);
   const title =
     membership.conversation.conversation_type === "group"
-      ? otherMembers.map(getProfileName).join(", ") || "Grupo Wave"
+      ? otherMembers.map(getProfileName).join(", ") || "Grupo Fluxo"
       : getProfileName(otherMembers[0]);
   const subtitle =
     membership.conversation.conversation_type === "group"

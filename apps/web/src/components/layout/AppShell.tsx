@@ -80,7 +80,7 @@ function LegalGate({ children }: { children: ReactNode }) {
   }, [isLoading, pathname, profile, router, supabase, user]);
 
   if (isLoading || isCheckingLegal) {
-    return <div className={styles.gateNotice}>Preparando sua entrada na Wave...</div>;
+    return <div className={styles.gateNotice}>Preparando sua entrada na Fluxo...</div>;
   }
 
   return children;
@@ -92,7 +92,7 @@ export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
 
   const topItems = [
-    { href: "/", label: "Wave", icon: <HiHome /> },
+    { href: "/", label: "Fluxo", icon: <HiHome /> },
     { href: "/discover", label: "Discover", icon: <HiSearch /> },
     { href: "/moments", label: "Vibes", icon: <HiLightningBolt /> },
     { href: "/stream", label: "Ao vivo", icon: <HiVideoCamera /> },

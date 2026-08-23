@@ -28,27 +28,27 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
     version: LEGAL_TERMS_VERSION,
     updatedAt: "17 de maio de 2026",
     summary:
-      "Define as regras gerais para usar a Wave, criar conta, publicar conteúdo, participar de comunidades e interagir com outras pessoas.",
+      "Define as regras gerais para usar a Fluxo, criar conta, publicar conteúdo, participar de comunidades e interagir com outras pessoas.",
     sections: [
       {
         title: "Aceitação",
         body: [
-          "Ao criar conta, entrar com Google, navegar logado ou usar recursos da Wave, você declara que leu, entendeu e aceitou estes Termos de Uso e os demais documentos legais da plataforma.",
-          "Se você não concordar com estes termos, não deve criar conta nem utilizar a Wave.",
+          "Ao criar conta, entrar com Google, navegar logado ou usar recursos da Fluxo, você declara que leu, entendeu e aceitou estes Termos de Uso e os demais documentos legais da plataforma.",
+          "Se você não concordar com estes termos, não deve criar conta nem utilizar a Fluxo.",
         ],
       },
       {
         title: "Conta e responsabilidade",
         body: [
           "Você é responsável pelas informações fornecidas, pela segurança da sua conta e por toda atividade realizada a partir dela.",
-          "A Wave pode exigir confirmações adicionais, limitar recursos ou suspender contas quando houver suspeita de abuso, fraude, violação de regras ou exigência legal.",
+          "A Fluxo pode exigir confirmações adicionais, limitar recursos ou suspender contas quando houver suspeita de abuso, fraude, violação de regras ou exigência legal.",
         ],
       },
       {
         title: "Idade e autorização",
         body: [
-          "A Wave pode exigir idade mínima, consentimento dos responsáveis ou verificações adicionais conforme a legislação aplicável e os recursos usados.",
-          "Recursos futuros como Date, monetização, wallet, Wave Coin ou pagamentos poderão ter regras próprias e requisitos adicionais.",
+          "A Fluxo pode exigir idade mínima, consentimento dos responsáveis ou verificações adicionais conforme a legislação aplicável e os recursos usados.",
+          "Recursos futuros como Date, monetização, wallet, Fluxo Coin ou pagamentos poderão ter regras próprias e requisitos adicionais.",
         ],
       },
       {
@@ -61,14 +61,14 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
       {
         title: "Licença de uso do conteúdo",
         body: [
-          "Você mantém a titularidade do seu conteúdo, mas concede à Wave uma licença não exclusiva, mundial, gratuita, sublicenciável e transferível para hospedar, armazenar, reproduzir, exibir, adaptar tecnicamente, distribuir e divulgar o conteúdo dentro da plataforma e em materiais relacionados à Wave.",
-          "Essa licença permite gerar miniaturas, previews, formatos técnicos, cortes de compatibilidade, exibição na Wave, comunidades, perfis, Discover e outras áreas da plataforma.",
+          "Você mantém a titularidade do seu conteúdo, mas concede à Fluxo uma licença não exclusiva, mundial, gratuita, sublicenciável e transferível para hospedar, armazenar, reproduzir, exibir, adaptar tecnicamente, distribuir e divulgar o conteúdo dentro da plataforma e em materiais relacionados à Fluxo.",
+          "Essa licença permite gerar miniaturas, previews, formatos técnicos, cortes de compatibilidade, exibição na Fluxo, comunidades, perfis, Discover e outras áreas da plataforma.",
         ],
       },
       {
         title: "Proibições",
         body: [
-          "É proibido usar a Wave para atividades ilegais, golpes, spam, perfis falsos, venda ilegal, assédio, ameaças, discurso de ódio, exploração sexual, abuso infantil, exposição indevida de dados pessoais ou uso indevido de imagem de terceiros.",
+          "É proibido usar a Fluxo para atividades ilegais, golpes, spam, perfis falsos, venda ilegal, assédio, ameaças, discurso de ódio, exploração sexual, abuso infantil, exposição indevida de dados pessoais ou uso indevido de imagem de terceiros.",
           "Também é proibido tentar burlar segurança, RLS, sistemas de autenticação, limites técnicos, moderação ou medidas antiabuso.",
         ],
       },
@@ -82,21 +82,21 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
       {
         title: "Moderação",
         body: [
-          "A Wave pode remover conteúdo, limitar alcance, bloquear recursos, suspender ou banir contas quando entender que há violação destes termos, das diretrizes, de direitos de terceiros ou da legislação aplicável.",
-          "A Wave pode cooperar com autoridades quando exigido por lei.",
+          "A Fluxo pode remover conteúdo, limitar alcance, bloquear recursos, suspender ou banir contas quando entender que há violação destes termos, das diretrizes, de direitos de terceiros ou da legislação aplicável.",
+          "A Fluxo pode cooperar com autoridades quando exigido por lei.",
         ],
       },
       {
-        title: "Propriedade intelectual da Wave",
+        title: "Propriedade intelectual da Fluxo",
         body: [
-          "Nome, marca, identidade visual, interface, código, textos, organização, recursos e demais elementos da Wave pertencem à Wave ou a seus licenciadores.",
-          "Nenhuma licença sobre a marca Wave é concedida sem autorização expressa.",
+          "Nome, marca, identidade visual, interface, código, textos, organização, recursos e demais elementos da Fluxo pertencem à Fluxo ou a seus licenciadores.",
+          "Nenhuma licença sobre a marca Fluxo é concedida sem autorização expressa.",
         ],
       },
       {
         title: "Disponibilidade e limitação de responsabilidade",
         body: [
-          "A Wave está em beta e pode conter instabilidades, indisponibilidades, mudanças, falhas ou recursos incompletos.",
+          "A Fluxo está em beta e pode conter instabilidades, indisponibilidades, mudanças, falhas ou recursos incompletos.",
           "Empregamos medidas razoáveis para manter a plataforma segura e funcional, mas não prometemos disponibilidade contínua, ausência absoluta de erros ou segurança perfeita.",
         ],
       },
@@ -104,7 +104,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
         title: "Alterações e contato",
         body: [
           "Estes termos podem ser atualizados. Quando houver mudanças relevantes, poderemos solicitar novo aceite.",
-          "Contato: privacidade@ocean.app.br ou canal oficial que vier a ser informado pela Wave.",
+          "Contato: privacidade@ocean.app.br ou canal oficial que vier a ser informado pela Fluxo.",
         ],
       },
     ],
@@ -115,7 +115,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
     version: LEGAL_PRIVACY_VERSION,
     updatedAt: "17 de maio de 2026",
     summary:
-      "Explica quais dados podem ser coletados, como são usados e quais cuidados aplicamos na beta da Wave.",
+      "Explica quais dados podem ser coletados, como são usados e quais cuidados aplicamos na beta da Fluxo.",
     sections: [
       {
         title: "Dados que coletamos",
@@ -127,14 +127,14 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
       {
         title: "Localização e perfil",
         body: [
-          "Quando a Wave solicitar localização, cidade, estado, preferências ou dados para experiências futuras, explicaremos o uso esperado na interface sempre que adequado.",
-          "Dados sensíveis não devem ser exibidos publicamente sem necessidade. A Wave pode limitar exibições para proteger usuários.",
+          "Quando a Fluxo solicitar localização, cidade, estado, preferências ou dados para experiências futuras, explicaremos o uso esperado na interface sempre que adequado.",
+          "Dados sensíveis não devem ser exibidos publicamente sem necessidade. A Fluxo pode limitar exibições para proteger usuários.",
         ],
       },
       {
         title: "Conteúdo, interações e Privs",
         body: [
-          "Conteúdos públicos podem aparecer na Wave, perfil, comunidades, Discover, buscas e outras áreas públicas ou semipúblicas da plataforma.",
+          "Conteúdos públicos podem aparecer na Fluxo, perfil, comunidades, Discover, buscas e outras áreas públicas ou semipúblicas da plataforma.",
           "Privs e mensagens podem ser processados para entrega, segurança, suporte, denúncia, prevenção de abuso e cumprimento legal. Não prometemos criptografia ponta a ponta nesta beta.",
         ],
       },
@@ -169,7 +169,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
         title: "Direitos do titular",
         body: [
           "Você pode solicitar acesso, correção, exclusão, portabilidade, informações sobre compartilhamento, revisão de decisões e outros direitos previstos na legislação aplicável.",
-          "Canal de privacidade: privacidade@ocean.app.br ou outro canal oficial informado pela Wave.",
+          "Canal de privacidade: privacidade@ocean.app.br ou outro canal oficial informado pela Fluxo.",
         ],
       },
       {
@@ -196,7 +196,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
       "Define o comportamento esperado para manter Flow, Comunidades, comentários e Privs seguros para a beta.",
     sections: [
       {
-        title: "O que a Wave permite",
+        title: "O que a Fluxo permite",
         body: [
           "Permitimos debate, humor sem ataque, opinião, crítica respeitosa, comunidades, conteúdo criativo, relatos pessoais, cultura, esportes, tecnologia e conversas autênticas.",
           "Divergências são bem-vindas quando preservam respeito, segurança e direitos de terceiros.",
@@ -212,7 +212,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
       {
         title: "Segurança e fraude",
         body: [
-          "Não permitimos spam, golpes, phishing, perfis falsos, venda ilegal, manipulação de engajamento, malware, automação abusiva ou tentativa de burlar sistemas da Wave.",
+          "Não permitimos spam, golpes, phishing, perfis falsos, venda ilegal, manipulação de engajamento, malware, automação abusiva ou tentativa de burlar sistemas da Fluxo.",
           "Não use imagem, voz, nome, marca ou dados de terceiros de forma enganosa, ofensiva ou sem autorização quando exigível.",
         ],
       },
@@ -226,7 +226,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
       {
         title: "Consequências",
         body: [
-          "A Wave pode remover conteúdo, restringir recursos, limitar alcance, bloquear comentários, suspender conta, banir usuário ou preservar registros quando necessário.",
+          "A Fluxo pode remover conteúdo, restringir recursos, limitar alcance, bloquear comentários, suspender conta, banir usuário ou preservar registros quando necessário.",
           "Podemos cooperar com autoridades quando exigido por lei.",
         ],
       },
@@ -245,26 +245,26 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
     version: LEGAL_CONTENT_LICENSE_VERSION,
     updatedAt: "17 de maio de 2026",
     summary:
-      "Explica como a Wave pode hospedar, exibir e adaptar tecnicamente conteúdos, imagem, voz, avatar e Flow ID publicados voluntariamente.",
+      "Explica como a Fluxo pode hospedar, exibir e adaptar tecnicamente conteúdos, imagem, voz, avatar e Flow ID publicados voluntariamente.",
     sections: [
       {
         title: "Titularidade",
         body: [
-          "Você mantém a titularidade dos conteúdos que cria, envia ou publica na Wave, observados direitos de terceiros e leis aplicáveis.",
+          "Você mantém a titularidade dos conteúdos que cria, envia ou publica na Fluxo, observados direitos de terceiros e leis aplicáveis.",
           "Você declara que possui direitos ou autorizações necessárias para publicar conteúdos, imagem, voz, nome, avatar, marca, música ou material de terceiros quando isso for exigível.",
         ],
       },
       {
-        title: "Licença concedida à Wave",
+        title: "Licença concedida à Fluxo",
         body: [
-          "Ao publicar ou enviar conteúdo, você concede à Wave licença não exclusiva, mundial, gratuita, sublicenciável, transferível e pelo prazo necessário para hospedar, armazenar, reproduzir, exibir, adaptar tecnicamente, distribuir e divulgar esse conteúdo dentro da plataforma e em materiais relacionados à Wave.",
+          "Ao publicar ou enviar conteúdo, você concede à Fluxo licença não exclusiva, mundial, gratuita, sublicenciável, transferível e pelo prazo necessário para hospedar, armazenar, reproduzir, exibir, adaptar tecnicamente, distribuir e divulgar esse conteúdo dentro da plataforma e em materiais relacionados à Fluxo.",
           "A licença inclui imagem, voz, nome de exibição, Flow ID, avatar, aparência e elementos publicados voluntariamente.",
         ],
       },
       {
         title: "Adaptações técnicas",
         body: [
-          "A Wave pode gerar thumbnails, previews, formatos adaptados, compressão, cortes técnicos, transcodificação e ajustes de exibição para compatibilidade, segurança, desempenho e experiência do usuário.",
+          "A Fluxo pode gerar thumbnails, previews, formatos adaptados, compressão, cortes técnicos, transcodificação e ajustes de exibição para compatibilidade, segurança, desempenho e experiência do usuário.",
           "Recursos futuros com IA de cortes, edição, filtros ou recomendação deverão respeitar opções, direitos e controles do criador quando implementados.",
         ],
       },
@@ -272,14 +272,14 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
         title: "Terceiros",
         body: [
           "Não publique imagem, voz, dados, obra, marca ou conteúdo de terceiros sem autorização quando ela for exigível.",
-          "Conteúdos denunciados ou potencialmente irregulares podem ser removidos, restringidos ou analisados pela Wave.",
+          "Conteúdos denunciados ou potencialmente irregulares podem ser removidos, restringidos ou analisados pela Fluxo.",
         ],
       },
       {
         title: "Exclusão",
         body: [
           "A exclusão de conta ou conteúdo pode remover exibições futuras, ressalvadas obrigações legais, backups técnicos temporários, registros de segurança, disputas, auditorias e exigências legais.",
-          "Conteúdos compartilhados, republicados ou capturados por terceiros podem continuar fora do controle técnico da Wave.",
+          "Conteúdos compartilhados, republicados ou capturados por terceiros podem continuar fora do controle técnico da Fluxo.",
         ],
       },
     ],

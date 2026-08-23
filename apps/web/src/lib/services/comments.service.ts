@@ -131,7 +131,7 @@ export async function createComment(
   }
 
   if (!userData.user) {
-    throw new Error("Entre na Wave para comentar.");
+    throw new Error("Entre na Fluxo para comentar.");
   }
 
   const { error } = await supabase.from("comments").insert({

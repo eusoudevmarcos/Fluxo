@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -35,7 +35,7 @@ type SelectedMedia = {
 };
 
 function getInitial(name?: string | null) {
-  return (name || "Wave").trim().charAt(0).toUpperCase() || "W";
+  return (name || "Fluxo").trim().charAt(0).toUpperCase() || "W";
 }
 
 function formatFileSize(size: number) {
@@ -399,7 +399,7 @@ export function PostComposer({ onCreated }: PostComposerProps) {
               onClick={() => setDestination("creation")}
             >
               <HiPhotograph />
-              Dropar na Wave
+              Dropar na Fluxo
             </button>
             <button
               type="button"

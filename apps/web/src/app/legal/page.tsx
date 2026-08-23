@@ -9,8 +9,8 @@ export default function LegalIndexPage() {
     <LegalShell>
       <section className={styles.index}>
         <div className={styles.hero}>
-          <span>Wave Legal</span>
-          <h1>Documentos legais da Wave</h1>
+          <span>Fluxo Legal</span>
+          <h1>Documentos legais da Fluxo</h1>
           <p>
             Antes de criar conta ou continuar usando a beta, leia os documentos que
             protegem você, a comunidade e a plataforma.

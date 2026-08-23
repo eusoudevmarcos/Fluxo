@@ -2,11 +2,11 @@ export const themes = [
   {
     id: "sunflow",
     name: "Sunflow",
-    description: "Tema amarelo Wave, alto astral e padrao inicial.",
+    description: "Tema amarelo Fluxo, alto astral e padrao inicial.",
   },
   {
     id: "ocean-blue",
-    name: "Wave Blue",
+    name: "Fluxo Blue",
     description: "Base escura com azul oceano, premium e global.",
   },
   {

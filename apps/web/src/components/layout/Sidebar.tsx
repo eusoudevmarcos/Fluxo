@@ -38,10 +38,10 @@ const menuItems = [
   { id: "moments", href: "/moments", label: "Vibes", icon: <HiLightningBolt /> },
   { id: "flows", href: "/flows", label: "Flows", icon: <HiPlay /> },
   { id: "communities", href: "/comunidades", label: "Comunidades", icon: <HiUserGroup /> },
-  { id: "stream", href: "/stream", label: "Wave Stream", icon: <HiVideoCamera /> },
-  { id: "academy", href: "/academy", label: "Wave Academy", icon: <HiAcademicCap /> },
-  { id: "shop", href: "/shop", label: "Wave Shop", icon: <HiShoppingBag /> },
-  { id: "coin", href: "/mais", label: "Wave Coin", icon: <HiCurrencyDollar /> },
+  { id: "stream", href: "/stream", label: "Fluxo Stream", icon: <HiVideoCamera /> },
+  { id: "academy", href: "/academy", label: "Fluxo Academy", icon: <HiAcademicCap /> },
+  { id: "shop", href: "/shop", label: "Fluxo Shop", icon: <HiShoppingBag /> },
+  { id: "coin", href: "/mais", label: "Fluxo Coin", icon: <HiCurrencyDollar /> },
   { id: "date", href: "/date", label: "Date", icon: <HiHeart /> },
   { id: "notifications", href: "/notificacoes", label: "Notificações", icon: <HiBell /> },
   { id: "badges", href: "/selos", label: "Selos", icon: <HiSparkles /> },
@@ -50,7 +50,7 @@ const menuItems = [
 ];
 
 function getDisplayName(profile: PublicProfileSummary) {
-  return profile.display_name || profile.username || "Wave User";
+  return profile.display_name || profile.username || "Fluxo User";
 }
 
 function getInitial(profile: PublicProfileSummary) {
@@ -174,7 +174,7 @@ export function Sidebar() {
       <form className={styles.search} onSubmit={handleSearchSubmit}>
         <HiSearch />
         <input
-          aria-label="Buscar pessoas na Wave"
+          aria-label="Buscar pessoas na Fluxo"
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Buscar pessoas"
           value={query}

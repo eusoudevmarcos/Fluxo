@@ -37,7 +37,7 @@ export async function toggleSaved(
   if (userError) throw userError;
 
   if (!userData.user) {
-    throw new Error("Entre na Wave para salvar.");
+    throw new Error("Entre na Fluxo para salvar.");
   }
 
   const { data: existing, error: existingError } = await supabase
@@ -78,7 +78,7 @@ export async function saveContent(
   if (userError) throw userError;
 
   if (!userData.user) {
-    throw new Error("Entre na Wave para salvar.");
+    throw new Error("Entre na Fluxo para salvar.");
   }
 
   const { error } = await supabase.from("saved_contents").upsert(

@@ -62,10 +62,10 @@ export function AuthScreen() {
       style={styles.screen}
     >
       <View style={styles.card}>
-        <Text style={styles.logo}>wave</Text>
+        <Text style={styles.logo}>fluxo</Text>
         <Text style={styles.title}>Entre no beta mobile.</Text>
         <Text style={styles.subtitle}>
-          Use a mesma conta da Wave. Esta tela ja conversa com o Supabase real.
+          Use a mesma conta da Fluxo. Esta tela ja conversa com o Supabase real.
         </Text>
 
         <View style={styles.form}>

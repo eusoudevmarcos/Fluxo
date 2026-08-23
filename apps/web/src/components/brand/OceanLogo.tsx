@@ -8,15 +8,15 @@ type OceanLogoProps = {
 };
 
 const logoSrc = {
-  yellow: "/brand/wave-icon-transparent.png",
-  blue: "/brand/wave-icon-transparent.png",
-  white: "/brand/wave-icon-transparent.png",
+  yellow: "/brand/fluxo-logo-horizontal.png",
+  blue: "/brand/fluxo-logo-horizontal.png",
+  white: "/brand/fluxo-logo-horizontal.png",
 } as const;
 
 const logoSize = {
-  sm: { width: 28, height: 28 },
-  md: { width: 38, height: 38 },
-  lg: { width: 48, height: 48 },
+  sm: { width: 92, height: 31 },
+  md: { width: 126, height: 42 },
+  lg: { width: 164, height: 55 },
 } as const;
 
 export function OceanLogo({
@@ -29,7 +29,7 @@ export function OceanLogo({
         <Image
           className={styles.yellowImage}
           src={logoSrc.yellow}
-          alt=""
+          alt="Fluxo"
           width={logoSize[size].width}
           height={logoSize[size].height}
           priority={size === "lg"}
@@ -42,7 +42,6 @@ export function OceanLogo({
           height={logoSize[size].height}
           priority={size === "lg"}
         />
-        <span className={styles.wordmark}>wave</span>
       </span>
     );
   }
@@ -51,12 +50,11 @@ export function OceanLogo({
     <span className={`${styles.logo} ${styles[variant]} ${styles[size]}`}>
       <Image
         src={logoSrc[variant]}
-        alt=""
+        alt="Fluxo"
         width={logoSize[size].width}
         height={logoSize[size].height}
         priority={size === "lg"}
       />
-      <span className={styles.wordmark}>wave</span>
     </span>
   );
 }

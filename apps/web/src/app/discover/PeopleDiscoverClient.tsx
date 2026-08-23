@@ -19,7 +19,7 @@ type PeopleDiscoverClientProps = {
 };
 
 function getDisplayName(profile: PublicProfileSummary) {
-  return profile.display_name || profile.username || "Wave User";
+  return profile.display_name || profile.username || "Fluxo User";
 }
 
 function getInitial(profile: PublicProfileSummary) {
@@ -28,7 +28,7 @@ function getInitial(profile: PublicProfileSummary) {
 
 function getLocation(profile: PublicProfileSummary) {
   if (profile.city && profile.state) return `${profile.city}, ${profile.state}`;
-  return profile.location_label || "Wave";
+  return profile.location_label || "Fluxo";
 }
 
 export function PeopleDiscoverClient({ initialQuery = "" }: PeopleDiscoverClientProps) {
@@ -130,7 +130,7 @@ export function PeopleDiscoverClient({ initialQuery = "" }: PeopleDiscoverClient
     <section className={styles.discover}>
       <header className={styles.header}>
         <span>Discover</span>
-        <h1>Encontre pessoas na Wave</h1>
+        <h1>Encontre pessoas na Fluxo</h1>
       </header>
 
       <form className={styles.searchPanel} onSubmit={handleSubmit}>

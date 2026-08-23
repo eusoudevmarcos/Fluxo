@@ -65,11 +65,11 @@ function getInitial(name?: string | null) {
   return (name || "O").trim().charAt(0).toUpperCase() || "O";
 }
 
-function getFounderBadge(userId?: string, label = "Fundador Wave"): EquippedBadge {
+function getFounderBadge(userId?: string, label = "Fundador Fluxo"): EquippedBadge {
   return {
     user_id: userId,
     badge_slug: "badge-founder",
-    badge_name: label || "Fundador Wave",
+    badge_name: label || "Fundador Fluxo",
     category: "founder",
     rarity: "milenar",
     color_primary: "#ffd01a",
@@ -97,7 +97,7 @@ export function PostCard({ content, onChange, onDelete }: PostCardProps) {
   const [error, setError] = useState("");
   const [commentError, setCommentError] = useState("");
   const hasRegisteredPresence = useRef(false);
-  const authorName = content.author?.display_name || "Wave User";
+  const authorName = content.author?.display_name || "Fluxo User";
   const username = content.author?.username || "ocean";
   const avatarUrl = content.author?.avatar_url;
   const equippedAura = content.author?.equipped_aura ?? null;
@@ -105,7 +105,7 @@ export function PostCard({ content, onChange, onDelete }: PostCardProps) {
   const officialLabel = content.author?.official_label;
   const authorBadge =
     content.author?.equipped_badge ??
-    (isFounder ? getFounderBadge(content.author?.user_id, officialLabel ?? "Fundador Wave") : null);
+    (isFounder ? getFounderBadge(content.author?.user_id, officialLabel ?? "Fundador Fluxo") : null);
   const authorHref = content.author?.username ? `/u/${content.author.username}` : null;
   const isAuthor = user?.id === content.author_id;
 
@@ -309,7 +309,7 @@ export function PostCard({ content, onChange, onDelete }: PostCardProps) {
   async function handleDeletePost() {
     setIsOptionsOpen(false);
 
-    if (!window.confirm("Esse Drop será removido da Wave.")) {
+    if (!window.confirm("Esse Drop será removido da Fluxo.")) {
       return;
     }
 
@@ -525,13 +525,13 @@ export function PostCard({ content, onChange, onDelete }: PostCardProps) {
           )}
 
           {comments.map((comment) => {
-            const commentAuthor = comment.author?.display_name || "Wave User";
+            const commentAuthor = comment.author?.display_name || "Fluxo User";
             const commentUsername = comment.author?.username || "ocean";
             const canDelete = user?.id === comment.author_id || isAuthor;
             const commentBadge =
               comment.author?.equipped_badge ??
               (comment.author?.is_founder
-                ? getFounderBadge(comment.author.user_id, comment.author.official_label ?? "Fundador Wave")
+                ? getFounderBadge(comment.author.user_id, comment.author.official_label ?? "Fundador Fluxo")
                 : null);
 
             return (

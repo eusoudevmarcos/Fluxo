@@ -52,7 +52,7 @@ export async function toggleWave(
   if (userError) throw userError;
 
   if (!userData.user) {
-    throw new Error("Entre na Wave para fazer Wave.");
+    throw new Error("Entre na Fluxo para fazer Wave.");
   }
 
   const { data: existing, error: existingError } = await supabase

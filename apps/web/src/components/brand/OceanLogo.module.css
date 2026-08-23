@@ -1,7 +1,6 @@
 .logo {
   align-items: center;
   display: inline-flex;
-  gap: clamp(6px, 0.6vw, 10px);
   line-height: 1;
   vertical-align: middle;
 }
@@ -12,16 +11,7 @@
   height: 100%;
   object-fit: contain;
   width: auto;
-  filter: drop-shadow(0 5px 14px rgba(14, 165, 233, 0.22));
-}
-
-.wordmark {
-  color: currentColor;
-  font-family: var(--font-ocean-brand);
-  font-weight: 900;
-  letter-spacing: -0.05em;
-  line-height: 1;
-  transform: translateY(-1px);
+  filter: drop-shadow(0 6px 18px rgba(255, 204, 0, 0.18));
 }
 
 .theme {
@@ -55,16 +45,13 @@
 }
 
 .sm {
-  font-size: 26px;
-  height: 28px;
+  height: 31px;
 }
 
 .md {
-  font-size: 35px;
-  height: 38px;
+  height: 42px;
 }
 
 .lg {
-  font-size: 48px;
-  height: 50px;
+  height: 55px;
 }

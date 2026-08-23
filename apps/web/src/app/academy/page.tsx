@@ -14,7 +14,7 @@ export default function AcademyPage() {
     <AppShell>
       <PageCard>
         <FeaturePage
-          eyebrow="Wave Academy"
+          eyebrow="Fluxo Academy"
           title="Cursos por criadores, especialistas e comunidades"
           description="Preview visual da Academy. Cursos reais e monetização ficam para depois da beta."
           stats={[

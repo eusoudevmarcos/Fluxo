@@ -11,7 +11,7 @@ import { defaultTheme, isThemeId, themes, type ThemeId } from "@/lib/themes";
 import styles from "./TopActions.module.css";
 
 function getInitial(name?: string | null) {
-  return (name || "Wave").trim().charAt(0).toUpperCase() || "W";
+  return (name || "Fluxo").trim().charAt(0).toUpperCase() || "W";
 }
 
 type TopActionsProps = {
@@ -60,7 +60,7 @@ export function TopActions({
     <div className={styles.topActions}>
       <button
         type="button"
-        aria-label="Alternar tema da Wave"
+        aria-label="Alternar tema da Fluxo"
         disabled={isSavingTheme}
         title="Alternar tema"
         onClick={handleThemeCycle}
@@ -89,7 +89,7 @@ export function TopActions({
         <HiChatAlt2 />
       </button>
 
-      <Link className={styles.walletBadge} href="/mais" aria-label="Wave Coin">
+      <Link className={styles.walletBadge} href="/mais" aria-label="Fluxo Coin">
         <HiCurrencyDollar />
         <span>0 OC</span>
       </Link>

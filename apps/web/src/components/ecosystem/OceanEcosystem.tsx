@@ -17,25 +17,25 @@ import styles from "./OceanEcosystem.module.css";
 
 const ecosystemItems = [
   {
-    title: "Wave Date",
+    title: "Fluxo Date",
     description: "Conexões com vibe, localização, segurança e compatibilidade social.",
     status: "Em breve",
     Icon: HeartHandshake,
   },
   {
-    title: "Wave Shop",
-    description: "Marketplace com reputação social, localização, reviews e integração futura com Wave Coin.",
+    title: "Fluxo Shop",
+    description: "Marketplace com reputação social, localização, reviews e integração futura com Fluxo Coin.",
     status: "Em breve",
     Icon: ShoppingBag,
   },
   {
-    title: "Wave Stream",
+    title: "Fluxo Stream",
     description: "Lives de jogos, música, dança, arte, lifestyle, eventos e conteúdo original.",
     status: "Em breve",
     Icon: Radio,
   },
   {
-    title: "Wave Academy",
+    title: "Fluxo Academy",
     description: "Cursos online por criadores, empresas, especialistas e comunidades.",
     status: "Em breve",
     Icon: GraduationCap,
@@ -53,7 +53,7 @@ const ecosystemItems = [
     Icon: Gamepad2,
   },
   {
-    title: "Wave Coin",
+    title: "Fluxo Coin",
     description: "Visão futura para wallet, transações, marketplace, doações, recompensas e economia interna.",
     status: "Visão futura",
     Icon: Coins,
@@ -69,11 +69,11 @@ const innovationItems = [
   },
   {
     title: "WaveMap",
-    description: "A Wave mostra como uma ideia se espalha, quem impulsionou e por onde passou.",
+    description: "A Fluxo mostra como uma ideia se espalha, quem impulsionou e por onde passou.",
     Icon: Map,
   },
   {
-    title: "Maré da Wave",
+    title: "Maré da Fluxo",
     description: "Você escolhe a experiência que quer viver, em vez de ser refém do algoritmo.",
     Icon: Waves,
   },
@@ -94,14 +94,14 @@ export function OceanEcosystem() {
     <div className={styles.ecosystem}>
       <section className={styles.hero}>
         <span>Mais</span>
-        <h1>O Ecossistema Wave</h1>
+        <h1>O Ecossistema Fluxo</h1>
         <p>
-          A Wave está nascendo como uma rede social, mas foi pensada para crescer como
+          A Fluxo está nascendo como uma rede social, mas foi pensada para crescer como
           um ecossistema de conteúdo, conexão, comércio, aprendizado e presença.
         </p>
       </section>
 
-      <section className={styles.grid} aria-label="Recursos futuros da Wave">
+      <section className={styles.grid} aria-label="Recursos futuros da Fluxo">
         {ecosystemItems.map(({ title, description, status, Icon, note }) => (
           <article className={styles.card} key={title}>
             <div className={styles.iconBox}>
@@ -125,7 +125,7 @@ export function OceanEcosystem() {
       <section className={styles.innovation}>
         <div className={styles.sectionTitle}>
           <span>Visão de produto</span>
-          <h2>O que torna a Wave diferente</h2>
+          <h2>O que torna a Fluxo diferente</h2>
         </div>
 
         <div className={styles.innovationGrid}>

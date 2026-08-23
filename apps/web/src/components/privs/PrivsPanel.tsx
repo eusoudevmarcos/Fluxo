@@ -34,11 +34,11 @@ type PrivsPanelProps = {
 };
 
 function getInitial(name?: string | null) {
-  return (name || "Wave").trim().replace("#", "").charAt(0).toUpperCase() || "W";
+  return (name || "Fluxo").trim().replace("#", "").charAt(0).toUpperCase() || "W";
 }
 
 function getProfileName(profile?: PrivProfile | null) {
-  return profile?.display_name || profile?.username || "Wave User";
+  return profile?.display_name || profile?.username || "Fluxo User";
 }
 
 function formatTime(value?: string | null) {
@@ -257,7 +257,7 @@ export function PrivsPanel({ onClose }: PrivsPanelProps) {
           {mobileView === "conversation" && activeConversation ? (
             <span>{activeConversation.subtitle}</span>
           ) : (
-            <span>Conversas privadas da Wave</span>
+            <span>Conversas privadas da Fluxo</span>
           )}
         </div>
 
@@ -365,7 +365,7 @@ export function PrivsPanel({ onClose }: PrivsPanelProps) {
                 </span>
                 <span className={styles.copy}>
                   <strong>{getProfileName(profile)}</strong>
-                  <small>{profile.username ? `~${profile.username}` : "Perfil Wave"}</small>
+                  <small>{profile.username ? `~${profile.username}` : "Perfil Fluxo"}</small>
                 </span>
               </button>
             ))
@@ -390,7 +390,7 @@ export function PrivsPanel({ onClose }: PrivsPanelProps) {
                 )}
               </span>
               <strong>{activeConversation.title}</strong>
-              <span>Conversa privada ativa na Wave.</span>
+              <span>Conversa privada ativa na Fluxo.</span>
             </div>
 
             <div className={styles.messages}>

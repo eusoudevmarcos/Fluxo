@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -18,9 +18,9 @@ import styles from "./page.module.css";
 type MissionGroup = "daily" | "weekly" | "other";
 
 function getLevelTitle(gamification?: UserGamification | null) {
-  if (gamification?.is_founder) return "Fundador Wave";
-  if ((gamification?.level ?? 1) >= 25) return "Waveiro Elite";
-  if ((gamification?.level ?? 1) >= 10) return "Waveiro";
+  if (gamification?.is_founder) return "Fundador Fluxo";
+  if ((gamification?.level ?? 1) >= 25) return "Fluxeiro Elite";
+  if ((gamification?.level ?? 1) >= 10) return "Fluxeiro";
   return "Novo Flow";
 }
 
@@ -93,9 +93,9 @@ export default function MissoesPage() {
         <main className={styles.page}>
           <header className={styles.hero}>
             <div>
-              <span>Wave Aura</span>
+              <span>Fluxo Aura</span>
               <h1>Missões & Recompensas</h1>
-              <p>Ganhe XP, desbloqueie Auras colecionáveis, mantenha sua sequência e evolua seu flow dentro da Wave.</p>
+              <p>Ganhe XP, desbloqueie Auras colecionáveis, mantenha sua sequência e evolua seu flow dentro da Fluxo.</p>
             </div>
             <Link href="/auras">Ver minhas Auras</Link>
           </header>

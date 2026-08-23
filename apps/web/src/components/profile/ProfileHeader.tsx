@@ -46,7 +46,7 @@ export function ProfileHeader({
   equippedBadge,
   gamification,
 }: ProfileHeaderProps) {
-  const displayName = profile.display_name || "Wave User";
+  const displayName = profile.display_name || "Fluxo User";
   const username = profile.username || "ocean";
   const aura = equippedAura?.aura_name || profile.aura || "starter";
   const level = gamification?.level ?? 1;
@@ -99,7 +99,7 @@ export function ProfileHeader({
             <h1>
               <BadgeIcon badge={visibleBadge} size="md" />
               {displayName}
-              {gamification?.is_founder && <em>Fundador Wave</em>}
+              {gamification?.is_founder && <em>Fundador Fluxo</em>}
             </h1>
             <span>
               @{username}
@@ -107,7 +107,7 @@ export function ProfileHeader({
             </span>
           </div>
 
-          <p>{profile.bio || "Complete sua ficha para aumentar sua presença na Wave."}</p>
+          <p>{profile.bio || "Complete sua ficha para aumentar sua presença na Fluxo."}</p>
         </div>
       </div>
 
@@ -143,7 +143,7 @@ export function ProfileHeader({
             <span className={styles.metaIcon}>
               <HiSparkles />
             </span>
-            <strong>Fundador Wave</strong>
+            <strong>Fundador Fluxo</strong>
             <small>Perfil Oficial</small>
           </span>
         )}

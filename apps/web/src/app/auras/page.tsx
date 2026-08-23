@@ -110,14 +110,14 @@ function AurasContent() {
 
   const ownedAuraIds = new Set(myAuras.map((aura) => aura.aura_id));
   const ownedCount = gamification?.has_all_auras ? definitions.length : ownedAuraIds.size;
-  const displayName = profile?.display_name || "Wave User";
+  const displayName = profile?.display_name || "Fluxo User";
 
   return (
         <main className={styles.page}>
           <header className={styles.hero}>
             <div>
               <span>Auras colecionáveis</span>
-              <h1>Suas Auras na Wave</h1>
+              <h1>Suas Auras na Fluxo</h1>
               <p>Equipe uma Aura sutil no avatar e leve sua identidade para perfil, Drops e comentários.</p>
             </div>
             <div className={styles.preview}>
@@ -168,7 +168,7 @@ function AurasContent() {
                       <div>
                         <span>{rarityLabels[aura.rarity] ?? aura.rarity}</span>
                         <h2>{aura.name}</h2>
-                        <p>{aura.description || "Aura colecionável da Wave."}</p>
+                        <p>{aura.description || "Aura colecionável da Fluxo."}</p>
                         <small>+{aura.xp_bonus_percent}% XP em missões</small>
                       </div>
                       {unlocked ? (
@@ -200,7 +200,7 @@ function AurasContent() {
 
               <section className={styles.examples}>
                 <header>
-                  <h2>Veja suas Auras em todo o Wave</h2>
+                  <h2>Veja suas Auras em toda a Fluxo</h2>
                 </header>
                 {["Perfil", "Drop", "Comentários"].map((label, index) => (
                   <article key={label}>
@@ -212,7 +212,7 @@ function AurasContent() {
                     />
                     <div>
                       <strong>{label}</strong>
-                      <p>A Aura aparece de forma discreta, acompanhando o avatar quadrado da Wave.</p>
+                      <p>A Aura aparece de forma discreta, acompanhando o avatar quadrado da Fluxo.</p>
                     </div>
                   </article>
                 ))}

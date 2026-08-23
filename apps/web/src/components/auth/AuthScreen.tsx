@@ -34,7 +34,7 @@ function getFriendlyAuthError(error: unknown) {
     normalizedMessage.includes("already registered") ||
     normalizedMessage.includes("already exists")
   ) {
-    return "Este email já tem uma conta na Wave. Entre com sua senha ou continue com Google.";
+    return "Este email já tem uma conta na Fluxo. Entre com sua senha ou continue com Google.";
   }
 
   if (
@@ -61,7 +61,7 @@ function hasExistingEmailIdentity(data: { user: { identities?: unknown[] | null 
 const previewHighlights = [
   { icon: <HiLightningBolt />, title: "Flow", text: "Crie e acompanhe o agora." },
   { icon: <HiSparkles />, title: "Aura", text: "Evolua com missões e recompensas." },
-  { icon: <HiUserGroup />, title: "Comunidades", text: "Encontre sua galera na Wave." },
+  { icon: <HiUserGroup />, title: "Comunidades", text: "Encontre sua galera na Fluxo." },
   { icon: <HiShieldCheck />, title: "Segurança", text: "Termos, privacidade e onboarding." },
 ];
 
@@ -176,7 +176,7 @@ export function AuthScreen({ initialMode, initialError }: AuthScreenProps) {
         }
 
         if (hasExistingEmailIdentity(data)) {
-          setError("Este email já tem uma conta na Wave. Entre com sua senha ou continue com Google.");
+          setError("Este email já tem uma conta na Fluxo. Entre com sua senha ou continue com Google.");
           setMode("login");
           router.push("/auth?mode=login", { scroll: false });
           return;
@@ -261,10 +261,10 @@ export function AuthScreen({ initialMode, initialError }: AuthScreenProps) {
 
   return (
     <main className={styles.page}>
-      <section className={styles.preview} aria-label="Previa do aplicativo Wave">
+      <section className={styles.preview} aria-label="Previa do aplicativo Fluxo">
         <div className={styles.previewText}>
           <OceanLogo size="lg" />
-          <h1>Entre no flow da Wave.</h1>
+          <h1>Entre no flow da Fluxo.</h1>
           <p>
             Crie Flows, acompanhe Vibes, participe de Comunidades e evolua sua Aura
             em uma experiência social imersiva.
@@ -274,7 +274,7 @@ export function AuthScreen({ initialMode, initialError }: AuthScreenProps) {
         <div className={styles.previewFrame}>
           <Image
             src="/auth/ocean-mobile-preview.png"
-            alt="Previa mobile da Wave com telas de flow e perfil"
+            alt="Previa mobile da Fluxo com telas de flow e perfil"
             width={1536}
             height={1024}
             priority
@@ -294,14 +294,14 @@ export function AuthScreen({ initialMode, initialError }: AuthScreenProps) {
         </div>
       </section>
 
-      <section className={styles.authArea} aria-label="Autenticação Wave">
+      <section className={styles.authArea} aria-label="Autenticação Fluxo">
         <div className={styles.authCard}>
           <div className={styles.cardLogo}>
             <OceanLogo />
           </div>
 
           <header className={styles.header}>
-            <h2>{isSignup ? "Crie sua conta" : "Entrar na Wave"}</h2>
+            <h2>{isSignup ? "Crie sua conta" : "Entrar na Fluxo"}</h2>
             <p>{isSignup ? "Entre no flow e viva o agora." : "Volte para o flow."}</p>
           </header>
 
@@ -389,7 +389,7 @@ export function AuthScreen({ initialMode, initialError }: AuthScreenProps) {
                   <a href="/legal/conteudo-imagem" target="_blank" rel="noreferrer">
                     Termo de Conteúdo, Imagem e Voz
                   </a>{" "}
-                  da Wave.
+                  da Fluxo.
                 </span>
               </label>
             )}

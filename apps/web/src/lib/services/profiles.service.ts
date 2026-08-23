@@ -66,7 +66,7 @@ async function requireCurrentUserId(supabase: SupabaseClient) {
   const userId = await getCurrentUserId(supabase);
 
   if (!userId) {
-    throw new Error("Entre na Wave para seguir pessoas.");
+    throw new Error("Entre na Fluxo para seguir pessoas.");
   }
 
   return userId;

@@ -14,9 +14,9 @@ export default function DatePage() {
     <AppShell>
       <PageCard>
         <FeaturePage
-          eyebrow="Wave Date"
+          eyebrow="Fluxo Date"
           title="Conexões com vibe, localização e segurança"
-          description="Preview do recurso futuro da Wave. Não há match real ativo na beta."
+          description="Preview do recurso futuro da Fluxo. Não há match real ativo na beta."
           stats={[
             { label: "status", value: "em breve" },
             { label: "idade", value: "18+" },

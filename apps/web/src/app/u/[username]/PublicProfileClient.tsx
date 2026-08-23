@@ -253,8 +253,8 @@ export function PublicProfileClient({ username }: PublicProfileClientProps) {
     return (
       <section className={styles.notFound}>
         <h1>Esse Flow ID ainda não existe.</h1>
-        <p>Verifique o Flow ID ou descubra novos perfis na Wave.</p>
-        <Link href="/">Voltar para Wave</Link>
+        <p>Verifique o Flow ID ou descubra novos perfis na Fluxo.</p>
+        <Link href="/">Voltar para Fluxo</Link>
       </section>
     );
   }
@@ -313,7 +313,7 @@ export function PublicProfileClient({ username }: PublicProfileClientProps) {
               : activeTab === "Vibes"
                 ? "Nenhuma Vibe por enquanto."
                 : activeTab === "Waves"
-                  ? "Nenhuma Wave por enquanto."
+                  ? "Nenhuma Fluxo por enquanto."
                   : "Nada salvo visível por enquanto."}
           </p>
         )}

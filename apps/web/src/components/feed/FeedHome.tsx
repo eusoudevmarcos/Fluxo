@@ -31,7 +31,7 @@ export function FeedHome() {
       setError(
         feedError instanceof Error
           ? feedError.message
-          : "Não foi possível carregar a Wave.",
+          : "Não foi possível carregar a Fluxo.",
       );
     } finally {
       setIsLoading(false);
@@ -80,13 +80,13 @@ export function FeedHome() {
 
       <SwagCarousel />
 
-      {isLoading && <p className={styles.notice}>Carregando Wave...</p>}
+      {isLoading && <p className={styles.notice}>Carregando Fluxo...</p>}
       {error && <p className={styles.error}>{error}</p>}
 
       {!isLoading && !error && !contents.length && (
         <section className={styles.empty}>
           <strong>Seu flow ainda está calmo.</strong>
-          <span>Faça o primeiro Drop para movimentar a Wave.</span>
+          <span>Faça o primeiro Drop para movimentar a Fluxo.</span>
         </section>
       )}
 

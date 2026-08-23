@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { HiBell, HiChatAlt2, HiSearch, HiUser } from "react-icons/hi";
@@ -12,7 +12,7 @@ type MobileTopBarProps = {
 };
 
 function getInitial(name?: string | null) {
-  return (name || "Wave").trim().charAt(0).toUpperCase() || "W";
+  return (name || "Fluxo").trim().charAt(0).toUpperCase() || "W";
 }
 
 export function MobileTopBar({ onTogglePrivs }: MobileTopBarProps) {
@@ -20,7 +20,7 @@ export function MobileTopBar({ onTogglePrivs }: MobileTopBarProps) {
 
   return (
     <header className={styles.topbar}>
-      <Link href="/" className={styles.logo} aria-label="Wave Home">
+      <Link href="/" className={styles.logo} aria-label="Fluxo Home">
         <OceanLogo size="sm" />
       </Link>
 

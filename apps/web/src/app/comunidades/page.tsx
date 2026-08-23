@@ -150,9 +150,9 @@ export default function ComunidadesPage() {
         <section className={styles.hero}>
           <div>
             <span className={styles.eyebrow}>Comunidades</span>
-            <h1>Encontre sua galera na Wave.</h1>
+            <h1>Encontre sua galera na Fluxo.</h1>
             <p>
-              Comunidades com alma de Orkut, visual Wave e espaço para Drops,
+              Comunidades com alma de Orkut, visual Fluxo e espaço para Drops,
               Salas e Regras.
             </p>
           </div>

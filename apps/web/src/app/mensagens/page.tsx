@@ -14,9 +14,9 @@ export default function PrivsPage() {
       <main className={styles.page}>
         <header className={styles.header}>
           <span>Privs</span>
-          <h1>Conversas privadas da Wave</h1>
+          <h1>Conversas privadas da Fluxo</h1>
           <p>
-            Inicie conversas, acompanhe grupos e mantenha os contatos da Wave
+            Inicie conversas, acompanhe grupos e mantenha os contatos da Fluxo
             em um painel real de mensagens.
           </p>
         </header>

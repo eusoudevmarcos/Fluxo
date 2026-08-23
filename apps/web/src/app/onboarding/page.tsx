@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -157,7 +157,7 @@ export default function OnboardingPage() {
         setIsLoading(false);
       } catch (loadError) {
         if (!isMounted) return;
-        setError(getErrorMessage(loadError, "Não foi possível preparar sua entrada na Wave."));
+        setError(getErrorMessage(loadError, "Não foi possível preparar sua entrada na Fluxo."));
         setIsLoading(false);
       }
     }
@@ -518,9 +518,9 @@ export default function OnboardingPage() {
           <form className={styles.card} onSubmit={handleFinish}>
             {step === "welcome" && (
               <section className={styles.stepPanel}>
-                <span className={styles.eyebrow}>Bem-vindo à Wave</span>
+                <span className={styles.eyebrow}>Bem-vindo à Fluxo</span>
                 <h1>Vamos montar seu flow?</h1>
-                <p>Antes de entrar, personalize sua presença na Wave.</p>
+                <p>Antes de entrar, personalize sua presença na Fluxo.</p>
                 <button type="button" onClick={goNext}>Começar</button>
               </section>
             )}
@@ -529,7 +529,7 @@ export default function OnboardingPage() {
               <section className={styles.stepPanel}>
                 <span className={styles.eyebrow}>Identidade</span>
                 <h1>Como você aparece no flow?</h1>
-                <p>Seu Flow ID é como as pessoas vão te encontrar na Wave.</p>
+                <p>Seu Flow ID é como as pessoas vão te encontrar na Fluxo.</p>
                 <label>
                   Nome de exibição
                   <input
@@ -544,7 +544,7 @@ export default function OnboardingPage() {
                   <input
                     value={form.username}
                     onChange={(event) => updateUsername(event.target.value)}
-                    placeholder="marcos.wave"
+                    placeholder="marcos.fluxo"
                     required
                   />
                 </label>
@@ -557,7 +557,7 @@ export default function OnboardingPage() {
                 <span className={styles.eyebrow}>Localização</span>
                 <h1>De onde vem seu flow?</h1>
                 <p>
-                  País, estado e cidade ajudam a Wave a preparar comunidades locais.
+                  País, estado e cidade ajudam a Fluxo a preparar comunidades locais.
                   Coordenadas GPS nunca aparecem publicamente.
                 </p>
                 <div className={styles.fieldGrid}>
@@ -642,9 +642,9 @@ export default function OnboardingPage() {
             {step === "gps" && (
               <section className={styles.stepPanel}>
                 <span className={styles.eyebrow}>Localização inteligente</span>
-                <h1>Uma Wave mais próxima de você.</h1>
+                <h1>Uma Fluxo mais próxima de você.</h1>
                 <p>
-                  Compartilhar sua localização ajuda a Wave a sugerir comunidades locais,
+                  Compartilhar sua localização ajuda a Fluxo a sugerir comunidades locais,
                   melhorar a segurança, reduzir spam e preparar experiências mais relevantes
                   para você.
                 </p>
@@ -687,7 +687,7 @@ export default function OnboardingPage() {
                 <span className={styles.eyebrow}>Segurança</span>
                 <h1>Informação privada</h1>
                 <p>
-                  Essa informação é privada e ajuda a Wave a preparar recursos de
+                  Essa informação é privada e ajuda a Fluxo a preparar recursos de
                   segurança e experiências futuras.
                 </p>
                 <div className={styles.chips}>
@@ -716,7 +716,7 @@ export default function OnboardingPage() {
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={form.avatar_url} alt="" />
                     ) : (
-                      <span>wave</span>
+                      <span>fluxo</span>
                     )}
                   </div>
                   <div className={styles.avatarControls}>
@@ -770,7 +770,7 @@ export default function OnboardingPage() {
               <section className={styles.stepPanel}>
                 <span className={styles.eyebrow}>Final</span>
                 <h1>Seu flow está pronto.</h1>
-                <p>Agora você já pode marcar presença na Wave.</p>
+                <p>Agora você já pode marcar presença na Fluxo.</p>
                 <div className={styles.summary}>
                   <strong>{form.display_name || "Seu nome"}</strong>
                   <span>~{form.username || "flow.id"}</span>
@@ -778,7 +778,7 @@ export default function OnboardingPage() {
                   <p>{form.bio || "Sobre seu flow será exibido aqui quando você preencher."}</p>
                 </div>
                 <button type="submit" disabled={isSaving}>
-                  {isSaving ? "Entrando..." : "Entrar na Wave"}
+                  {isSaving ? "Entrando..." : "Entrar na Fluxo"}
                 </button>
               </section>
             )}

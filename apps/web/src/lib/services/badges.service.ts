@@ -127,7 +127,7 @@ export async function equipBadge(supabase: SupabaseClient, slug: string) {
   }
 
   if (!userData.user) {
-    throw new Error("Entre na Wave para equipar um selo.");
+    throw new Error("Entre na Fluxo para equipar um selo.");
   }
 
   const { data, error } = await supabase.rpc("equip_user_badge", {
@@ -174,7 +174,7 @@ export async function grantBadgeForFounderIfAllowed(supabase: SupabaseClient) {
   }
 
   if (!userData.user) {
-    throw new Error("Entre na Wave para validar seu perfil.");
+    throw new Error("Entre na Fluxo para validar seu perfil.");
   }
 
   const { data, error } = await supabase.rpc("apply_founder_badge", {

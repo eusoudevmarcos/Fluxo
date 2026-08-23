@@ -1,29 +1,29 @@
 {
   "expo": {
-    "name": "Wave",
-    "slug": "wave-mobile",
+    "name": "Fluxo",
+    "slug": "fluxo-mobile",
     "version": "0.1.0",
     "orientation": "portrait",
-    "scheme": "wave",
+    "scheme": "fluxo",
     "userInterfaceStyle": "dark",
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "br.com.wavesocial.app",
+      "bundleIdentifier": "br.com.fluxosocial.app",
       "supportsTablet": false,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
-      "package": "br.com.wavesocial.app",
+      "package": "br.com.fluxosocial.app",
       "adaptiveIcon": {
         "backgroundColor": "#020617"
       }
     },
     "extra": {
-      "appName": "Wave",
+      "appName": "Fluxo",
       "eas": {
         "projectId": "48bb0ac4-0fdd-4b4c-a4f3-b3dc0c08f5e2"
       }

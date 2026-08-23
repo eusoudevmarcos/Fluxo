@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -10,18 +10,18 @@ import { createClient } from "@/lib/supabase/client";
 import styles from "./SwagCarousel.module.css";
 
 function getDisplayName(flow: FlowPreview) {
-  return flow.author?.display_name || flow.author?.username || "Wave";
+  return flow.author?.display_name || flow.author?.username || "Fluxo";
 }
 
 function getInitial(name: string) {
   return name.trim().charAt(0).toUpperCase() || "W";
 }
 
-function getFounderBadge(userId?: string, label = "Fundador Wave"): EquippedBadge {
+function getFounderBadge(userId?: string, label = "Fundador Fluxo"): EquippedBadge {
   return {
     user_id: userId,
     badge_slug: "badge-founder",
-    badge_name: label || "Fundador Wave",
+    badge_name: label || "Fundador Fluxo",
     category: "founder",
     rarity: "milenar",
     color_primary: "#ffd01a",
@@ -96,7 +96,7 @@ export function SwagCarousel() {
           <div>
             <strong>Flows dos Seletos</strong>
             {!isLoading && !error && !flows.length && (
-              <span>Sugestões para você sentir o ritmo da Wave.</span>
+              <span>Sugestões para você sentir o ritmo da Fluxo.</span>
             )}
           </div>
           <Link href="/flows">Ver todos</Link>
@@ -122,7 +122,7 @@ export function SwagCarousel() {
             const flowBadge =
               flow.author?.equipped_badge ??
               (flow.author?.is_founder
-                ? getFounderBadge(flow.author.user_id, flow.author.official_label ?? "Fundador Wave")
+                ? getFounderBadge(flow.author.user_id, flow.author.official_label ?? "Fundador Fluxo")
                 : null);
 
             return (
@@ -206,7 +206,7 @@ export function SwagCarousel() {
                       (selectedFlow.author?.is_founder
                         ? getFounderBadge(
                             selectedFlow.author.user_id,
-                            selectedFlow.author.official_label ?? "Fundador Wave",
+                            selectedFlow.author.official_label ?? "Fundador Fluxo",
                           )
                         : null)
                     }

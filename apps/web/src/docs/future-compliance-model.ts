@@ -1,4 +1,4 @@
-// Future Wave compliance model.
+// Future Fluxo compliance model.
 //
 // This file is intentionally not imported anywhere in the app.
 // It exists only as technical documentation for a future compliance phase.
@@ -9,7 +9,7 @@
 // - Google login
 // - basic social profile fields
 //
-// Future versions of Wave may introduce CPF collection when legally required.
+// Future versions of Fluxo may introduce CPF collection when legally required.
 // Future versions may enforce a minimum age policy.
 // Future versions may support documentary validation for identity verification.
 // Future versions may support guardian accounts for supervised youth experiences.

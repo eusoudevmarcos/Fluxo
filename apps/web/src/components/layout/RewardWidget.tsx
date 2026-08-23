@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -71,7 +71,7 @@ export function RewardWidget() {
         </span>
         <div>
           <small>Nível {level}</small>
-          <strong>{gamification?.is_founder ? "Fundador Wave" : "Waveiro"}</strong>
+          <strong>{gamification?.is_founder ? "Fundador Fluxo" : "Fluxeiro"}</strong>
         </div>
         <span className={styles.xp}>
           {xpCurrent.toLocaleString("pt-BR")} / {xpNext.toLocaleString("pt-BR")} XP

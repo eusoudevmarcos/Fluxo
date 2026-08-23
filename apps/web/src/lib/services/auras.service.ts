@@ -26,7 +26,7 @@ export async function listAuraDefinitions(supabase: SupabaseClient) {
 export async function getMyAuras(supabase: SupabaseClient) {
   const { data: userData, error: userError } = await supabase.auth.getUser();
   if (userError) throw userError;
-  if (!userData.user) throw new Error("Entre na Wave para ver suas Auras.");
+  if (!userData.user) throw new Error("Entre na Fluxo para ver suas Auras.");
 
   const { data, error } = await supabase
     .from("user_auras")
@@ -82,7 +82,7 @@ export async function getEquippedAurasByUserIds(
 export async function equipAura(supabase: SupabaseClient, auraSlug: string) {
   const { data: userData, error: userError } = await supabase.auth.getUser();
   if (userError) throw userError;
-  if (!userData.user) throw new Error("Entre na Wave para equipar uma Aura.");
+  if (!userData.user) throw new Error("Entre na Fluxo para equipar uma Aura.");
 
   const { data, error } = await supabase.rpc("equip_user_aura", {
     target_user_id: userData.user.id,

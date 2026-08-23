@@ -54,11 +54,11 @@ function normalizeUsername(value: string) {
     .replace(/[._]{2,}/g, ".")
     .replace(/^[._]+|[._]+$/g, "");
 
-  return normalized || "wave";
+  return normalized || "fluxo";
 }
 
 function getEmailBase(email?: string | null) {
-  return normalizeUsername(email?.split("@")[0] ?? "wave");
+  return normalizeUsername(email?.split("@")[0] ?? "fluxo");
 }
 
 function getDisplayDate(value: string) {
@@ -190,7 +190,7 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
     );
   }
 
-  const title = profile?.display_name || profile?.username || session.user.email || "Wave";
+  const title = profile?.display_name || profile?.username || session.user.email || "Fluxo";
   const handle = profile?.username ? `@${profile.username}` : session.user.email;
 
   return (
@@ -207,7 +207,7 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
     >
       <View style={styles.header}>
         <View>
-          <Text style={styles.logo}>wave</Text>
+          <Text style={styles.logo}>fluxo</Text>
           <Text style={styles.eyebrow}>Beta nativo conectado</Text>
         </View>
         <Pressable onPress={onSignOut} style={styles.signOutButton}>

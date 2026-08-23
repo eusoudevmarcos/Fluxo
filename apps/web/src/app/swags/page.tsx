@@ -6,7 +6,7 @@ const flows = [
   { title: "Surf no pôr do sol", meta: "12,4k dahoras", description: "Vídeo curto quase quadrado com clima cinematográfico e alta presença.", action: "Assistir" },
   { title: "Treino de domingo", meta: "8,1k waves", description: "Conteúdo rápido com energia social e comentários acontecendo agora.", action: "Abrir" },
   { title: "Vida na cidade", meta: "5,8k presencas", description: "Recortes visuais do agora em cards leves e faceis de explorar.", action: "Ver" },
-  { title: "Trips Wave", meta: "2,7k seletos", description: "Flows de viagem, lifestyle e comunidades conectadas por vibe.", action: "Discover" },
+  { title: "Trips Fluxo", meta: "2,7k seletos", description: "Flows de viagem, lifestyle e comunidades conectadas por vibe.", action: "Discover" },
 ];
 
 export default function FlowsPage() {

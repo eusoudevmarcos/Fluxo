@@ -114,8 +114,8 @@ export default function LegalAcceptPage() {
   return (
     <LegalShell>
       <form className={styles.acceptCard} onSubmit={handleSubmit}>
-        <span>Wave Legal</span>
-        <h1>Antes de entrar na Wave</h1>
+        <span>Fluxo Legal</span>
+        <h1>Antes de entrar na Fluxo</h1>
         <p>
           Para proteger você, a comunidade e a beta, precisamos registrar seu aceite
           das versoes atuais dos documentos legais.
@@ -123,7 +123,7 @@ export default function LegalAcceptPage() {
 
         <ul>
           <li>Conteúdos, imagem, voz, comentários e comunidades seguem regras claras.</li>
-          <li>Privs e recursos futuros também ficam sujeitos à segurança da Wave.</li>
+          <li>Privs e recursos futuros também ficam sujeitos à segurança da Fluxo.</li>
           <li>Podemos pedir novo aceite quando houver mudancas relevantes.</li>
         </ul>
 

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
@@ -310,7 +310,7 @@ export function PerfilClient() {
 
           {!isLoading && !profile && !configError && (
             <div className={styles.empty}>
-              <p>Entre na Wave para criar e visualizar seu perfil.</p>
+              <p>Entre na Fluxo para criar e visualizar seu perfil.</p>
               <Link href="/auth">Entrar ou criar conta</Link>
             </div>
           )}
@@ -331,7 +331,7 @@ export function PerfilClient() {
 
               <section className={styles.profileDetails}>
                 <div className={styles.detailCard}>
-                  <span>Ficha Wave</span>
+                  <span>Ficha Fluxo</span>
                   <strong>{getDateIntentLabel(profile.date_intent)}</strong>
                   <p>{profile.looking_for || "Conte o que você procura para melhorar conexões no Date e no Flow."}</p>
                 </div>
@@ -349,7 +349,7 @@ export function PerfilClient() {
                 <div className={styles.detailCard}>
                   <span>Interesses</span>
                   <div className={styles.interests}>
-                    {(profile.interests?.length ? profile.interests : ["Flow", "Vibes", "Wave"]).map((interest) => (
+                    {(profile.interests?.length ? profile.interests : ["Flow", "Vibes", "Fluxo"]).map((interest) => (
                       <span key={interest}>{interest}</span>
                     ))}
                   </div>
@@ -379,7 +379,7 @@ export function PerfilClient() {
                       : activeTab === "Vibes"
                         ? "Nenhuma Vibe ainda."
                         : activeTab === "Waves"
-                        ? "Nenhuma Wave por enquanto."
+                        ? "Nenhuma Fluxo por enquanto."
                         : "Nada salvo ainda."}
                   </p>
                 )}

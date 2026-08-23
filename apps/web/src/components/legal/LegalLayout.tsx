@@ -17,7 +17,7 @@ export function LegalShell({ children }: LegalShellProps) {
   return (
     <main className={styles.page}>
       <header className={styles.topbar}>
-        <Link href="/" aria-label="Voltar para Wave">
+        <Link href="/" aria-label="Voltar para Fluxo">
           <OceanLogo size="md" />
         </Link>
         <nav>

@@ -302,7 +302,7 @@ export async function createContent(
   }
 
   if (!userData.user) {
-    throw new Error("Entre na Wave para criar.");
+    throw new Error("Entre na Fluxo para criar.");
   }
 
   const text = input.text.trim();
@@ -357,7 +357,7 @@ export async function deleteContent(supabase: SupabaseClient, contentId: string)
   }
 
   if (!userData.user) {
-    throw new Error("Entre na Wave para apagar essa criação.");
+    throw new Error("Entre na Fluxo para apagar essa criação.");
   }
 
   const { error } = await supabase.from("contents").delete().eq("id", contentId);
@@ -379,7 +379,7 @@ export async function setCommentsEnabled(
   }
 
   if (!userData.user) {
-    throw new Error("Entre na Wave para gerenciar comentários.");
+    throw new Error("Entre na Fluxo para gerenciar comentários.");
   }
 
   const { data, error } = await supabase

@@ -30,7 +30,7 @@ type CommunityRoomChatProps = {
 };
 
 function getDisplayName(message: CommunityRoomMessage) {
-  return message.sender?.display_name || message.sender?.username || "Wave User";
+  return message.sender?.display_name || message.sender?.username || "Fluxo User";
 }
 
 function getInitial(name: string) {

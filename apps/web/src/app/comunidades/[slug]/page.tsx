@@ -185,7 +185,7 @@ export default function CommunityPage({ params }: CommunityPageProps) {
       <AppShell>
         <section className={styles.notFound}>
           <h1>Essa comunidade ainda não existe.</h1>
-          <p>Verifique o endereço ou descubra novas comunidades na Wave.</p>
+          <p>Verifique o endereço ou descubra novas comunidades na Fluxo.</p>
           <Link href="/comunidades">Voltar para Comunidades</Link>
         </section>
       </AppShell>
@@ -342,7 +342,7 @@ export default function CommunityPage({ params }: CommunityPageProps) {
 
         {activeTab === "regras" && (
           <section className={styles.rules}>
-            <p>Respeite as regras da comunidade e a segurança da Wave.</p>
+            <p>Respeite as regras da comunidade e a segurança da Fluxo.</p>
             <ul>
               {(community.rules?.length ? community.rules : ["Respeite os membros."]).map((rule) => (
                 <li key={rule}>{rule}</li>
