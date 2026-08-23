@@ -49,7 +49,7 @@ export default function App() {
     return (
       <View style={styles.centered}>
         <StatusBar style="light" />
-        <Text style={styles.logo}>wave</Text>
+        <Text style={styles.logo}>fluxo</Text>
         <Text style={styles.message}>{configError}</Text>
       </View>
     );
