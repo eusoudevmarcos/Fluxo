@@ -11,6 +11,7 @@ import {
 } from "react-native";
 
 import { Avatar } from "../components/Avatar";
+import { SealBadge } from "../components/SealBadge";
 import { createMobileSupabaseClient } from "../lib/supabase/client";
 import {
   getProfileContentStats,
@@ -26,6 +27,7 @@ import {
   type Profile,
   type RelationshipStats,
 } from "../lib/services/profiles.service";
+import { getVerifiedSeal, type VerifiedSeal } from "../lib/services/seals.service";
 
 type ProfileScreenProps = {
   session: Session;
@@ -45,6 +47,7 @@ export function ProfileScreen({ session, userId, onBack, onSignOut, onMessageUse
     dahorasReceived: 0,
   });
   const [contents, setContents] = useState<ContentRow[]>([]);
+  const [verifiedSeal, setVerifiedSeal] = useState<VerifiedSeal | null>(null);
   const [isFollowing, setIsFollowing] = useState(false);
   const [canFollow, setCanFollow] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -54,13 +57,14 @@ export function ProfileScreen({ session, userId, onBack, onSignOut, onMessageUse
   const loadProfile = useCallback(async () => {
     const supabase = createMobileSupabaseClient();
 
-    const [profileData, relationshipStats, profileContentStats, authoredContents, relationshipState] =
+    const [profileData, relationshipStats, profileContentStats, authoredContents, relationshipState, seal] =
       await Promise.all([
         getProfileByUserId(supabase, userId),
         getRelationshipStats(supabase, userId),
         getProfileContentStats(supabase, userId),
         listContentsByAuthorId(supabase, userId),
         isSelf ? Promise.resolve({ isFollowing: false, canFollow: false }) : getRelationshipState(supabase, userId),
+        getVerifiedSeal(supabase, userId),
       ]);
 
     setProfile(profileData);
@@ -69,6 +73,7 @@ export function ProfileScreen({ session, userId, onBack, onSignOut, onMessageUse
     setContents(authoredContents);
     setIsFollowing(relationshipState.isFollowing);
     setCanFollow(relationshipState.canFollow);
+    setVerifiedSeal(seal);
   }, [userId, isSelf]);
 
   useEffect(() => {
@@ -147,7 +152,10 @@ export function ProfileScreen({ session, userId, onBack, onSignOut, onMessageUse
       <View style={styles.intro}>
         <Avatar avatarUrl={profile?.avatar_url} label={displayName} large />
         <View style={styles.introCopy}>
-          <Text style={styles.username}>@{profile?.username || "fluxo"}</Text>
+          <View style={styles.usernameRow}>
+            <Text style={styles.username}>@{profile?.username || "fluxo"}</Text>
+            <SealBadge seal={verifiedSeal} size={20} />
+          </View>
           <Text style={styles.bio}>{profile?.bio || "Viva o flow. Sinta o momentum."}</Text>
           {!!profile?.location_label && <Text style={styles.location}>⌖ {profile.location_label}</Text>}
         </View>
@@ -267,6 +275,11 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 7,
     justifyContent: "center",
+  },
+  usernameRow: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 8,
   },
   username: {
     color: "#ffffff",

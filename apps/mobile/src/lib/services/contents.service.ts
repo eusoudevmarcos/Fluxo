@@ -1,5 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
+import { getVerifiedSealsByUserIds, type VerifiedSeal } from "./seals.service";
+
 export type ContentType = "post" | "flow";
 export type MediaType = "image" | "video" | "none";
 
@@ -8,6 +10,7 @@ export type ContentAuthor = {
   username: string | null;
   display_name: string | null;
   avatar_url: string | null;
+  verified_seal?: VerifiedSeal | null;
 };
 
 export type ContentRow = {
@@ -75,7 +78,7 @@ export async function listFeedContents(
   const contentIds = contents.map((content) => content.id);
   const authorIds = [...new Set(contents.map((content) => content.author_id))];
 
-  const [profilesResult, dahorasResult, commentsResult, wavesResult, myDahorasResult] =
+  const [profilesResult, dahorasResult, commentsResult, wavesResult, myDahorasResult, verifiedSeals] =
     await Promise.all([
       supabase
         .from("profiles")
@@ -91,6 +94,7 @@ export async function listFeedContents(
             .eq("user_id", currentUserId)
             .in("content_id", contentIds)
         : Promise.resolve({ data: [], error: null }),
+      getVerifiedSealsByUserIds(supabase, authorIds),
     ]);
 
   if (profilesResult.error) throw profilesResult.error;
@@ -100,7 +104,10 @@ export async function listFeedContents(
   if (myDahorasResult.error) throw myDahorasResult.error;
 
   const profiles = new Map(
-    ((profilesResult.data ?? []) as ContentAuthor[]).map((profile) => [profile.user_id, profile]),
+    ((profilesResult.data ?? []) as ContentAuthor[]).map((profile) => [
+      profile.user_id,
+      { ...profile, verified_seal: verifiedSeals.get(profile.user_id) ?? null },
+    ]),
   );
   const dahoraCounts = countByContentId((dahorasResult.data ?? []) as CountableContentRow[]);
   const commentsCounts = countByContentId((commentsResult.data ?? []) as CountableContentRow[]);

@@ -1,5 +1,7 @@
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
 
+import { getVerifiedSealsByUserIds, type VerifiedSeal } from "./seals.service";
+
 export type Profile = {
   user_id: string;
   username: string | null;
@@ -17,6 +19,7 @@ export type Profile = {
 export type PublicProfile = Profile & {
   is_following: boolean;
   can_follow: boolean;
+  verified_seal: VerifiedSeal | null;
 };
 
 export type RelationshipStats = {
@@ -67,12 +70,14 @@ async function withRelationshipState(
 ): Promise<PublicProfile[]> {
   const currentUserId = await getCurrentUserId(supabase);
   const targetIds = profiles.map((profile) => profile.user_id).filter(Boolean);
+  const verifiedSeals = await getVerifiedSealsByUserIds(supabase, targetIds);
 
   if (!currentUserId || !targetIds.length) {
     return profiles.map((profile) => ({
       ...profile,
       is_following: false,
       can_follow: Boolean(currentUserId && currentUserId !== profile.user_id),
+      verified_seal: verifiedSeals.get(profile.user_id) ?? null,
     }));
   }
 
@@ -92,6 +97,7 @@ async function withRelationshipState(
     ...profile,
     is_following: followingIds.has(profile.user_id),
     can_follow: currentUserId !== profile.user_id,
+    verified_seal: verifiedSeals.get(profile.user_id) ?? null,
   }));
 }
 

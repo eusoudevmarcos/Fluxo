@@ -10,6 +10,7 @@ import {
 } from "react-native";
 
 import { Avatar } from "../components/Avatar";
+import { SealBadge } from "../components/SealBadge";
 import { createMobileSupabaseClient } from "../lib/supabase/client";
 import { searchProfiles, type PublicProfile } from "../lib/services/profiles.service";
 
@@ -82,7 +83,10 @@ export function SearchScreen({ onOpenProfile }: SearchScreenProps) {
             <Pressable onPress={() => onOpenProfile(item.user_id)} style={styles.row}>
               <Avatar avatarUrl={item.avatar_url} label={item.display_name || item.username || "Fluxo"} />
               <View style={styles.rowText}>
-                <Text style={styles.rowName}>{item.display_name || item.username}</Text>
+                <View style={styles.rowNameLine}>
+                  <Text style={styles.rowName}>{item.display_name || item.username}</Text>
+                  <SealBadge seal={item.verified_seal} size={14} />
+                </View>
                 {!!item.username && <Text style={styles.rowUsername}>@{item.username}</Text>}
               </View>
               {item.is_following && <Text style={styles.followingTag}>Seguindo</Text>}
@@ -142,6 +146,11 @@ const styles = StyleSheet.create({
   },
   rowText: {
     flex: 1,
+  },
+  rowNameLine: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 5,
   },
   rowName: {
     color: "#ffffff",

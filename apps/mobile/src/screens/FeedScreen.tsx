@@ -12,6 +12,7 @@ import {
 } from "react-native";
 
 import { Avatar } from "../components/Avatar";
+import { SealBadge } from "../components/SealBadge";
 import { createMobileSupabaseClient } from "../lib/supabase/client";
 import { toggleDahora } from "../lib/services/dahoras.service";
 import { listFeedContents, type FeedContent } from "../lib/services/contents.service";
@@ -51,7 +52,10 @@ function PostCard({
       <Pressable onPress={() => onOpenProfile(content.author_id)} style={styles.cardHeader}>
         <Avatar avatarUrl={content.author?.avatar_url} label={authorName} />
         <View style={styles.cardHeaderText}>
-          <Text style={styles.authorName}>{authorName}</Text>
+          <View style={styles.authorNameRow}>
+            <Text style={styles.authorName}>{authorName}</Text>
+            <SealBadge seal={content.author?.verified_seal} size={14} />
+          </View>
           <Text style={styles.timestamp}>
             {content.author?.username ? `~${content.author.username} · ` : ""}
             {timeAgo(content.created_at)}
@@ -243,6 +247,11 @@ const styles = StyleSheet.create({
   },
   cardHeaderText: {
     flex: 1,
+  },
+  authorNameRow: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 5,
   },
   authorName: {
     color: "#ffffff",
