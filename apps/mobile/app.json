@@ -41,6 +41,12 @@
           "cameraPermission": "O Fluxo usa a câmera para você fotografar e criar posts.",
           "microphonePermission": "O Fluxo usa o microfone para gravar vídeos nos seus posts."
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "O Fluxo usa sua localização para sugerir comunidades locais e melhorar a segurança."
+        }
       ]
     ],
     "extra": {

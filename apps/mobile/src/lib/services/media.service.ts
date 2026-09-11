@@ -13,8 +13,10 @@ export type UploadedContentMedia = {
 };
 
 const CONTENT_MEDIA_BUCKET = "content-media";
+const AVATAR_BUCKET = "avatars";
 const IMAGE_MAX_SIZE = 10 * 1024 * 1024;
 const VIDEO_MAX_SIZE = 100 * 1024 * 1024;
+const AVATAR_MAX_SIZE = 5 * 1024 * 1024;
 
 const ALLOWED_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
 const ALLOWED_VIDEO_TYPES = new Set(["video/mp4", "video/webm", "video/quicktime"]);
@@ -106,4 +108,39 @@ export async function uploadContentMedia(
     publicUrl: data.publicUrl,
     mediaType,
   };
+}
+
+export async function uploadAvatar(supabase: SupabaseClient, asset: PickedMedia): Promise<string> {
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError) throw userError;
+  if (!userData.user) throw new Error("Entre na Fluxo para adicionar uma foto.");
+
+  const response = await fetch(asset.uri);
+  const arrayBuffer = await response.arrayBuffer();
+  const mimeType = resolveMimeType(asset);
+
+  if (!ALLOWED_IMAGE_TYPES.has(mimeType)) {
+    throw new Error("Escolha uma foto em formato suportado.");
+  }
+
+  if (arrayBuffer.byteLength > AVATAR_MAX_SIZE) {
+    throw new Error("A foto de perfil pode ter no máximo 5MB.");
+  }
+
+  const extension = mimeType.split("/")[1] ?? "jpg";
+  const path = `${userData.user.id}/avatar.${extension}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from(AVATAR_BUCKET)
+    .upload(path, arrayBuffer, {
+      cacheControl: "3600",
+      contentType: mimeType,
+      upsert: true,
+    });
+
+  if (uploadError) throw uploadError;
+
+  const { data } = supabase.storage.from(AVATAR_BUCKET).getPublicUrl(path);
+
+  return `${data.publicUrl}?t=${Date.now()}`;
 }

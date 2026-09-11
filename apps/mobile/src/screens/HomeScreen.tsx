@@ -8,6 +8,7 @@ import { ensureMobileProfile, type Profile } from "../lib/services/profiles.serv
 import { CreateScreen } from "./CreateScreen";
 import { FeedScreen } from "./FeedScreen";
 import { MessagesScreen } from "./MessagesScreen";
+import { OnboardingScreen } from "./OnboardingScreen";
 import { ProfileScreen } from "./ProfileScreen";
 import { SearchScreen } from "./SearchScreen";
 
@@ -89,6 +90,16 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
       <View style={styles.centered}>
         <Text style={styles.error}>{errorMessage}</Text>
       </View>
+    );
+  }
+
+  if (profile && !profile.profile_required_completed) {
+    return (
+      <OnboardingScreen
+        onComplete={setProfile}
+        profile={profile}
+        session={session}
+      />
     );
   }
 

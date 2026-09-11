@@ -2,6 +2,9 @@ import type { Session, SupabaseClient } from "@supabase/supabase-js";
 
 import { getVerifiedSealsByUserIds, type VerifiedSeal } from "./seals.service";
 
+export type GeolocationPermission = "unknown" | "granted" | "denied" | "unavailable";
+export type BiologicalSex = "male" | "female" | "intersex" | "prefer_not_to_say";
+
 export type Profile = {
   user_id: string;
   username: string | null;
@@ -14,6 +17,29 @@ export type Profile = {
   vibe: string | null;
   interests: string[] | null;
   onboarding_completed: boolean | null;
+  profile_required_completed: boolean | null;
+  state: string | null;
+  city: string | null;
+  country: string | null;
+  biological_sex: BiologicalSex | null;
+  geolocation_permission: GeolocationPermission | null;
+};
+
+export type ProfileRequiredOnboardingInput = {
+  display_name: string;
+  username: string;
+  avatar_url: string;
+  bio: string;
+  state: string;
+  city: string;
+  country: string;
+  location_lat: number | null;
+  location_lng: number | null;
+  location_accuracy_meters: number | null;
+  geolocation_permission: GeolocationPermission;
+  geolocation_consent_at: string | null;
+  geolocation_denied_at: string | null;
+  biological_sex: BiologicalSex;
 };
 
 export type PublicProfile = Profile & {
@@ -33,7 +59,7 @@ export type RelationshipState = {
 };
 
 const PROFILE_COLUMNS =
-  "user_id,username,display_name,avatar_url,bio,theme,aura,location_label,vibe,interests,onboarding_completed";
+  "user_id,username,display_name,avatar_url,bio,theme,aura,location_label,vibe,interests,onboarding_completed,profile_required_completed,state,city,country,biological_sex,geolocation_permission";
 
 function normalizeUsername(value: string) {
   const normalized = value
@@ -283,4 +309,90 @@ export async function toggleFollowProfile(
 
   await followProfile(supabase, targetUserId);
   return true;
+}
+
+export async function usernameExists(
+  supabase: SupabaseClient,
+  username: string,
+  currentUserId?: string,
+) {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("user_id")
+    .eq("username", username)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  return Boolean(data && data.user_id !== currentUserId);
+}
+
+export async function isUsernameAvailable(
+  supabase: SupabaseClient,
+  username: string,
+  currentUserId?: string,
+) {
+  const normalized = normalizeUsername(username);
+  if (normalized.length < 3) return false;
+  return !(await usernameExists(supabase, normalized, currentUserId));
+}
+
+export async function updateProfileRequiredInfo(
+  supabase: SupabaseClient,
+  input: ProfileRequiredOnboardingInput,
+): Promise<Profile> {
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError) throw userError;
+  if (!userData.user) throw new Error("Usuário não autenticado.");
+
+  const username = normalizeUsername(input.username);
+  const displayName = input.display_name.trim();
+  const state = input.state.trim();
+  const city = input.city.trim();
+
+  if (!displayName) throw new Error("Informe o nome que vai aparecer no perfil.");
+  if (username.length < 3) throw new Error("Seu Flow ID precisa ter pelo menos 3 caracteres.");
+  if (!state || !city) throw new Error("Informe sua cidade e estado para continuar.");
+  if (!input.biological_sex) throw new Error("Selecione uma opção para continuar.");
+  if (input.geolocation_permission === "unknown") {
+    throw new Error("Avance pela etapa de localização para continuar.");
+  }
+
+  if (await usernameExists(supabase, username, userData.user.id)) {
+    throw new Error("Esse Flow ID já está em uso.");
+  }
+
+  const locationLabel = `${city}, ${state}`;
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({
+      display_name: displayName,
+      username,
+      avatar_url: input.avatar_url.trim() || null,
+      bio: input.bio.trim(),
+      state,
+      city,
+      country: input.country || "BR",
+      location_label: locationLabel,
+      location_lat: input.location_lat,
+      location_lng: input.location_lng,
+      location_accuracy_meters: input.location_accuracy_meters,
+      geolocation_permission: input.geolocation_permission,
+      geolocation_consent_at: input.geolocation_consent_at,
+      geolocation_denied_at: input.geolocation_denied_at,
+      biological_sex: input.biological_sex,
+      onboarding_completed: true,
+      profile_required_completed: true,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("user_id", userData.user.id)
+    .select(PROFILE_COLUMNS)
+    .single();
+
+  if (error) {
+    if (error.code === "23505") throw new Error("Esse Flow ID já está em uso.");
+    throw error;
+  }
+
+  return data as Profile;
 }
