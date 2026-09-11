@@ -32,6 +32,7 @@ export type FeedContent = ContentRow & {
   comments_count: number;
   wave_count: number;
   has_dahora: boolean;
+  has_waved: boolean;
 };
 
 type CountableContentRow = { content_id: string };
@@ -78,30 +79,45 @@ export async function listFeedContents(
   const contentIds = contents.map((content) => content.id);
   const authorIds = [...new Set(contents.map((content) => content.author_id))];
 
-  const [profilesResult, dahorasResult, commentsResult, wavesResult, myDahorasResult, verifiedSeals] =
-    await Promise.all([
-      supabase
-        .from("profiles")
-        .select("user_id,username,display_name,avatar_url")
-        .in("user_id", authorIds),
-      supabase.from("dahoras").select("content_id").in("content_id", contentIds),
-      supabase.from("comments").select("content_id").in("content_id", contentIds),
-      supabase.from("waves").select("content_id").in("content_id", contentIds),
-      currentUserId
-        ? supabase
-            .from("dahoras")
-            .select("content_id")
-            .eq("user_id", currentUserId)
-            .in("content_id", contentIds)
-        : Promise.resolve({ data: [], error: null }),
-      getVerifiedSealsByUserIds(supabase, authorIds),
-    ]);
+  const [
+    profilesResult,
+    dahorasResult,
+    commentsResult,
+    wavesResult,
+    myDahorasResult,
+    myWavesResult,
+    verifiedSeals,
+  ] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("user_id,username,display_name,avatar_url")
+      .in("user_id", authorIds),
+    supabase.from("dahoras").select("content_id").in("content_id", contentIds),
+    supabase.from("comments").select("content_id").in("content_id", contentIds),
+    supabase.from("waves").select("content_id").in("content_id", contentIds),
+    currentUserId
+      ? supabase
+          .from("dahoras")
+          .select("content_id")
+          .eq("user_id", currentUserId)
+          .in("content_id", contentIds)
+      : Promise.resolve({ data: [], error: null }),
+    currentUserId
+      ? supabase
+          .from("waves")
+          .select("content_id")
+          .eq("user_id", currentUserId)
+          .in("content_id", contentIds)
+      : Promise.resolve({ data: [], error: null }),
+    getVerifiedSealsByUserIds(supabase, authorIds),
+  ]);
 
   if (profilesResult.error) throw profilesResult.error;
   if (dahorasResult.error) throw dahorasResult.error;
   if (commentsResult.error) throw commentsResult.error;
   if (wavesResult.error) throw wavesResult.error;
   if (myDahorasResult.error) throw myDahorasResult.error;
+  if (myWavesResult.error) throw myWavesResult.error;
 
   const profiles = new Map(
     ((profilesResult.data ?? []) as ContentAuthor[]).map((profile) => [
@@ -115,6 +131,9 @@ export async function listFeedContents(
   const myDahoraIds = new Set(
     ((myDahorasResult.data ?? []) as CountableContentRow[]).map((row) => row.content_id),
   );
+  const myWaveIds = new Set(
+    ((myWavesResult.data ?? []) as CountableContentRow[]).map((row) => row.content_id),
+  );
 
   return contents.map((content) => ({
     ...content,
@@ -123,6 +142,7 @@ export async function listFeedContents(
     comments_count: commentsCounts[content.id] ?? 0,
     wave_count: waveCounts[content.id] ?? 0,
     has_dahora: myDahoraIds.has(content.id),
+    has_waved: myWaveIds.has(content.id),
   }));
 }
 

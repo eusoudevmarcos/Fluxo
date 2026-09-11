@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 
+import { PostVideo } from "../components/PostVideo";
 import { createMobileSupabaseClient } from "../lib/supabase/client";
 import { createContent } from "../lib/services/contents.service";
 import { uploadContentMedia, type PickedMedia } from "../lib/services/media.service";
@@ -138,9 +139,7 @@ export function CreateScreen({ onCreated }: CreateScreenProps) {
       {media && (
         <View style={styles.mediaPreview}>
           {media.type === "video" ? (
-            <View style={styles.videoPlaceholder}>
-              <Text style={styles.videoPlaceholderText}>▶ Vídeo selecionado</Text>
-            </View>
+            <PostVideo style={styles.mediaImage} uri={media.uri} />
           ) : (
             <Image source={{ uri: media.uri }} style={styles.mediaImage} />
           )}
@@ -211,18 +210,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     height: 260,
     width: "100%",
-  },
-  videoPlaceholder: {
-    alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.06)",
-    borderRadius: 16,
-    height: 180,
-    justifyContent: "center",
-  },
-  videoPlaceholderText: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "700",
   },
   removeMediaButton: {
     alignSelf: "flex-start",

@@ -27,7 +27,11 @@ import {
   type Profile,
   type RelationshipStats,
 } from "../lib/services/profiles.service";
-import { getVerifiedSeal, type VerifiedSeal } from "../lib/services/seals.service";
+import {
+  checkAndGrantVerifiedSeal,
+  getVerifiedSeal,
+  type VerifiedSeal,
+} from "../lib/services/seals.service";
 
 type ProfileScreenProps = {
   session: Session;
@@ -56,6 +60,10 @@ export function ProfileScreen({ session, userId, onBack, onSignOut, onMessageUse
 
   const loadProfile = useCallback(async () => {
     const supabase = createMobileSupabaseClient();
+
+    if (isSelf) {
+      await checkAndGrantVerifiedSeal(supabase, userId).catch(() => undefined);
+    }
 
     const [profileData, relationshipStats, profileContentStats, authoredContents, relationshipState, seal] =
       await Promise.all([

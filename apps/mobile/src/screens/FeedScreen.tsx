@@ -12,9 +12,12 @@ import {
 } from "react-native";
 
 import { Avatar } from "../components/Avatar";
+import { CommentsModal } from "../components/CommentsModal";
+import { PostVideo } from "../components/PostVideo";
 import { SealBadge } from "../components/SealBadge";
 import { createMobileSupabaseClient } from "../lib/supabase/client";
 import { toggleDahora } from "../lib/services/dahoras.service";
+import { toggleWave } from "../lib/services/waves.service";
 import { listFeedContents, type FeedContent } from "../lib/services/contents.service";
 import { getProfileName, type Profile } from "../lib/services/profiles.service";
 
@@ -38,12 +41,16 @@ function timeAgo(isoDate: string) {
 
 function PostCard({
   content,
+  onOpenComments,
   onOpenProfile,
   onToggleDahora,
+  onToggleWave,
 }: {
   content: FeedContent;
+  onOpenComments: (contentId: string) => void;
   onOpenProfile: (userId: string) => void;
   onToggleDahora: (contentId: string) => void;
+  onToggleWave: (contentId: string) => void;
 }) {
   const authorName = content.author?.display_name || content.author?.username || "Fluxo";
 
@@ -69,6 +76,10 @@ function PostCard({
         <Image source={{ uri: content.media_url }} style={styles.media} resizeMode="cover" />
       )}
 
+      {content.media_url && content.media_type === "video" && (
+        <PostVideo style={styles.media} uri={content.media_url} />
+      )}
+
       <View style={styles.actionsRow}>
         <Pressable onPress={() => onToggleDahora(content.id)} style={styles.actionButton}>
           <Text style={[styles.actionIcon, content.has_dahora && styles.actionIconActive]}>
@@ -76,14 +87,14 @@ function PostCard({
           </Text>
           <Text style={styles.actionValue}>{content.dahora_count}</Text>
         </Pressable>
-        <View style={styles.actionButton}>
+        <Pressable onPress={() => onOpenComments(content.id)} style={styles.actionButton}>
           <Text style={styles.actionIcon}>☰</Text>
           <Text style={styles.actionValue}>{content.comments_count}</Text>
-        </View>
-        <View style={styles.actionButton}>
-          <Text style={styles.actionIcon}>◒</Text>
+        </Pressable>
+        <Pressable onPress={() => onToggleWave(content.id)} style={styles.actionButton}>
+          <Text style={[styles.actionIcon, content.has_waved && styles.actionIconActive]}>◒</Text>
           <Text style={styles.actionValue}>{content.wave_count}</Text>
-        </View>
+        </Pressable>
       </View>
     </View>
   );
@@ -94,6 +105,7 @@ export function FeedScreen({ session, profile, onOpenProfile }: FeedScreenProps)
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [openCommentsForContentId, setOpenCommentsForContentId] = useState<string | null>(null);
 
   const loadFeed = useCallback(async () => {
     const supabase = createMobileSupabaseClient();
@@ -162,6 +174,45 @@ export function FeedScreen({ session, profile, onOpenProfile }: FeedScreenProps)
     }
   }
 
+  async function handleToggleWave(contentId: string) {
+    setContents((previous) =>
+      previous.map((content) =>
+        content.id === contentId
+          ? {
+              ...content,
+              has_waved: !content.has_waved,
+              wave_count: content.wave_count + (content.has_waved ? -1 : 1),
+            }
+          : content,
+      ),
+    );
+
+    try {
+      const supabase = createMobileSupabaseClient();
+      const state = await toggleWave(supabase, contentId);
+      setContents((previous) =>
+        previous.map((content) =>
+          content.id === contentId
+            ? { ...content, has_waved: state.has_waved, wave_count: state.count }
+            : content,
+        ),
+      );
+    } catch {
+      loadFeed().catch(() => undefined);
+    }
+  }
+
+  function handleCommentAdded() {
+    if (!openCommentsForContentId) return;
+    setContents((previous) =>
+      previous.map((content) =>
+        content.id === openCommentsForContentId
+          ? { ...content, comments_count: content.comments_count + 1 }
+          : content,
+      ),
+    );
+  }
+
   if (isLoading) {
     return (
       <View style={styles.centered}>
@@ -189,7 +240,13 @@ export function FeedScreen({ session, profile, onOpenProfile }: FeedScreenProps)
           <RefreshControl onRefresh={handleRefresh} refreshing={isRefreshing} tintColor="#ffc400" />
         }
         renderItem={({ item }) => (
-          <PostCard content={item} onOpenProfile={onOpenProfile} onToggleDahora={handleToggleDahora} />
+          <PostCard
+            content={item}
+            onOpenComments={setOpenCommentsForContentId}
+            onOpenProfile={onOpenProfile}
+            onToggleDahora={handleToggleDahora}
+            onToggleWave={handleToggleWave}
+          />
         )}
         ListEmptyComponent={
           <View style={styles.emptyState}>
@@ -197,6 +254,12 @@ export function FeedScreen({ session, profile, onOpenProfile }: FeedScreenProps)
             <Text style={styles.emptyText}>Seja a primeira criação a aparecer no Flow.</Text>
           </View>
         }
+      />
+
+      <CommentsModal
+        contentId={openCommentsForContentId}
+        onClose={() => setOpenCommentsForContentId(null)}
+        onCommentAdded={handleCommentAdded}
       />
     </View>
   );

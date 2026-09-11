@@ -42,3 +42,13 @@ export async function getVerifiedSeal(
   const seals = await getVerifiedSealsByUserIds(supabase, [userId]);
   return seals.get(userId) ?? null;
 }
+
+// Concede o selo azul automaticamente ao atingir 100 mil fas. Nao faz nada (e nao lanca) se a
+// migration 042 ainda nao foi aplicada no Supabase, ou se o usuario ja tem qualquer selo.
+export async function checkAndGrantVerifiedSeal(supabase: SupabaseClient, userId: string) {
+  const { error } = await supabase.rpc("grant_verified_seal_if_eligible", {
+    target_user_id: userId,
+  });
+
+  if (error && error.code !== "42883") throw error;
+}

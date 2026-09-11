@@ -21,6 +21,7 @@
     "expo-image-picker": "~57.0.17",
     "expo-splash-screen": "~57.0.9",
     "expo-status-bar": "~57.0.1",
+    "expo-video": "~57.0.4",
     "react": "19.2.3",
     "react-native": "0.86.3",
     "react-native-url-polyfill": "^3.0.0"
