@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "scheme": "fluxo",
     "userInterfaceStyle": "dark",
+    "icon": "./assets/icon.png",
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -19,9 +20,29 @@
     "android": {
       "package": "br.com.fluxosocial.app",
       "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#020617"
       }
     },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#030711"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "O Fluxo usa suas fotos para você criar posts.",
+          "cameraPermission": "O Fluxo usa a câmera para você fotografar e criar posts.",
+          "microphonePermission": "O Fluxo usa o microfone para gravar vídeos nos seus posts."
+        }
+      ]
+    ],
     "extra": {
       "appName": "Fluxo",
       "eas": {
