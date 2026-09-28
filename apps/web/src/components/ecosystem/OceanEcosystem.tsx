@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   BadgeCheck,
   BookOpen,
@@ -11,11 +12,22 @@ import {
   Sparkles,
   Users,
   Waves,
+  type LucideIcon,
 } from "lucide-react";
 
 import styles from "./OceanEcosystem.module.css";
 
-const ecosystemItems = [
+type EcosystemItem = {
+  title: string;
+  description: string;
+  status: string;
+  Icon: LucideIcon;
+  note?: string;
+  href?: string;
+  actionLabel?: string;
+};
+
+const ecosystemItems: EcosystemItem[] = [
   {
     title: "Fluxo Date",
     description: "Conexões com vibe, localização, segurança e compatibilidade social.",
@@ -54,10 +66,12 @@ const ecosystemItems = [
   },
   {
     title: "Fluxo Coin",
-    description: "Visão futura para wallet, transações, marketplace, doações, recompensas e economia interna.",
-    status: "Visão futura",
+    description: "Moeda interna que você ganha completando missões e subindo de nível.",
+    status: "Ativo",
     Icon: Coins,
-    note: "Sujeito a requisitos técnicos, legais e regulatórios. Não é uma moeda ativa nesta beta.",
+    note: "100% interna: sem conversão em dinheiro real e, por enquanto, sem troca entre pessoas. Só ganho e acúmulo — doações em lives chegam com o Fluxo Stream.",
+    href: "/carteira",
+    actionLabel: "Ver carteira",
   },
 ];
 
@@ -102,7 +116,7 @@ export function OceanEcosystem() {
       </section>
 
       <section className={styles.grid} aria-label="Recursos futuros da Fluxo">
-        {ecosystemItems.map(({ title, description, status, Icon, note }) => (
+        {ecosystemItems.map(({ title, description, status, Icon, note, href, actionLabel }) => (
           <article className={styles.card} key={title}>
             <div className={styles.iconBox}>
               <Icon aria-hidden="true" size={22} strokeWidth={2.2} />
@@ -115,9 +129,13 @@ export function OceanEcosystem() {
               <p>{description}</p>
               {note && <small>{note}</small>}
             </div>
-            <button type="button" disabled>
-              Em breve
-            </button>
+            {href ? (
+              <Link href={href}>{actionLabel ?? "Ver mais"}</Link>
+            ) : (
+              <button type="button" disabled>
+                Em breve
+              </button>
+            )}
           </article>
         ))}
       </section>

@@ -7,3 +7,4 @@ export * from "./types/post";
 export * from "./types/social";
 export * from "./types/theme";
 export * from "./types/gamification";
+export * from "./types/coin";
