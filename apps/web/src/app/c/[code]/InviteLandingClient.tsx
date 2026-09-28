@@ -100,8 +100,12 @@ export function InviteLandingClient({ code }: InviteLandingClientProps) {
             </div>
 
             {/* Abre o app instalado com o codigo (esquema fluxo:// do app mobile). */}
-            <a className={styles.primary} href={`fluxo://c/${preview.code}`}>
-              Abrir no app Fluxo
+            {/* O codigo ja ficou salvo: /baixar mostra ele para digitar no cadastro do app. */}
+            <Link className={styles.primary} href="/baixar">
+              Baixar o app Fluxo
+            </Link>
+            <a className={styles.secondary} href={`fluxo://c/${preview.code}`}>
+              Já tenho o app: abrir
             </a>
 
             {isLoggedIn ? (

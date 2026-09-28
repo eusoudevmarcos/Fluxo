@@ -5,6 +5,14 @@
     "version": "0.1.0",
     "orientation": "portrait",
     "scheme": "fluxo",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/48bb0ac4-0fdd-4b4c-a4f3-b3dc0c08f5e2",
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
+    },
     "userInterfaceStyle": "dark",
     "icon": "./assets/icon.png",
     "assetBundlePatterns": [
