@@ -26,7 +26,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
     slug: "termos",
     title: "Termos de Uso",
     version: LEGAL_TERMS_VERSION,
-    updatedAt: "17 de maio de 2026",
+    updatedAt: "28 de setembro de 2026",
     summary:
       "Define as regras gerais para usar a Fluxo, criar conta, publicar conteúdo, participar de comunidades e interagir com outras pessoas.",
     sections: [
@@ -45,10 +45,33 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
         ],
       },
       {
-        title: "Idade e autorização",
+        title: "Idade mínima e proteção de adolescentes",
         body: [
-          "A Fluxo pode exigir idade mínima, consentimento dos responsáveis ou verificações adicionais conforme a legislação aplicável e os recursos usados.",
-          "Recursos futuros como Date, monetização, wallet, Fluxo Coin ou pagamentos poderão ter regras próprias e requisitos adicionais.",
+          "A Fluxo é para pessoas a partir de 14 anos. A data de nascimento é informada uma única vez no cadastro; contas de menores de 14 anos não são criadas. Informar data falsa pode levar ao cancelamento da conta.",
+          "Contas de 14 a 17 anos têm proteções automáticas: não são sugeridas a adultos (de 14 e 15 anos, a ninguém), não aparecem na busca de adultos que elas não seguem, só recebem mensagens de quem seguem, não usam o recurso Pessoas Próximas, não recebem missões de sequência de dias e não recebem notificações entre 21h e 8h.",
+          "Programa de criadores, monetização e recursos como Date, carteira ou pagamentos têm regras próprias e, nesta fase, são restritos a maiores de 18 anos.",
+        ],
+      },
+      {
+        title: "Convites, missões, selos e recompensas",
+        body: [
+          "Convites, missões, XP, auras, selos, temas e Fluxo Coin são recursos virtuais da plataforma, sem valor em dinheiro, não reembolsáveis e não transferíveis para fora da Fluxo.",
+          "Campanhas como selos de pioneiro têm vagas limitadas e podem terminar a qualquer momento (por exemplo, quando a Fluxo atingir 100 mil usuários). Critérios, quantidades e recompensas podem mudar.",
+          "Criar contas falsas ou múltiplas, trocar convites combinados, automatizar ações ou manipular missões e engajamento pode levar à perda das recompensas, remoção de alcance e suspensão da conta.",
+        ],
+      },
+      {
+        title: "Programa Prime Influencer",
+        body: [
+          "Criadores podem se inscrever informando rede social e número de seguidores. A aprovação é feita pela equipe da Fluxo, pode exigir prova de titularidade do perfil externo (código na bio) e pode ser recusada sem necessidade de justificativa detalhada.",
+          "O selo e o tema exclusivo são concedidos aos primeiros aprovados enquanto houver vagas e podem ser retirados em caso de violação destes termos.",
+        ],
+      },
+      {
+        title: "Bloqueio e denúncia",
+        body: [
+          "Você pode bloquear qualquer pessoa: vocês deixam de se seguir e deixam de ver posts, comentários, perfis na busca e mensagens um do outro. A pessoa bloqueada não é avisada.",
+          "Você pode denunciar posts, comentários, perfis e mensagens. Conteúdos com várias denúncias podem ser ocultados automaticamente até a revisão da equipe.",
         ],
       },
       {
@@ -96,7 +119,8 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
       {
         title: "Disponibilidade e limitação de responsabilidade",
         body: [
-          "A Fluxo está em beta e pode conter instabilidades, indisponibilidades, mudanças, falhas ou recursos incompletos.",
+          "A Fluxo está em versão de teste (beta) e pode conter instabilidades, indisponibilidades, mudanças, falhas ou recursos incompletos. Dados e recompensas da fase de testes podem ser ajustados antes do lançamento oficial.",
+          "Durante a beta, relatórios de erro e feedbacks enviados pelo app são usados para corrigir problemas e melhorar a plataforma.",
           "Empregamos medidas razoáveis para manter a plataforma segura e funcional, mas não prometemos disponibilidade contínua, ausência absoluta de erros ou segurança perfeita.",
         ],
       },
@@ -113,7 +137,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
     slug: "privacidade",
     title: "Política de Privacidade",
     version: LEGAL_PRIVACY_VERSION,
-    updatedAt: "17 de maio de 2026",
+    updatedAt: "28 de setembro de 2026",
     summary:
       "Explica quais dados podem ser coletados, como são usados e quais cuidados aplicamos na beta da Fluxo.",
     sections: [
@@ -122,13 +146,28 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
         body: [
           "Podemos coletar dados de cadastro, login, perfil, Flow ID, avatar, bio, cidade/estado, interesses, preferências, interações, conteúdo publicado, comentários, comunidade, mídia, dispositivo, logs técnicos e dados de uso.",
           "Se você enviar imagens, vídeos ou áudio, poderemos tratar imagem, voz, aparência e metadados técnicos associados ao arquivo.",
+          "Também tratamos: data de nascimento (para aplicar a idade mínima e as proteções de adolescentes), convites (quem convidou quem), progresso em missões e recompensas, token do aparelho para notificações, e feedbacks ou relatórios de erro enviados pelo app com informações técnicas do aparelho.",
         ],
       },
       {
-        title: "Localização e perfil",
+        title: "Localização",
         body: [
-          "Quando a Fluxo solicitar localização, cidade, estado, preferências ou dados para experiências futuras, explicaremos o uso esperado na interface sempre que adequado.",
-          "Dados sensíveis não devem ser exibidos publicamente sem necessidade. A Fluxo pode limitar exibições para proteger usuários.",
+          "A localização é opcional. Com sua permissão, usamos a posição do aparelho para sugerir comunidades e pessoas da sua região. Suas coordenadas nunca aparecem no perfil nem para outras pessoas.",
+          "O recurso Pessoas Próximas só funciona se você ativá-lo, é exclusivo para maiores de 18 anos e mostra apenas faixas de distância aproximada (por exemplo, \"até 5 km\"), calculadas sobre posições arredondadas. Enquanto estiver ativo, a posição é atualizada no máximo a cada 10 minutos quando você usa o app. Você pode desativá-lo a qualquer momento.",
+          "Sexo informado, data de nascimento e coordenadas são dados privados, visíveis apenas para você e usados internamente para segurança e personalização.",
+        ],
+      },
+      {
+        title: "Sugestões e alcance",
+        body: [
+          "As sugestões de quem seguir consideram amigos em comum, cidade, proximidade (quando ativada), novas contas e o alcance ganho ao cumprir missões. O alcance extra é temporário e diminui com o tempo.",
+          "Não vendemos posição nas sugestões e não usamos dados de adolescentes para recomendá-los a adultos.",
+        ],
+      },
+      {
+        title: "Notificações",
+        body: [
+          "Com sua permissão, enviamos notificações no aparelho sobre interações, convites aceitos, missões e selos. Você pode desativá-las nas configurações do aparelho. Adolescentes não recebem notificações entre 21h e 8h.",
         ],
       },
       {
@@ -175,7 +214,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
       {
         title: "Menores e transferência internacional",
         body: [
-          "Podemos restringir recursos para menores ou exigir autorização conforme a lei e a natureza do recurso.",
+          "A Fluxo aceita contas a partir de 14 anos e aplica proteções automáticas a contas de 14 a 17 anos, descritas nos Termos de Uso. Recursos adicionais podem exigir autorização dos responsáveis conforme a lei.",
           "Como usamos provedores técnicos, dados podem ser processados fora do Brasil, sempre buscando medidas compatíveis com a legislação aplicável.",
         ],
       },
@@ -191,7 +230,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
     slug: "diretrizes",
     title: "Diretrizes da Comunidade",
     version: LEGAL_COMMUNITY_VERSION,
-    updatedAt: "17 de maio de 2026",
+    updatedAt: "28 de setembro de 2026",
     summary:
       "Define o comportamento esperado para manter Flow, Comunidades, comentários e Privs seguros para a beta.",
     sections: [
@@ -213,6 +252,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
         title: "Segurança e fraude",
         body: [
           "Não permitimos spam, golpes, phishing, perfis falsos, venda ilegal, manipulação de engajamento, malware, automação abusiva ou tentativa de burlar sistemas da Fluxo.",
+          "Isso inclui criar contas para aceitar os próprios convites, trocar curtidas, comentários ou seguidores combinados só para cumprir missões, e qualquer forma de farmar recompensas.",
           "Não use imagem, voz, nome, marca ou dados de terceiros de forma enganosa, ofensiva ou sem autorização quando exigível.",
         ],
       },
@@ -233,7 +273,8 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
       {
         title: "Denúncias",
         body: [
-          "Recursos de denúncia e moderação serão expandidos. Durante a beta, algumas ações podem ser tratadas manualmente.",
+          "Você pode denunciar posts, comentários, perfis e mensagens pelo menu \"⋯\" ou tocando e segurando o comentário, e pode bloquear qualquer perfil. Quem é denunciado não sabe quem denunciou.",
+          "Posts com várias denúncias podem ser ocultados automaticamente até a revisão da equipe, que decide se o conteúdo volta ou é removido. Durante a beta, a revisão é manual.",
           "Denúncias falsas, abusivas ou de má-fé também podem gerar medidas contra o denunciante.",
         ],
       },
@@ -243,7 +284,7 @@ export const legalDocuments: Record<LegalDocumentSlug, LegalDocument> = {
     slug: "conteudo-imagem",
     title: "Termo de Conteúdo, Imagem e Voz",
     version: LEGAL_CONTENT_LICENSE_VERSION,
-    updatedAt: "17 de maio de 2026",
+    updatedAt: "28 de setembro de 2026",
     summary:
       "Explica como a Fluxo pode hospedar, exibir e adaptar tecnicamente conteúdos, imagem, voz, avatar e Flow ID publicados voluntariamente.",
     sections: [

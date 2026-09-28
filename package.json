@@ -22,6 +22,7 @@
         "dev:mobile": "npm run start -w apps/mobile",
         "dev:api": "npm run dev -w apps/api",
         "build:api": "npm run build -w apps/api",
-        "seed:marcos": "node scripts/create-marcos-ocean.mjs"
+        "seed:marcos": "node scripts/create-marcos-ocean.mjs",
+        "test:db": "npm run test -w @ocean/database"
     }
 }

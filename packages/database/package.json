@@ -4,5 +4,11 @@
   "private": true,
   "type": "module",
   "main": "./index.ts",
-  "types": "./index.ts"
+  "types": "./index.ts",
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8"
+  },
+  "scripts": {
+    "test": "node tests/migrations.test.mjs"
+  }
 }

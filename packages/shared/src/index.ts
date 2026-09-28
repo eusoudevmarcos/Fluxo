@@ -2,6 +2,7 @@ export * from "./constants/ocean";
 export * from "./constants/routes";
 export * from "./constants/onboarding";
 export * from "./constants/gamification";
+export * from "./constants/legal";
 export * from "./types/profile";
 export * from "./types/post";
 export * from "./types/social";

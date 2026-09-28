@@ -5,6 +5,7 @@ import { ActivityIndicator, BackHandler, StyleSheet, Text, View } from "react-na
 import { BottomNav, type ScreenTab } from "../components/BottomNav";
 import { createMobileSupabaseClient } from "../lib/supabase/client";
 import { addPushTapListener, registerForPushNotifications } from "../lib/push";
+import { hasAcceptedCurrentLegalVersions } from "../lib/services/legal.service";
 import { countMyUnreadNotifications } from "../lib/services/notifications.service";
 import { ensureMobileProfile, type Profile } from "../lib/services/profiles.service";
 import { BlockedUsersScreen } from "./BlockedUsersScreen";
@@ -13,6 +14,7 @@ import { FeedbackScreen } from "./FeedbackScreen";
 import { CreatorProgramScreen } from "./CreatorProgramScreen";
 import { FeedScreen } from "./FeedScreen";
 import { InvitesScreen } from "./InvitesScreen";
+import { LegalAcceptScreen } from "./LegalAcceptScreen";
 import { MessagesScreen } from "./MessagesScreen";
 import { MissionsScreen } from "./MissionsScreen";
 import { NotificationsScreen } from "./NotificationsScreen";
@@ -28,6 +30,7 @@ type HomeScreenProps = {
 
 export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [hasAcceptedLegal, setHasAcceptedLegal] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [activeTab, setActiveTab] = useState<ScreenTab>("home");
@@ -104,10 +107,12 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
 
     setIsLoading(true);
     setErrorMessage("");
-    ensureMobileProfile(createMobileSupabaseClient(), session)
-      .then((nextProfile) => {
+    const supabase = createMobileSupabaseClient();
+    Promise.all([ensureMobileProfile(supabase, session), hasAcceptedCurrentLegalVersions(supabase)])
+      .then(([nextProfile, accepted]) => {
         if (!isMounted) return;
         setProfile(nextProfile);
+        setHasAcceptedLegal(accepted);
       })
       .catch((error) => {
         if (!isMounted) return;
@@ -227,6 +232,10 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
         <Text style={styles.error}>{errorMessage}</Text>
       </View>
     );
+  }
+
+  if (!hasAcceptedLegal) {
+    return <LegalAcceptScreen onAccepted={() => setHasAcceptedLegal(true)} onSignOut={onSignOut} />;
   }
 
   if (profile && !profile.profile_required_completed) {
