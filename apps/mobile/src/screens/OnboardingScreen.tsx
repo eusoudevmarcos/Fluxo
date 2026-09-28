@@ -22,17 +22,39 @@ import {
   type CountryOption,
   type StateOption,
 } from "../lib/services/location.service";
+import { normalizeInviteCode, redeemInvite } from "../lib/services/invites.service";
 import { uploadAvatar } from "../lib/services/media.service";
 import {
+  getMyAgeBand,
   isUsernameAvailable,
+  setMyBirthDate,
   updateProfileRequiredInfo,
   type BiologicalSex,
   type GeolocationPermission,
   type Profile,
 } from "../lib/services/profiles.service";
 
-type StepId = "identity" | "location" | "gps" | "sex" | "avatar" | "bio" | "finish";
-const STEPS: StepId[] = ["identity", "location", "gps", "sex", "avatar", "bio", "finish"];
+type StepId = "birth" | "identity" | "location" | "gps" | "sex" | "avatar" | "bio" | "finish";
+const STEPS: StepId[] = ["birth", "identity", "location", "gps", "sex", "avatar", "bio", "finish"];
+
+// Tela de idade neutra (modelo TikTok): nao informa a idade minima, para nao induzir a pessoa a
+// declarar outra data. Retorna "AAAA-MM-DD" ou null se a data for invalida.
+function parseBirthDate(day: string, month: string, year: string) {
+  const d = Number(day);
+  const m = Number(month);
+  const y = Number(year);
+  if (!Number.isInteger(d) || !Number.isInteger(m) || !Number.isInteger(y) || year.length !== 4) {
+    return null;
+  }
+
+  const date = new Date(Date.UTC(y, m - 1, d));
+  if (date.getUTCFullYear() !== y || date.getUTCMonth() !== m - 1 || date.getUTCDate() !== d) {
+    return null;
+  }
+  if (date.getTime() > Date.now() || y < 1900) return null;
+
+  return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+}
 
 type OnboardingForm = {
   display_name: string;
@@ -96,9 +118,26 @@ export function OnboardingScreen({ session, profile, onComplete }: OnboardingScr
   const [isPickingAvatar, setIsPickingAvatar] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [birth, setBirth] = useState({ day: "", month: "", year: "" });
+  const [birthRecorded, setBirthRecorded] = useState(false);
+  const [isAgeBlocked, setIsAgeBlocked] = useState(false);
+  const [inviteCode, setInviteCode] = useState("");
 
   useEffect(() => {
     listCountries().then(setCountries).catch(() => undefined);
+  }, []);
+
+  useEffect(() => {
+    getMyAgeBand(createMobileSupabaseClient())
+      .then((band) => {
+        if (band === "blocked") {
+          setIsAgeBlocked(true);
+        } else if (band !== "unknown") {
+          setBirthRecorded(true);
+          setStepIndex((current) => (current === 0 ? 1 : current));
+        }
+      })
+      .catch(() => undefined);
   }, []);
 
   useEffect(() => {
@@ -131,6 +170,29 @@ export function OnboardingScreen({ session, profile, onComplete }: OnboardingScr
   async function goNext() {
     setErrorMessage("");
     const step = STEPS[stepIndex];
+
+    if (step === "birth" && !birthRecorded) {
+      const birthDate = parseBirthDate(birth.day, birth.month, birth.year);
+      if (!birthDate) {
+        setErrorMessage("Informe uma data de nascimento válida.");
+        return;
+      }
+
+      setIsSubmitting(true);
+      try {
+        const band = await setMyBirthDate(createMobileSupabaseClient(), birthDate);
+        if (band === "blocked") {
+          setIsAgeBlocked(true);
+          return;
+        }
+        setBirthRecorded(true);
+      } catch (error) {
+        setErrorMessage(error instanceof Error ? error.message : "Não foi possível continuar.");
+        return;
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
 
     if (step === "identity") {
       const validationError = validateIdentity();
@@ -172,7 +234,8 @@ export function OnboardingScreen({ session, profile, onComplete }: OnboardingScr
 
   function goBack() {
     setErrorMessage("");
-    setStepIndex((current) => Math.max(current - 1, 0));
+    // A data de nascimento nao pode ser alterada depois de declarada.
+    setStepIndex((current) => Math.max(current - 1, birthRecorded ? 1 : 0));
   }
 
   async function requestGps() {
@@ -290,6 +353,20 @@ export function OnboardingScreen({ session, profile, onComplete }: OnboardingScr
         biological_sex: form.biological_sex as BiologicalSex,
       });
 
+      // O convite so vale com o cadastro completo (o servidor exige). Se falhar, avisa e deixa
+      // seguir sem convite no proximo toque.
+      if (inviteCode) {
+        try {
+          await redeemInvite(supabase, inviteCode);
+        } catch (inviteError) {
+          setInviteCode("");
+          setErrorMessage(
+            `${inviteError instanceof Error ? inviteError.message : "Não foi possível usar o convite."} Toque em "Entrar na Fluxo" para continuar sem convite.`,
+          );
+          return;
+        }
+      }
+
       onComplete(updatedProfile);
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : "Não foi possível concluir.");
@@ -310,6 +387,22 @@ export function OnboardingScreen({ session, profile, onComplete }: OnboardingScr
   }));
   const cityOptions: PickerOption[] = cities.map((city) => ({ label: city, value: city }));
 
+  if (isAgeBlocked) {
+    return (
+      <View style={styles.screen}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <Text style={styles.brand}>fluxo</Text>
+          <View style={styles.card}>
+            <Text style={styles.title}>Não foi possível criar sua conta</Text>
+            <Text style={styles.subtitle}>
+              A Fluxo não está disponível para você no momento. Obrigado pelo interesse.
+            </Text>
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.screen}>
       <ScrollView contentContainerStyle={styles.content}>
@@ -317,6 +410,44 @@ export function OnboardingScreen({ session, profile, onComplete }: OnboardingScr
         <Text style={styles.stepCounter}>
           Passo {stepIndex + 1} de {STEPS.length}
         </Text>
+
+        {step === "birth" && (
+          <View style={styles.card}>
+            <Text style={styles.title}>Quando você nasceu?</Text>
+            <Text style={styles.subtitle}>
+              Não aparece no seu perfil. Usamos para ajustar sua experiência e sua segurança.
+            </Text>
+            <View style={styles.birthRow}>
+              <TextInput
+                keyboardType="number-pad"
+                maxLength={2}
+                onChangeText={(value) => setBirth((current) => ({ ...current, day: value.replace(/\D/g, "") }))}
+                placeholder="DD"
+                placeholderTextColor="rgba(255,255,255,0.4)"
+                style={[styles.input, styles.birthInput]}
+                value={birth.day}
+              />
+              <TextInput
+                keyboardType="number-pad"
+                maxLength={2}
+                onChangeText={(value) => setBirth((current) => ({ ...current, month: value.replace(/\D/g, "") }))}
+                placeholder="MM"
+                placeholderTextColor="rgba(255,255,255,0.4)"
+                style={[styles.input, styles.birthInput]}
+                value={birth.month}
+              />
+              <TextInput
+                keyboardType="number-pad"
+                maxLength={4}
+                onChangeText={(value) => setBirth((current) => ({ ...current, year: value.replace(/\D/g, "") }))}
+                placeholder="AAAA"
+                placeholderTextColor="rgba(255,255,255,0.4)"
+                style={[styles.input, styles.birthYearInput]}
+                value={birth.year}
+              />
+            </View>
+          </View>
+        )}
 
         {step === "identity" && (
           <View style={styles.card}>
@@ -470,13 +601,23 @@ export function OnboardingScreen({ session, profile, onComplete }: OnboardingScr
               {form.stateName ? `, ${form.stateName}` : ""}
             </Text>
             {!!form.bio && <Text style={styles.summaryLine}>{form.bio}</Text>}
+            <Text style={styles.subtitle}>Recebeu um convite? Digite o código (opcional):</Text>
+            <TextInput
+              autoCapitalize="characters"
+              autoCorrect={false}
+              onChangeText={(value) => setInviteCode(normalizeInviteCode(value))}
+              placeholder="Ex: K7PX2QMA"
+              placeholderTextColor="rgba(255,255,255,0.4)"
+              style={styles.input}
+              value={inviteCode}
+            />
           </View>
         )}
 
         {!!errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
 
         <View style={styles.navRow}>
-          {stepIndex > 0 && (
+          {stepIndex > (birthRecorded ? 1 : 0) && (
             <Pressable onPress={goBack} style={styles.backButton}>
               <Text style={styles.backButtonText}>Voltar</Text>
             </Pressable>
@@ -592,6 +733,18 @@ const styles = StyleSheet.create({
   bioInput: {
     minHeight: 100,
     textAlignVertical: "top",
+  },
+  birthRow: {
+    flexDirection: "row",
+    gap: 10,
+  },
+  birthInput: {
+    flex: 1,
+    textAlign: "center",
+  },
+  birthYearInput: {
+    flex: 1.6,
+    textAlign: "center",
   },
   selectField: {
     backgroundColor: "rgba(255,255,255,0.06)",

@@ -21,9 +21,10 @@ export type Profile = {
   state: string | null;
   city: string | null;
   country: string | null;
-  biological_sex: BiologicalSex | null;
   geolocation_permission: GeolocationPermission | null;
 };
+
+export type AgeBand = "adult" | "teen_16" | "teen_14" | "blocked" | "unknown";
 
 export type ProfileRequiredOnboardingInput = {
   display_name: string;
@@ -46,7 +47,18 @@ export type PublicProfile = Profile & {
   is_following: boolean;
   can_follow: boolean;
   verified_seal: VerifiedSeal | null;
+  // Presente so nas sugestoes (get_follow_suggestions, migration 053).
+  suggestion_detail?: string;
 };
+
+export type NearbySettings = {
+  nearby_visible: boolean;
+  is_adult: boolean;
+};
+
+function isMissingFunction(error: { code?: string } | null) {
+  return error?.code === "42883" || error?.code === "PGRST202";
+}
 
 export type RelationshipStats = {
   fans: number;
@@ -58,8 +70,10 @@ export type RelationshipState = {
   canFollow: boolean;
 };
 
+// Sem colunas sensiveis (coordenadas, biological_sex): nao sao legiveis via select em profiles
+// (migration 047).
 const PROFILE_COLUMNS =
-  "user_id,username,display_name,avatar_url,bio,theme,aura,location_label,vibe,interests,onboarding_completed,profile_required_completed,state,city,country,biological_sex,geolocation_permission";
+  "user_id,username,display_name,avatar_url,bio,theme,aura,location_label,vibe,interests,onboarding_completed,profile_required_completed,state,city,country,geolocation_permission";
 
 function normalizeUsername(value: string) {
   const normalized = value
@@ -198,6 +212,22 @@ export async function searchProfiles(
   const currentUserId = await getCurrentUserId(supabase);
   const searchTerm = query.trim().replace(/[%_,()]/g, " ").replace(/\s+/g, " ").slice(0, 64);
 
+  // Sem busca digitada: sugestoes ordenadas no servidor (amigos em comum, alcance por missoes,
+  // pessoas proximas). Sem a migration 053, cai nos perfis recentes abaixo.
+  if (searchTerm.length < 2) {
+    const suggestions = await listFollowSuggestions(supabase, limit);
+    if (suggestions) return suggestions;
+  } else {
+    // Busca no servidor com protecao de menores (migration 054). Sem ela, cai na busca direta.
+    const { data, error } = await supabase.rpc("search_profiles", {
+      search_term: searchTerm,
+      max_results: limit,
+    });
+
+    if (!error) return withRelationshipState(supabase, (data ?? []) as Profile[]);
+    if (!isMissingFunction(error)) throw error;
+  }
+
   let profileQuery = supabase.from("profiles").select(PROFILE_COLUMNS).limit(limit);
 
   if (searchTerm.length >= 2) {
@@ -219,6 +249,66 @@ export async function searchProfiles(
   if (error) throw error;
 
   return withRelationshipState(supabase, (data ?? []) as Profile[]);
+}
+
+async function listFollowSuggestions(
+  supabase: SupabaseClient,
+  limit: number,
+): Promise<PublicProfile[] | null> {
+  const { data, error } = await supabase.rpc("get_follow_suggestions", { max_results: limit });
+
+  if (error) {
+    if (isMissingFunction(error)) return null;
+    throw error;
+  }
+
+  const rows = (data ?? []) as (Profile & { reason_detail: string })[];
+  const profiles = await withRelationshipState(
+    supabase,
+    rows.map(({ reason_detail, ...profile }) => {
+      void reason_detail;
+      return profile as Profile;
+    }),
+  );
+
+  return profiles.map((profile, index) => ({
+    ...profile,
+    suggestion_detail: rows[index]?.reason_detail,
+  }));
+}
+
+export async function getMyNearbySettings(supabase: SupabaseClient): Promise<NearbySettings | null> {
+  const { data, error } = await supabase.rpc("get_my_private_profile");
+
+  if (error) {
+    if (isMissingFunction(error)) return null;
+    throw error;
+  }
+
+  const row = (Array.isArray(data) ? data[0] : data) as
+    | { nearby_visible?: boolean; age_band?: AgeBand }
+    | undefined;
+  if (!row || row.nearby_visible === undefined) return null;
+
+  return { nearby_visible: Boolean(row.nearby_visible), is_adult: row.age_band === "adult" };
+}
+
+// O servidor ignora atualizacoes com menos de 10 minutos de intervalo.
+export async function updateMyLocation(
+  supabase: SupabaseClient,
+  coords: { latitude: number; longitude: number; accuracy?: number | null },
+) {
+  const { error } = await supabase.rpc("update_my_location", {
+    input_lat: coords.latitude,
+    input_lng: coords.longitude,
+    input_accuracy_meters: coords.accuracy ? Math.round(coords.accuracy) : null,
+  });
+  if (error) throw error;
+}
+
+export async function setNearbyVisibility(supabase: SupabaseClient, enabled: boolean) {
+  const { error } = await supabase.rpc("set_nearby_visibility", { enabled });
+  if (error) throw error;
 }
 
 export async function getRelationshipStats(
@@ -335,6 +425,30 @@ export async function isUsernameAvailable(
   const normalized = normalizeUsername(username);
   if (normalized.length < 3) return false;
   return !(await usernameExists(supabase, normalized, currentUserId));
+}
+
+export async function getMyAgeBand(supabase: SupabaseClient): Promise<AgeBand> {
+  const { data, error } = await supabase.rpc("get_my_private_profile");
+
+  if (error) {
+    // Migration 047 ainda nao aplicada.
+    if (error.code === "42883" || error.code === "PGRST202") return "unknown";
+    throw error;
+  }
+
+  const row = (Array.isArray(data) ? data[0] : data) as { age_band?: AgeBand } | undefined;
+  return row?.age_band ?? "unknown";
+}
+
+// Declarada uma unica vez. Retorna "blocked" para menores de 14 (a conta fica bloqueada).
+export async function setMyBirthDate(supabase: SupabaseClient, birthDate: string): Promise<AgeBand> {
+  const { data, error } = await supabase.rpc("set_my_birth_date", {
+    input_birth_date: birthDate,
+  });
+
+  if (error) throw error;
+
+  return data as AgeBand;
 }
 
 export async function updateProfileRequiredInfo(

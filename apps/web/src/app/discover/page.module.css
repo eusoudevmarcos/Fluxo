@@ -236,3 +236,62 @@
     width: 100%;
   }
 }
+
+.reason {
+  align-self: flex-start;
+  background: color-mix(in srgb, var(--color-primary) 14%, var(--color-card));
+  border-radius: 999px;
+  color: var(--color-primary-hover);
+  font-size: 12px;
+  font-weight: 850;
+  padding: 3px 10px;
+}
+
+.nearbyCard {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-card) 88%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 14px 16px;
+}
+
+.nearbyCard div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.nearbyCard strong {
+  color: var(--color-text);
+}
+
+.nearbyCard small {
+  color: var(--color-muted);
+  line-height: 1.4;
+}
+
+.nearbyCard button {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border: none;
+  border-radius: 14px;
+  color: var(--color-on-primary);
+  cursor: pointer;
+  font-weight: 900;
+  min-height: 40px;
+  padding: 0 14px;
+}
+
+.nearbyCard button.secondary {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.nearbyCard button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}

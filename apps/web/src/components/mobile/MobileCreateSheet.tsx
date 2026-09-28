@@ -126,12 +126,6 @@ export function MobileCreateSheet({ isOpen, onClose }: MobileCreateSheetProps) {
         media_url: uploadedMedia?.publicUrl,
         media_type: uploadedMedia?.mediaType ?? "none",
         content_type: getContentType(destination),
-        gamification_action:
-          destination === "moments"
-            ? "create_moments"
-            : destination === "flow"
-              ? "create_flow"
-              : "daily_activity",
       });
 
       if (destination === "favorites") {

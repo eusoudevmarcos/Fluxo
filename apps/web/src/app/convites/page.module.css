@@ -1,0 +1,181 @@
+.page {
+  display: grid;
+  gap: 16px;
+}
+
+.hero,
+.card {
+  background: color-mix(in srgb, var(--color-card) 94%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  box-shadow: var(--shadow-card);
+}
+
+.hero {
+  padding: 22px;
+}
+
+.hero span {
+  color: var(--color-primary-hover);
+  font-size: 13px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  color: var(--color-text);
+  font-size: clamp(26px, 4vw, 38px);
+  line-height: 1;
+  margin: 7px 0 8px;
+}
+
+.hero p {
+  color: var(--color-muted);
+  line-height: 1.55;
+  margin: 0;
+  max-width: 620px;
+}
+
+.card {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+}
+
+.card h2 {
+  color: var(--color-text);
+  font-size: 18px;
+  margin: 0;
+}
+
+.muted {
+  color: var(--color-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.muted strong {
+  color: var(--color-text);
+  letter-spacing: 0.12em;
+}
+
+.linkRow {
+  background: color-mix(in srgb, var(--color-bg) 58%, transparent);
+  border: 1px dashed var(--color-border);
+  border-radius: 14px;
+  overflow-wrap: anywhere;
+  padding: 12px 14px;
+}
+
+.linkRow code {
+  color: var(--color-text);
+  font-size: 14px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.actions button {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  color: var(--color-text);
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 850;
+  gap: 8px;
+  padding: 11px 16px;
+}
+
+.actions .primaryButton {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.progress {
+  background: color-mix(in srgb, var(--color-bg) 70%, transparent);
+  border-radius: 999px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.progress span {
+  background: linear-gradient(90deg, #4fc3ff, #1e88ff);
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+}
+
+.friendList {
+  display: grid;
+  gap: 10px;
+}
+
+.friend {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-bg) 58%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+  border-radius: 16px;
+  color: inherit;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: max-content 1fr;
+  padding: 10px 12px;
+  text-decoration: none;
+}
+
+.friendAvatar {
+  align-items: center;
+  background: var(--color-primary);
+  border-radius: 999px;
+  color: var(--color-on-primary);
+  display: flex;
+  font-weight: 950;
+  height: 40px;
+  justify-content: center;
+  overflow: hidden;
+  width: 40px;
+}
+
+.friendAvatar img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.friendInfo strong {
+  color: var(--color-text);
+  display: block;
+  font-size: 14px;
+}
+
+.friendInfo small {
+  color: var(--color-muted);
+}
+
+.notice,
+.error {
+  border-radius: 16px;
+  margin: 0;
+  padding: 12px 14px;
+}
+
+.notice {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-card) 86%, var(--color-bg));
+  color: var(--color-muted);
+  display: flex;
+  gap: 8px;
+}
+
+.error {
+  background: rgba(127, 29, 29, 0.26);
+  border: 1px solid rgba(248, 113, 113, 0.34);
+  color: #fecaca;
+}

@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import {
   HiAcademicCap,
+  HiBadgeCheck,
   HiBell,
   HiCheck,
   HiCurrencyDollar,
@@ -38,10 +39,12 @@ const menuItems = [
   { id: "moments", href: "/moments", label: "Vibes", icon: <HiLightningBolt /> },
   { id: "flows", href: "/flows", label: "Flows", icon: <HiPlay /> },
   { id: "communities", href: "/comunidades", label: "Comunidades", icon: <HiUserGroup /> },
+  { id: "invites", href: "/convites", label: "Convidar amigos", icon: <HiUserAdd /> },
+  { id: "creators", href: "/criadores", label: "Prime Influencer", icon: <HiBadgeCheck /> },
   { id: "stream", href: "/stream", label: "Fluxo Stream", icon: <HiVideoCamera /> },
   { id: "academy", href: "/academy", label: "Fluxo Academy", icon: <HiAcademicCap /> },
   { id: "shop", href: "/shop", label: "Fluxo Shop", icon: <HiShoppingBag /> },
-  { id: "coin", href: "/mais", label: "Fluxo Coin", icon: <HiCurrencyDollar /> },
+  { id: "coin", href: "/carteira", label: "Fluxo Coin", icon: <HiCurrencyDollar /> },
   { id: "date", href: "/date", label: "Date", icon: <HiHeart /> },
   { id: "notifications", href: "/notificacoes", label: "Notificações", icon: <HiBell /> },
   { id: "badges", href: "/selos", label: "Selos", icon: <HiSparkles /> },
@@ -258,7 +261,9 @@ export function Sidebar() {
 
             <div>
               <strong>{getDisplayName(person)}</strong>
-              <span>@{person.username}</span>
+              <span title={`@${person.username}`}>
+                {person.suggestion_detail ?? `@${person.username}`}
+              </span>
             </div>
 
             {person.can_follow && (

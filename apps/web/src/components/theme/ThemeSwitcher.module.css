@@ -30,7 +30,7 @@
 .grid {
   display: grid;
   gap: 12px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
 .grid button {
@@ -53,6 +53,28 @@
 
 .grid strong {
   font-size: 15px;
+}
+
+.grid .locked {
+  background: linear-gradient(135deg, #0b0906, #1a140a);
+  border: 1px dashed rgba(212, 165, 55, 0.45);
+  border-radius: 18px;
+  color: #fbf6ea;
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+}
+
+.grid .locked strong {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+}
+
+.unlockLink {
+  color: #f0c75e;
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .grid span {

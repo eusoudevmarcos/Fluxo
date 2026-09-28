@@ -7,6 +7,7 @@ import type { MissionDefinition, UserGamification, UserMissionProgress } from "@
 
 import { AppShell } from "@/components/layout/AppShell";
 import { PageCard } from "@/components/ui/PageCard";
+import { ensureMyCoinWallet } from "@/lib/services/coin.service";
 import { ensureMyGamification } from "@/lib/services/gamification.service";
 import {
   getMyMissionProgress,
@@ -40,6 +41,7 @@ function missionGroup(mission: MissionDefinition): MissionGroup {
 export default function MissoesPage() {
   const supabase = useMemo(() => createClient(), []);
   const [gamification, setGamification] = useState<UserGamification | null>(null);
+  const [coinBalance, setCoinBalance] = useState(0);
   const [missions, setMissions] = useState<MissionDefinition[]>([]);
   const [progress, setProgress] = useState<UserMissionProgress[]>([]);
   const [error, setError] = useState("");
@@ -53,14 +55,16 @@ export default function MissoesPage() {
       setError("");
 
       try {
-        const [nextGamification, nextMissions, nextProgress] = await Promise.all([
+        const [nextGamification, nextWallet, nextMissions, nextProgress] = await Promise.all([
           ensureMyGamification(supabase),
+          ensureMyCoinWallet(supabase),
           listActiveMissions(supabase),
           getMyMissionProgress(supabase),
         ]);
 
         if (isMounted) {
           setGamification(nextGamification);
+          setCoinBalance(nextWallet.balance);
           setMissions(nextMissions);
           setProgress(nextProgress);
         }
@@ -95,7 +99,12 @@ export default function MissoesPage() {
             <div>
               <span>Fluxo Aura</span>
               <h1>Missões & Recompensas</h1>
-              <p>Ganhe XP, desbloqueie Auras colecionáveis, mantenha sua sequência e evolua seu flow dentro da Fluxo.</p>
+              <p>
+                Todo dia você recebe 3 missões novas e toda semana mais 5, escolhidas para a sua
+                fase na Fluxo. Ganhe XP, Fluxo Coin, Auras e, a cada missão semanal, mais um
+                convite. Quem cumpre missões ganha alcance e aparece mais nas sugestões de quem
+                seguir.
+              </p>
             </div>
             <Link href="/auras">Ver minhas Auras</Link>
           </header>
@@ -118,6 +127,8 @@ export default function MissoesPage() {
                 </div>
                 <em>
                   {xpCurrent.toLocaleString("pt-BR")} / {xpNext.toLocaleString("pt-BR")} XP
+                  <br />
+                  {coinBalance.toLocaleString("pt-BR")} OC
                 </em>
               </section>
 
@@ -125,12 +136,12 @@ export default function MissoesPage() {
                 <MissionSection
                   missions={dailyMissions}
                   progress={progress}
-                  title="Missão diária"
+                  title="Missões de hoje · renovam à meia-noite"
                 />
                 <MissionSection
                   missions={weeklyMissions}
                   progress={progress}
-                  title="Missão semanal"
+                  title="Missões da semana · renovam na segunda"
                 />
               </section>
 
@@ -210,7 +221,15 @@ function MissionSection({
                   {current}/{target}
                   {missionProgress?.is_completed ? <HiCheck /> : null}
                 </small>
-                <em>+{mission.xp_reward} XP</em>
+                <em>
+                  +{mission.xp_reward} XP
+                  {mission.coin_reward > 0 && (
+                    <>
+                      <br />
+                      +{mission.coin_reward} OC
+                    </>
+                  )}
+                </em>
               </article>
             );
           })

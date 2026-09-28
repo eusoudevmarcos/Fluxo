@@ -25,6 +25,7 @@ type FeedScreenProps = {
   session: Session;
   profile: Profile | null;
   onOpenProfile: (userId: string) => void;
+  onOpenMissions: () => void;
 };
 
 function timeAgo(isoDate: string) {
@@ -100,7 +101,7 @@ function PostCard({
   );
 }
 
-export function FeedScreen({ session, profile, onOpenProfile }: FeedScreenProps) {
+export function FeedScreen({ session, profile, onOpenProfile, onOpenMissions }: FeedScreenProps) {
   const [contents, setContents] = useState<FeedContent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -225,9 +226,14 @@ export function FeedScreen({ session, profile, onOpenProfile }: FeedScreenProps)
     <View style={styles.screen}>
       <View style={styles.topBar}>
         <Text style={styles.brand}>fluxo</Text>
-        <Pressable onPress={() => onOpenProfile(session.user.id)}>
-          <Avatar avatarUrl={profile?.avatar_url} label={getProfileName(profile, session)} />
-        </Pressable>
+        <View style={styles.topBarActions}>
+          <Pressable onPress={onOpenMissions} style={styles.missionsButton}>
+            <Text style={styles.missionsIcon}>⚡</Text>
+          </Pressable>
+          <Pressable onPress={() => onOpenProfile(session.user.id)}>
+            <Avatar avatarUrl={profile?.avatar_url} label={getProfileName(profile, session)} />
+          </Pressable>
+        </View>
       </View>
 
       {!!errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
@@ -289,6 +295,23 @@ const styles = StyleSheet.create({
     fontSize: 27,
     fontWeight: "900",
     letterSpacing: -1.4,
+  },
+  topBarActions: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 14,
+  },
+  missionsButton: {
+    alignItems: "center",
+    backgroundColor: "rgba(255,196,0,0.14)",
+    borderRadius: 18,
+    height: 36,
+    justifyContent: "center",
+    width: 36,
+  },
+  missionsIcon: {
+    color: "#ffc400",
+    fontSize: 18,
   },
   list: {
     gap: 14,

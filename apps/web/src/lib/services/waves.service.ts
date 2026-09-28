@@ -1,7 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-import { safelyAddXpForAction } from "./gamification.service";
-
 export type WaveState = {
   count: number;
   has_waved: boolean;
@@ -79,8 +77,6 @@ export async function toggleWave(
     });
 
     if (error) throw error;
-
-    await safelyAddXpForAction(supabase, "create_wave", { content_id: contentId });
   }
 
   return getWaveState(supabase, contentId);

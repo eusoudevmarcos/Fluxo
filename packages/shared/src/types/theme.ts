@@ -1,1 +1,1 @@
-export type ThemeId = "sunflow" | "ocean-blue" | "night-flow";
+export type ThemeId = "sunflow" | "ocean-blue" | "night-flow" | "prime-gold";

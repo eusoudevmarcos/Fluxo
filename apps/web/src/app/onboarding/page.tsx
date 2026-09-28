@@ -9,11 +9,18 @@ import {
   getErrorMessage,
   isUsernameAvailable,
   normalizeUsername,
+  setMyBirthDate,
   updateProfileRequiredInfo,
   type BiologicalSex,
   type GeolocationPermission,
   type OceanProfile,
 } from "@/lib/profiles/ensure-profile";
+import {
+  clearPendingInviteCode,
+  normalizeInviteCode,
+  readPendingInviteCode,
+  redeemInvite,
+} from "@/lib/services/invites.service";
 import { hasAcceptedCurrentLegalVersions } from "@/lib/services/legal.service";
 import {
   listCitiesByState,
@@ -29,6 +36,7 @@ import styles from "./page.module.css";
 
 type StepId =
   | "welcome"
+  | "birth"
   | "identity"
   | "location"
   | "gps"
@@ -56,6 +64,7 @@ type OnboardingForm = {
 
 const steps: Array<{ id: StepId; label: string }> = [
   { id: "welcome", label: "Início" },
+  { id: "birth", label: "Idade" },
   { id: "identity", label: "Identidade" },
   { id: "location", label: "Local" },
   { id: "gps", label: "GPS" },
@@ -113,6 +122,10 @@ export default function OnboardingPage() {
   const [isLoadingCities, setIsLoadingCities] = useState(false);
   const [locationOptionsError, setLocationOptionsError] = useState("");
   const [error, setError] = useState(configError ?? "");
+  const [birthDate, setBirthDate] = useState("");
+  const [birthRecorded, setBirthRecorded] = useState(false);
+  const [isAgeBlocked, setIsAgeBlocked] = useState(false);
+  const [inviteCode, setInviteCode] = useState("");
   const currentStepIndex = getStepIndex(step);
 
   useEffect(() => {
@@ -153,6 +166,11 @@ export default function OnboardingPage() {
 
         setProfile(ensuredProfile);
         setForm(getInitialForm(ensuredProfile));
+        setInviteCode(readPendingInviteCode());
+        setIsAgeBlocked(ensuredProfile.age_band === "blocked");
+        setBirthRecorded(
+          ensuredProfile.age_band !== "unknown" && ensuredProfile.age_band !== "blocked",
+        );
         setGoogleAvatarUrl(googlePhoto);
         setIsLoading(false);
       } catch (loadError) {
@@ -355,7 +373,33 @@ export default function OnboardingPage() {
     return true;
   }
 
+  // Declarada uma unica vez; <14 bloqueia a conta (set_my_birth_date retorna "blocked").
+  async function submitBirthDate() {
+    if (birthRecorded) return true;
+
+    const parsed = new Date(`${birthDate}T00:00:00Z`);
+    if (!birthDate || Number.isNaN(parsed.getTime()) || parsed.getTime() > Date.now()) {
+      setError("Informe uma data de nascimento válida.");
+      return false;
+    }
+
+    try {
+      const band = await setMyBirthDate(birthDate);
+      if (band === "blocked") {
+        setIsAgeBlocked(true);
+        return false;
+      }
+      setBirthRecorded(true);
+      setError("");
+      return true;
+    } catch (birthError) {
+      setError(getErrorMessage(birthError, "Não foi possível continuar."));
+      return false;
+    }
+  }
+
   async function canLeaveStep() {
+    if (step === "birth") return submitBirthDate();
     if (step === "identity") return validateIdentity();
     if (step === "location") return validateLocation();
     if (step === "gps") return validateGps();
@@ -373,7 +417,7 @@ export default function OnboardingPage() {
   }
 
   function goBack() {
-    const previousStep = steps[currentStepIndex - 1];
+    const previousStep = steps[currentStepIndex - (birthRecorded && step === "identity" ? 2 : 1)];
     if (previousStep) {
       setError("");
       setStep(previousStep.id);
@@ -444,6 +488,12 @@ export default function OnboardingPage() {
     event?.preventDefault();
     if (!form) return;
 
+    if (!birthRecorded) {
+      setStep("birth");
+      setError("Informe sua data de nascimento para continuar.");
+      return;
+    }
+
     if (!(await validateIdentity())) {
       setStep("identity");
       return;
@@ -479,6 +529,23 @@ export default function OnboardingPage() {
         ...form,
         biological_sex: biologicalSex,
       });
+
+      // O convite so vale com o cadastro completo (o servidor exige). Se falhar (codigo
+      // invalido, convites esgotados), avisa e deixa seguir sem convite no proximo clique.
+      if (inviteCode) {
+        try {
+          await redeemInvite(createClient(), inviteCode);
+        } catch (inviteError) {
+          setInviteCode("");
+          clearPendingInviteCode();
+          setError(
+            `${getErrorMessage(inviteError, "Não foi possível usar o convite.")} Clique em "Entrar na Fluxo" para continuar sem convite.`,
+          );
+          return;
+        }
+        clearPendingInviteCode();
+      }
+
       await safelyApplyDefaultOfficialFollowsForCurrentUser(createClient());
       router.replace("/perfil");
       router.refresh();
@@ -487,6 +554,24 @@ export default function OnboardingPage() {
     } finally {
       setIsSaving(false);
     }
+  }
+
+  if (isAgeBlocked) {
+    return (
+      <main className={styles.page}>
+        <section className={styles.shell}>
+          <header className={styles.topbar}>
+            <OceanLogo size="md" />
+          </header>
+          <div className={styles.card}>
+            <section className={styles.stepPanel}>
+              <h1>Não foi possível criar sua conta</h1>
+              <p>A Fluxo não está disponível para você no momento. Obrigado pelo interesse.</p>
+            </section>
+          </div>
+        </section>
+      </main>
+    );
   }
 
   return (
@@ -521,7 +606,33 @@ export default function OnboardingPage() {
                 <span className={styles.eyebrow}>Bem-vindo à Fluxo</span>
                 <h1>Vamos montar seu flow?</h1>
                 <p>Antes de entrar, personalize sua presença na Fluxo.</p>
-                <button type="button" onClick={goNext}>Começar</button>
+                <button
+                  type="button"
+                  onClick={() => (birthRecorded ? setStep("identity") : void goNext())}
+                >
+                  Começar
+                </button>
+              </section>
+            )}
+
+            {step === "birth" && (
+              <section className={styles.stepPanel}>
+                <span className={styles.eyebrow}>Idade</span>
+                <h1>Quando você nasceu?</h1>
+                <p>
+                  Não aparece no seu perfil. Usamos para ajustar sua experiência e sua
+                  segurança na Fluxo.
+                </p>
+                <label>
+                  Data de nascimento
+                  <input
+                    type="date"
+                    value={birthDate}
+                    max={new Date().toISOString().slice(0, 10)}
+                    onChange={(event) => setBirthDate(event.target.value)}
+                    required
+                  />
+                </label>
               </section>
             )}
 
@@ -777,6 +888,15 @@ export default function OnboardingPage() {
                   <p>{form.city && form.state ? `${form.city}, ${form.state}` : "Cidade e estado pendentes."}</p>
                   <p>{form.bio || "Sobre seu flow será exibido aqui quando você preencher."}</p>
                 </div>
+                <label>
+                  Código de convite (opcional)
+                  <input
+                    value={inviteCode}
+                    onChange={(event) => setInviteCode(normalizeInviteCode(event.target.value))}
+                    placeholder="Ex: K7PX2QMA"
+                    autoCapitalize="characters"
+                  />
+                </label>
                 <button type="submit" disabled={isSaving}>
                   {isSaving ? "Entrando..." : "Entrar na Fluxo"}
                 </button>

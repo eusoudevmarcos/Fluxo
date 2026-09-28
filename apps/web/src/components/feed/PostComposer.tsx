@@ -198,12 +198,6 @@ export function PostComposer({ onCreated }: PostComposerProps) {
         media_url: uploadedMedia?.publicUrl,
         media_type: uploadedMedia?.mediaType ?? "none",
         content_type: getContentTypeForDestination(destination),
-        gamification_action:
-          destination === "moments"
-            ? "create_moments"
-            : destination === "flow"
-              ? "create_flow"
-              : "daily_activity",
       });
 
       if (destination === "favorites") {

@@ -1,0 +1,102 @@
+.page {
+  align-items: center;
+  background: var(--color-bg);
+  display: flex;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: 24px 16px;
+}
+
+.card {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-card) 94%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 26px;
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+  max-width: 440px;
+  padding: 28px 22px;
+  text-align: center;
+  width: 100%;
+}
+
+.card h1 {
+  color: var(--color-text);
+  font-size: clamp(22px, 5vw, 30px);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.muted {
+  color: var(--color-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.handle {
+  color: var(--color-primary-hover);
+  font-weight: 800;
+  margin: -6px 0 0;
+}
+
+.avatar {
+  align-items: center;
+  background: radial-gradient(circle at 35% 20%, #fff6d8, #ffc400 55%, #b47f00 100%);
+  border-radius: 999px;
+  color: #402d00;
+  display: flex;
+  font-size: 34px;
+  font-weight: 950;
+  height: 92px;
+  justify-content: center;
+  overflow: hidden;
+  width: 92px;
+}
+
+.avatar img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.codeBox {
+  background: color-mix(in srgb, var(--color-bg) 58%, transparent);
+  border: 1px dashed var(--color-border);
+  border-radius: 16px;
+  display: grid;
+  gap: 2px;
+  padding: 10px 18px;
+}
+
+.codeBox small {
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.codeBox strong {
+  color: var(--color-text);
+  font-size: 22px;
+  letter-spacing: 0.18em;
+}
+
+.primary,
+.secondary {
+  border-radius: 16px;
+  font-weight: 900;
+  padding: 14px 18px;
+  text-align: center;
+  text-decoration: none;
+  width: 100%;
+}
+
+.primary {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.secondary {
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}

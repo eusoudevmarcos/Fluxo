@@ -36,7 +36,8 @@ type SealBadgeProps = {
 };
 
 export function SealBadge({ seal, size = 16 }: SealBadgeProps) {
-  if (!seal) return null;
+  // Selo sem arte no app (ex: prime_user/prime_influencer em versoes antigas) nao renderiza.
+  if (!seal || !SEAL_IMAGES[seal]) return null;
 
   return (
     <Image

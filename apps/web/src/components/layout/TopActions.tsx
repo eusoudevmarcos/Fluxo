@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { HiBell, HiChatAlt2, HiCurrencyDollar } from "react-icons/hi";
 import { IoMoonOutline } from "react-icons/io5";
 
 import { useProfile } from "@/components/profile/ProfileProvider";
+import { ensureMyCoinWallet } from "@/lib/services/coin.service";
 import { createClient } from "@/lib/supabase/client";
-import { defaultTheme, isThemeId, themes, type ThemeId } from "@/lib/themes";
+import { defaultTheme, isThemeId, publicThemes, type ThemeId } from "@/lib/themes";
 import styles from "./TopActions.module.css";
 
 function getInitial(name?: string | null) {
@@ -28,14 +29,32 @@ export function TopActions({
   onTogglePrivs,
 }: TopActionsProps) {
   const { profile } = useProfile();
+  const supabase = useMemo(() => createClient(), []);
   const [isSavingTheme, setIsSavingTheme] = useState(false);
+  const [coinBalance, setCoinBalance] = useState<number | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    ensureMyCoinWallet(supabase)
+      .then((wallet) => {
+        if (isMounted) setCoinBalance(wallet.balance);
+      })
+      .catch(() => undefined);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [supabase]);
 
   async function handleThemeCycle() {
     if (isSavingTheme) return;
 
     const currentTheme = isThemeId(profile?.theme) ? profile.theme : defaultTheme;
-    const currentIndex = themes.findIndex((theme) => theme.id === currentTheme);
-    const nextTheme = themes[(currentIndex + 1) % themes.length]?.id ?? defaultTheme;
+    // Alterna so entre os temas abertos; o exclusivo e escolhido no perfil por quem desbloqueou.
+    const currentIndex = publicThemes.findIndex((theme) => theme.id === currentTheme);
+    const nextTheme =
+      publicThemes[(currentIndex + 1) % publicThemes.length]?.id ?? defaultTheme;
 
     window.dispatchEvent(
       new CustomEvent("ocean-theme-change", { detail: { theme: nextTheme } }),
@@ -46,7 +65,6 @@ export function TopActions({
     setIsSavingTheme(true);
 
     try {
-      const supabase = createClient();
       await supabase
         .from("profiles")
         .update({ theme: nextTheme as ThemeId, updated_at: new Date().toISOString() })
@@ -89,9 +107,9 @@ export function TopActions({
         <HiChatAlt2 />
       </button>
 
-      <Link className={styles.walletBadge} href="/mais" aria-label="Fluxo Coin">
+      <Link className={styles.walletBadge} href="/carteira" aria-label="Fluxo Coin">
         <HiCurrencyDollar />
-        <span>0 OC</span>
+        <span>{(coinBalance ?? 0).toLocaleString("pt-BR")} OC</span>
       </Link>
 
       <Link className={styles.profileAvatar} href="/perfil" aria-label="Perfil">

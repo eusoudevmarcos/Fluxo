@@ -6,9 +6,13 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { HiArrowRight, HiCheck, HiSearch, HiUserAdd } from "react-icons/hi";
 
 import {
+  getMyNearbySettings,
   listPeopleSuggestions,
   searchProfiles,
+  setNearbyVisibility,
   toggleFollowProfile,
+  updateMyLocation,
+  type NearbySettings,
   type PublicProfileSummary,
 } from "@/lib/services/profiles.service";
 import { createClient } from "@/lib/supabase/client";
@@ -31,6 +35,27 @@ function getLocation(profile: PublicProfileSummary) {
   return profile.location_label || "Fluxo";
 }
 
+function getCurrentPosition() {
+  return new Promise<GeolocationPosition>((resolve, reject) => {
+    if (!("geolocation" in navigator)) {
+      reject(new Error("Seu navegador não permite localização."));
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(resolve, () => reject(
+      new Error("Permita a localização no navegador para ver pessoas próximas."),
+    ), { enableHighAccuracy: false, maximumAge: 300000, timeout: 10000 });
+  });
+}
+
+async function isGeolocationAlreadyGranted() {
+  try {
+    const status = await navigator.permissions.query({ name: "geolocation" });
+    return status.state === "granted";
+  } catch {
+    return false;
+  }
+}
+
 export function PeopleDiscoverClient({ initialQuery = "" }: PeopleDiscoverClientProps) {
   const router = useRouter();
   const supabase = useMemo(() => createClient(), []);
@@ -41,6 +66,60 @@ export function PeopleDiscoverClient({ initialQuery = "" }: PeopleDiscoverClient
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [nearby, setNearby] = useState<NearbySettings | null>(null);
+  const [isUpdatingNearby, setIsUpdatingNearby] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadNearby() {
+      const settings = await getMyNearbySettings(supabase).catch(() => null);
+      if (!isMounted) return;
+      setNearby(settings);
+
+      // Quem ja ligou "pessoas proximas" tem a posicao renovada ao abrir o Discover, sem novo
+      // pedido de permissao (o servidor limita a uma atualizacao a cada 10 minutos).
+      if (settings?.nearby_visible && (await isGeolocationAlreadyGranted())) {
+        const position = await getCurrentPosition().catch(() => null);
+        if (position) await updateMyLocation(supabase, position.coords).catch(() => undefined);
+      }
+    }
+
+    void loadNearby();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [supabase]);
+
+  async function handleToggleNearby() {
+    if (!nearby) return;
+    setIsUpdatingNearby(true);
+    setError("");
+    setMessage("");
+
+    try {
+      if (nearby.nearby_visible) {
+        await setNearbyVisibility(supabase, false);
+        setNearby({ ...nearby, nearby_visible: false });
+        setMessage("Você não aparece mais para pessoas próximas.");
+      } else {
+        const position = await getCurrentPosition();
+        await updateMyLocation(supabase, position.coords);
+        await setNearbyVisibility(supabase, true);
+        setNearby({ ...nearby, nearby_visible: true, has_location: true });
+        setMessage("Pronto! Agora você vê e aparece para pessoas próximas.");
+      }
+      setReloadKey((current) => current + 1);
+    } catch (nearbyError) {
+      setError(
+        nearbyError instanceof Error ? nearbyError.message : "Não foi possível atualizar.",
+      );
+    } finally {
+      setIsUpdatingNearby(false);
+    }
+  }
 
   useEffect(() => {
     let isMounted = true;
@@ -78,7 +157,7 @@ export function PeopleDiscoverClient({ initialQuery = "" }: PeopleDiscoverClient
     return () => {
       isMounted = false;
     };
-  }, [submittedQuery, supabase]);
+  }, [reloadKey, submittedQuery, supabase]);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -144,6 +223,27 @@ export function PeopleDiscoverClient({ initialQuery = "" }: PeopleDiscoverClient
         <button type="submit">Buscar</button>
       </form>
 
+      {!submittedQuery && nearby?.is_adult && (
+        <div className={styles.nearbyCard}>
+          <div>
+            <strong>Pessoas perto de você</strong>
+            <small>
+              {nearby.nearby_visible
+                ? "Ativado. Você vê e aparece para quem também ativou. Ninguém vê sua localização exata, só uma faixa de distância."
+                : "Veja quem usa a Fluxo perto de você. Só aparece para quem também ativar, e nunca com a localização exata."}
+            </small>
+          </div>
+          <button
+            className={nearby.nearby_visible ? styles.secondary : ""}
+            disabled={isUpdatingNearby}
+            onClick={handleToggleNearby}
+            type="button"
+          >
+            {isUpdatingNearby ? "Atualizando..." : nearby.nearby_visible ? "Desativar" : "Ativar"}
+          </button>
+        </div>
+      )}
+
       {message && <p className={styles.success}>{message}</p>}
       {error && <p className={styles.error}>{error}</p>}
 
@@ -177,6 +277,9 @@ export function PeopleDiscoverClient({ initialQuery = "" }: PeopleDiscoverClient
                 </span>
               </Link>
 
+              {profile.suggestion_detail && (
+                <span className={styles.reason}>{profile.suggestion_detail}</span>
+              )}
               <p>{profile.bio || getLocation(profile)}</p>
 
               <div className={styles.cardActions}>

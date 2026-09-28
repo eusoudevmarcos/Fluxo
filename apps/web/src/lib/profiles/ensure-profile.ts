@@ -5,6 +5,7 @@ import { defaultTheme, type ThemeId } from "@/lib/themes";
 
 export type GeolocationPermission = "unknown" | "granted" | "denied" | "unavailable";
 export type BiologicalSex = "male" | "female" | "intersex" | "prefer_not_to_say";
+export type AgeBand = "adult" | "teen_16" | "teen_14" | "blocked" | "unknown";
 
 export type OceanProfile = {
   id: string;
@@ -36,7 +37,23 @@ export type OceanProfile = {
   geolocation_denied_at: string | null;
   biological_sex: BiologicalSex | null;
   profile_required_completed: boolean | null;
+  birth_date: string | null;
+  age_band: AgeBand;
 };
+
+// Colunas sensiveis (coordenadas, sexo, nascimento) nao sao legiveis via select em profiles
+// (migration 047); o dono le pela RPC get_my_private_profile.
+type PrivateProfileFields = Pick<
+  OceanProfile,
+  | "location_lat"
+  | "location_lng"
+  | "location_accuracy_meters"
+  | "geolocation_consent_at"
+  | "geolocation_denied_at"
+  | "biological_sex"
+  | "birth_date"
+  | "age_band"
+>;
 
 export type ProfileUpdateInput = {
   display_name: string;
@@ -50,7 +67,7 @@ export type ProfileUpdateInput = {
 const BASE_PROFILE_COLUMNS =
   "id,user_id,username,display_name,avatar_url,bio,theme,aura,created_at,updated_at";
 const REQUIRED_PROFILE_COLUMNS =
-  "state,city,country,location_lat,location_lng,location_accuracy_meters,geolocation_permission,geolocation_consent_at,geolocation_denied_at,biological_sex,profile_required_completed";
+  "state,city,country,geolocation_permission,profile_required_completed";
 const ONBOARDING_PROFILE_COLUMNS =
   `onboarding_completed,spotify_connected,spotify_label,interests,date_intent,vibe,location_label,looking_for,${REQUIRED_PROFILE_COLUMNS}`;
 const PROFILE_COLUMNS = `${BASE_PROFILE_COLUMNS},${ONBOARDING_PROFILE_COLUMNS}`;
@@ -202,8 +219,47 @@ function withOnboardingDefaults(profile: Partial<OceanProfile>) {
     geolocation_denied_at: null,
     biological_sex: null,
     profile_required_completed: false,
+    birth_date: null,
+    age_band: "unknown",
     ...profile,
   } as OceanProfile;
+}
+
+function isMissingFunction(error: { code?: string } | null) {
+  return error?.code === "42883" || error?.code === "PGRST202";
+}
+
+async function withPrivateFields(supabase: SupabaseClient, profile: OceanProfile) {
+  const { data, error } = await supabase.rpc("get_my_private_profile");
+
+  if (error) {
+    if (isMissingFunction(error)) return profile;
+    throw error;
+  }
+
+  const row = (Array.isArray(data) ? data[0] : data) as PrivateProfileFields | undefined;
+  if (!row) return profile;
+
+  return {
+    ...profile,
+    ...row,
+    location_lat: row.location_lat === null ? null : Number(row.location_lat),
+    location_lng: row.location_lng === null ? null : Number(row.location_lng),
+    location_accuracy_meters:
+      row.location_accuracy_meters === null ? null : Number(row.location_accuracy_meters),
+    age_band: row.age_band ?? "unknown",
+  };
+}
+
+export async function setMyBirthDate(birthDate: string): Promise<AgeBand> {
+  const supabase = createClient();
+  const { data, error } = await supabase.rpc("set_my_birth_date", {
+    input_birth_date: birthDate,
+  });
+
+  if (error) throw error;
+
+  return data as AgeBand;
 }
 
 async function selectProfileByUserId(supabase: SupabaseClient, userId: string) {
@@ -241,7 +297,12 @@ export async function ensureProfileWithClient(supabase: SupabaseClient) {
   );
 
   if (profileError) throw profileError;
-  if (existingProfile) return withOnboardingDefaults(existingProfile as Partial<OceanProfile>);
+  if (existingProfile) {
+    return withPrivateFields(
+      supabase,
+      withOnboardingDefaults(existingProfile as Partial<OceanProfile>),
+    );
+  }
 
   const username = await getAvailableUsername(supabase, getEmailBase(user.email));
   const payload = getProfilePayload(user, username);

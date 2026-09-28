@@ -18,7 +18,25 @@ const PUBLIC_PROFILE_SUMMARY_COLUMNS =
 export type PublicProfileSummary = OceanProfile & {
   is_following: boolean;
   can_follow: boolean;
+  // Presente so nas sugestoes (get_follow_suggestions, migration 053).
+  suggestion_reason?: "nearby" | "mutual" | "trending" | "same_city" | "new" | "suggested";
+  suggestion_detail?: string;
 };
+
+type SuggestionRow = Partial<OceanProfile> & {
+  reason: PublicProfileSummary["suggestion_reason"];
+  reason_detail: string;
+};
+
+export type NearbySettings = {
+  nearby_visible: boolean;
+  is_adult: boolean;
+  has_location: boolean;
+};
+
+function isMissingFunction(error: { code?: string } | null) {
+  return error?.code === "42883" || error?.code === "PGRST202";
+}
 
 export type RelationshipStats = {
   fans: number;
@@ -39,6 +57,8 @@ function normalizePublicProfile(profile: Partial<OceanProfile>): OceanProfile {
     geolocation_consent_at: null,
     geolocation_denied_at: null,
     biological_sex: null,
+    birth_date: null,
+    age_band: "unknown",
     ...profile,
   } as OceanProfile;
 }
@@ -132,9 +152,10 @@ export async function getProfileByUsername(
 ): Promise<OceanProfile | null> {
   const normalizedUsername = normalizeUsername(username);
 
+  // Sem "*": colunas sensiveis de profiles nao sao legiveis pelo client (migration 047).
   const { data, error } = await supabase
     .from("profiles")
-    .select("*")
+    .select(PUBLIC_PROFILE_SUMMARY_COLUMNS)
     .eq("username", normalizedUsername)
     .maybeSingle();
 
@@ -142,7 +163,7 @@ export async function getProfileByUsername(
     throw error;
   }
 
-  return data as OceanProfile | null;
+  return data ? normalizePublicProfile(data as Partial<OceanProfile>) : null;
 }
 
 export async function getPublicProfileByUsername(
@@ -168,10 +189,37 @@ export async function getPublicProfileByUsername(
     : null;
 }
 
+// Sugestoes ordenadas no servidor: amigos em comum, alcance ganho com missoes, pessoas
+// proximas, mesma cidade (migration 053). Sem a 053 aplicada, cai nos perfis mais recentes.
 export async function listPeopleSuggestions(
   supabase: SupabaseClient,
   limit = 4,
 ): Promise<PublicProfileSummary[]> {
+  const { data: suggestionRows, error: suggestionError } = await supabase.rpc(
+    "get_follow_suggestions",
+    { max_results: limit },
+  );
+
+  if (!suggestionError) {
+    const rows = (suggestionRows ?? []) as SuggestionRow[];
+    const withState = await withRelationshipState(
+      supabase,
+      rows.map(({ reason, reason_detail, ...profile }) => {
+        void reason;
+        void reason_detail;
+        return normalizePublicProfile(profile);
+      }),
+    );
+
+    return withState.map((profile, index) => ({
+      ...profile,
+      suggestion_reason: rows[index]?.reason,
+      suggestion_detail: rows[index]?.reason_detail,
+    }));
+  }
+
+  if (!isMissingFunction(suggestionError)) throw suggestionError;
+
   const currentUserId = await getCurrentUserId(supabase);
   let query = supabase
     .from("profiles")
@@ -208,6 +256,21 @@ export async function searchProfiles(
   if (searchTerm.length < 2) {
     return listPeopleSuggestions(supabase, limit);
   }
+
+  // Busca no servidor com protecao de menores (migration 054). Sem ela, cai na busca direta.
+  const { data: searchRows, error: searchError } = await supabase.rpc("search_profiles", {
+    search_term: searchTerm,
+    max_results: limit,
+  });
+
+  if (!searchError) {
+    return withRelationshipState(
+      supabase,
+      ((searchRows ?? []) as Partial<OceanProfile>[]).map(normalizePublicProfile),
+    );
+  }
+
+  if (!isMissingFunction(searchError)) throw searchError;
 
   const currentUserId = await getCurrentUserId(supabase);
   const usernameTerm = normalizeUsername(searchTerm);
@@ -343,6 +406,44 @@ export async function toggleFollowProfile(
 
   await followProfile(supabase, targetUserId);
   return true;
+}
+
+export async function getMyNearbySettings(supabase: SupabaseClient): Promise<NearbySettings | null> {
+  const { data, error } = await supabase.rpc("get_my_private_profile");
+
+  if (error) {
+    if (isMissingFunction(error)) return null;
+    throw error;
+  }
+
+  const row = (Array.isArray(data) ? data[0] : data) as
+    | { nearby_visible?: boolean; age_band?: string; location_lat?: number | null }
+    | undefined;
+  if (!row || row.nearby_visible === undefined) return null;
+
+  return {
+    nearby_visible: Boolean(row.nearby_visible),
+    is_adult: row.age_band === "adult",
+    has_location: row.location_lat !== null && row.location_lat !== undefined,
+  };
+}
+
+// O servidor ignora atualizacoes com menos de 10 minutos de intervalo.
+export async function updateMyLocation(
+  supabase: SupabaseClient,
+  coords: { latitude: number; longitude: number; accuracy?: number | null },
+) {
+  const { error } = await supabase.rpc("update_my_location", {
+    input_lat: coords.latitude,
+    input_lng: coords.longitude,
+    input_accuracy_meters: coords.accuracy ? Math.round(coords.accuracy) : null,
+  });
+  if (error) throw error;
+}
+
+export async function setNearbyVisibility(supabase: SupabaseClient, enabled: boolean) {
+  const { error } = await supabase.rpc("set_nearby_visibility", { enabled });
+  if (error) throw error;
 }
 
 export async function saveProfile(input: ProfileUpdateInput) {

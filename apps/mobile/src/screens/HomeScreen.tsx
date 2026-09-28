@@ -7,10 +7,13 @@ import { createMobileSupabaseClient } from "../lib/supabase/client";
 import { ensureMobileProfile, type Profile } from "../lib/services/profiles.service";
 import { CreateScreen } from "./CreateScreen";
 import { FeedScreen } from "./FeedScreen";
+import { InvitesScreen } from "./InvitesScreen";
 import { MessagesScreen } from "./MessagesScreen";
+import { MissionsScreen } from "./MissionsScreen";
 import { OnboardingScreen } from "./OnboardingScreen";
 import { ProfileScreen } from "./ProfileScreen";
 import { SearchScreen } from "./SearchScreen";
+import { WalletScreen } from "./WalletScreen";
 
 type HomeScreenProps = {
   session: Session;
@@ -23,6 +26,9 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
   const [errorMessage, setErrorMessage] = useState("");
   const [activeTab, setActiveTab] = useState<ScreenTab>("home");
   const [viewedProfileUserId, setViewedProfileUserId] = useState<string | null>(null);
+  const [isMissionsOpen, setIsMissionsOpen] = useState(false);
+  const [isWalletOpen, setIsWalletOpen] = useState(false);
+  const [isInvitesOpen, setIsInvitesOpen] = useState(false);
   const [openConversationWithUserId, setOpenConversationWithUserId] = useState<string | null>(null);
   const [unreadMessages, setUnreadMessages] = useState(0);
 
@@ -70,6 +76,9 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
 
   const handleChangeTab = useCallback((tab: ScreenTab) => {
     setViewedProfileUserId(null);
+    setIsMissionsOpen(false);
+    setIsWalletOpen(false);
+    setIsInvitesOpen(false);
     setActiveTab(tab);
   }, []);
 
@@ -106,6 +115,7 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
   let screen: ReactNode;
 
   if (viewedProfileUserId) {
+    // Vem antes das telas sobrepostas para que abrir um amigo a partir de Convites funcione.
     screen = (
       <ProfileScreen
         onBack={() => setViewedProfileUserId(null)}
@@ -113,6 +123,20 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
         onSignOut={onSignOut}
         session={session}
         userId={viewedProfileUserId}
+      />
+    );
+  } else if (isWalletOpen) {
+    screen = <WalletScreen onBack={() => setIsWalletOpen(false)} />;
+  } else if (isInvitesOpen) {
+    screen = (
+      <InvitesScreen onBack={() => setIsInvitesOpen(false)} onOpenProfile={openProfile} />
+    );
+  } else if (isMissionsOpen) {
+    screen = (
+      <MissionsScreen
+        onBack={() => setIsMissionsOpen(false)}
+        onOpenInvites={() => setIsInvitesOpen(true)}
+        onOpenWallet={() => setIsWalletOpen(true)}
       />
     );
   } else if (activeTab === "search") {
@@ -138,7 +162,14 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
       />
     );
   } else {
-    screen = <FeedScreen onOpenProfile={openProfile} profile={profile} session={session} />;
+    screen = (
+      <FeedScreen
+        onOpenMissions={() => setIsMissionsOpen(true)}
+        onOpenProfile={openProfile}
+        profile={profile}
+        session={session}
+      />
+    );
   }
 
   return (

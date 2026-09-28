@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { HiCheck, HiLightningBolt, HiSparkles } from "react-icons/hi";
-import type { UserGamification, UserMissionProgress } from "@ocean/shared";
+import type { MissionDefinition, UserGamification, UserMissionProgress } from "@ocean/shared";
 
+import { ensureMyCoinWallet } from "@/lib/services/coin.service";
 import { getMyGamification } from "@/lib/services/gamification.service";
-import { getMyMissionProgress } from "@/lib/services/missions.service";
+import { getMyMissionProgress, listActiveMissions } from "@/lib/services/missions.service";
 import { createClient } from "@/lib/supabase/client";
 import styles from "./RewardWidget.module.css";
 
@@ -23,18 +24,24 @@ const week = [
 export function RewardWidget() {
   const supabase = useMemo(() => createClient(), []);
   const [gamification, setGamification] = useState<UserGamification | null>(null);
-  const [missions, setMissions] = useState<UserMissionProgress[]>([]);
+  const [missions, setMissions] = useState<MissionDefinition[]>([]);
+  const [progress, setProgress] = useState<UserMissionProgress[]>([]);
+  const [coinBalance, setCoinBalance] = useState(0);
 
   useEffect(() => {
     let isMounted = true;
 
     Promise.all([
       getMyGamification(supabase).catch(() => null),
+      listActiveMissions(supabase).catch(() => []),
       getMyMissionProgress(supabase).catch(() => []),
-    ]).then(([nextGamification, nextMissions]) => {
+      ensureMyCoinWallet(supabase).catch(() => null),
+    ]).then(([nextGamification, nextMissions, nextProgress, nextWallet]) => {
       if (!isMounted) return;
       setGamification(nextGamification);
       setMissions(nextMissions);
+      setProgress(nextProgress);
+      setCoinBalance(nextWallet?.balance ?? 0);
     });
 
     return () => {
@@ -46,17 +53,21 @@ export function RewardWidget() {
   const xpCurrent = gamification?.xp_current_level ?? 3250;
   const xpNext = gamification?.xp_next_level ?? 5000;
   const xpPercent = Math.min(100, Math.round((xpCurrent / Math.max(1, xpNext)) * 100));
+  // Destaque: primeira missao sorteada (diarias vem primeiro) que ainda nao foi concluida.
+  const progressFor = (mission: MissionDefinition) =>
+    progress.find((item) => item.mission_id === mission.id);
   const mainMission =
-    missions.find((mission) => mission.mission?.slug === "weekly_join_5_communities") ??
-    missions[0];
-  const missionCurrent = mainMission?.current_value ?? 2;
-  const missionTarget = mainMission?.target_value ?? 3;
+    missions.find((mission) => !progressFor(mission)?.is_completed) ?? missions[0];
+  const mainProgress = mainMission ? progressFor(mainMission) : undefined;
+  const missionCurrent = mainProgress?.current_value ?? 0;
+  const missionTarget = mainProgress?.target_value ?? mainMission?.target_value ?? 1;
   const missionPercent = Math.min(
     100,
     Math.round((missionCurrent / Math.max(1, missionTarget)) * 100),
   );
-  const missionTitle = mainMission?.mission?.title ?? "Dropar 3 flows esta semana";
-  const missionXp = mainMission?.mission?.xp_reward ?? 250;
+  const missionTitle = mainMission?.title ?? "Missões carregando...";
+  const missionXp = mainMission?.xp_reward ?? 0;
+  const missionCoin = mainMission?.coin_reward ?? 0;
 
   return (
     <section className={styles.rewardCard}>
@@ -74,7 +85,8 @@ export function RewardWidget() {
           <strong>{gamification?.is_founder ? "Fundador Fluxo" : "Fluxeiro"}</strong>
         </div>
         <span className={styles.xp}>
-          {xpCurrent.toLocaleString("pt-BR")} / {xpNext.toLocaleString("pt-BR")} XP
+          {xpCurrent.toLocaleString("pt-BR")} / {xpNext.toLocaleString("pt-BR")} XP ·{" "}
+          {coinBalance.toLocaleString("pt-BR")} OC
         </span>
       </div>
 
@@ -95,7 +107,7 @@ export function RewardWidget() {
         </small>
         <em>
           <HiSparkles />
-          +{missionXp} XP
+          +{missionXp} XP{missionCoin > 0 ? ` · +${missionCoin} OC` : ""}
         </em>
       </div>
 

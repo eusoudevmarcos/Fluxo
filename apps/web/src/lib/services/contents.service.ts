@@ -2,7 +2,6 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 import { getEquippedAurasByUserIds, type PublicEquippedAura } from "./auras.service";
 import { getEquippedBadgesByUserIds, type PublicEquippedBadge } from "./badges.service";
-import { safelyAddXpForAction } from "./gamification.service";
 
 export type ContentType = "post" | "flow";
 export type MediaType = "image" | "video" | "none";
@@ -79,7 +78,6 @@ export type CreateContentInput = {
   media_type?: MediaType;
   content_type?: ContentType;
   community_id?: string;
-  gamification_action?: "create_flow" | "create_moments" | "daily_activity";
 };
 
 const MAX_CONTENT_TEXT_LENGTH = 1000;
@@ -337,16 +335,7 @@ export async function createContent(
     throw error;
   }
 
-  const createdContent = data as ContentRow;
-
-  await safelyAddXpForAction(
-    supabase,
-    input.gamification_action ??
-      (createdContent.content_type === "flow" ? "create_flow" : "daily_activity"),
-    { content_id: createdContent.id, content_type: createdContent.content_type },
-  );
-
-  return createdContent;
+  return data as ContentRow;
 }
 
 export async function deleteContent(supabase: SupabaseClient, contentId: string) {

@@ -61,6 +61,21 @@
   --shadow-card: 0 18px 56px rgba(0, 0, 0, 0.4);
   --radius-card: 28px;
 }
+/* Exclusivo dos Prime Influencers (proposta inicial de cores; ajustar com a identidade final). */
+.theme-prime-gold {
+  --color-bg: #050403;
+  --color-card: #110e09;
+  --color-text: #fbf6ea;
+  --color-muted: #b9ad94;
+  --color-primary: #d4a537;
+  --color-primary-hover: #f0c75e;
+  --color-accent: #f3e1b5;
+  --color-on-primary: #140f05;
+  --color-border: rgba(212, 165, 55, 0.2);
+  --shadow-card: 0 22px 70px rgba(212, 165, 55, 0.12);
+  --radius-card: 24px;
+}
+
 html,
 body {
   margin: 0;

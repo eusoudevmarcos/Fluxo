@@ -75,9 +75,13 @@ export type MissionDefinition = {
   cadence: MissionCadence;
   target_value: number;
   xp_reward: number;
+  coin_reward: number;
   aura_reward_slug: string | null;
   sticker_pack_reward_slug: string | null;
   is_active: boolean;
+  in_rotation?: boolean;
+  audience?: "all" | "new" | "active" | "creator";
+  invite_slot_reward?: number;
   starts_at: string | null;
   ends_at: string | null;
   metadata: Record<string, unknown>;

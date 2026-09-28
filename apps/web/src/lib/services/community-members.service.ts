@@ -1,7 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-import { safelyAddXpForAction } from "./gamification.service";
-
 export type MembershipState = {
   is_member: boolean;
   role: "owner" | "moderator" | "member" | null;
@@ -59,8 +57,6 @@ export async function joinCommunity(
   );
 
   if (error) throw error;
-
-  await safelyAddXpForAction(supabase, "join_community", { community_id: communityId });
 }
 
 export async function leaveCommunity(supabase: SupabaseClient, communityId: string) {

@@ -45,7 +45,7 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "O Fluxo usa sua localização para sugerir comunidades locais e melhorar a segurança."
+          "locationWhenInUsePermission": "A Fluxo usa sua localização para sugerir comunidades locais e, se você ativar, mostrar pessoas próximas. Sua localização exata nunca aparece para ninguém."
         }
       ]
     ],
