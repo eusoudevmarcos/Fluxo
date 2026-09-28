@@ -22,6 +22,7 @@ import {
   type CountryOption,
   type StateOption,
 } from "../lib/services/location.service";
+import { clearPendingInviteCode, readPendingInviteCode } from "../lib/pendingInvite";
 import { normalizeInviteCode, redeemInvite } from "../lib/services/invites.service";
 import { uploadAvatar } from "../lib/services/media.service";
 import {
@@ -125,6 +126,15 @@ export function OnboardingScreen({ session, profile, onComplete }: OnboardingScr
 
   useEffect(() => {
     listCountries().then(setCountries).catch(() => undefined);
+  }, []);
+
+  // Codigo vindo do link de convite (fluxo://c/CODIGO) ja aparece preenchido no fim.
+  useEffect(() => {
+    readPendingInviteCode()
+      .then((code) => {
+        if (code) setInviteCode((current) => current || code);
+      })
+      .catch(() => undefined);
   }, []);
 
   useEffect(() => {
@@ -358,8 +368,10 @@ export function OnboardingScreen({ session, profile, onComplete }: OnboardingScr
       if (inviteCode) {
         try {
           await redeemInvite(supabase, inviteCode);
+          await clearPendingInviteCode();
         } catch (inviteError) {
           setInviteCode("");
+          await clearPendingInviteCode();
           setErrorMessage(
             `${inviteError instanceof Error ? inviteError.message : "Não foi possível usar o convite."} Toque em "Entrar na Fluxo" para continuar sem convite.`,
           );

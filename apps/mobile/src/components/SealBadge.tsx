@@ -10,7 +10,9 @@ import sealGold from "../../assets/selos/selo-gold.png";
 import sealMaster from "../../assets/selos/selo-master.png";
 import sealRoxo from "../../assets/selos/selo-roxo.png";
 
-const SEAL_IMAGES: Record<VerifiedSeal, number> = {
+// prime_user e prime_influencer ainda nao tem arte: ficam fora ate os PNGs chegarem em
+// assets/selos (as campanhas deles tambem nascem desligadas no banco).
+const SEAL_IMAGES: Partial<Record<VerifiedSeal, number>> = {
   azul: sealAzul,
   roxo: sealRoxo,
   gold: sealGold,
@@ -21,7 +23,9 @@ const SEAL_IMAGES: Record<VerifiedSeal, number> = {
 };
 
 export const SEAL_LABELS: Record<VerifiedSeal, string> = {
+  prime_user: "Prime",
   azul: "Verificado",
+  prime_influencer: "Prime Influencer",
   roxo: "Criador",
   gold: "Gold",
   diamante: "Diamante",
@@ -30,20 +34,19 @@ export const SEAL_LABELS: Record<VerifiedSeal, string> = {
   fundador: "Fundador",
 };
 
+export function hasSealArt(seal?: VerifiedSeal | null) {
+  return Boolean(seal && SEAL_IMAGES[seal]);
+}
+
 type SealBadgeProps = {
   seal?: VerifiedSeal | null;
   size?: number;
 };
 
 export function SealBadge({ seal, size = 16 }: SealBadgeProps) {
-  // Selo sem arte no app (ex: prime_user/prime_influencer em versoes antigas) nao renderiza.
-  if (!seal || !SEAL_IMAGES[seal]) return null;
+  // Selo sem arte no app nao renderiza.
+  const source = seal ? SEAL_IMAGES[seal] : undefined;
+  if (!source) return null;
 
-  return (
-    <Image
-      resizeMode="contain"
-      source={SEAL_IMAGES[seal]}
-      style={{ height: size, width: size }}
-    />
-  );
+  return <Image resizeMode="contain" source={source} style={{ height: size, width: size }} />;
 }

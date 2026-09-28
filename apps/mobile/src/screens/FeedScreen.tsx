@@ -26,6 +26,8 @@ type FeedScreenProps = {
   profile: Profile | null;
   onOpenProfile: (userId: string) => void;
   onOpenMissions: () => void;
+  onOpenNotifications: () => void;
+  unreadNotifications: number;
 };
 
 function timeAgo(isoDate: string) {
@@ -101,7 +103,14 @@ function PostCard({
   );
 }
 
-export function FeedScreen({ session, profile, onOpenProfile, onOpenMissions }: FeedScreenProps) {
+export function FeedScreen({
+  session,
+  profile,
+  onOpenProfile,
+  onOpenMissions,
+  onOpenNotifications,
+  unreadNotifications,
+}: FeedScreenProps) {
   const [contents, setContents] = useState<FeedContent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -227,7 +236,23 @@ export function FeedScreen({ session, profile, onOpenProfile, onOpenMissions }: 
       <View style={styles.topBar}>
         <Text style={styles.brand}>fluxo</Text>
         <View style={styles.topBarActions}>
-          <Pressable onPress={onOpenMissions} style={styles.missionsButton}>
+          <Pressable
+            accessibilityLabel="Notificações"
+            onPress={onOpenNotifications}
+            style={styles.missionsButton}
+          >
+            <Text style={styles.missionsIcon}>🔔</Text>
+            {unreadNotifications > 0 && (
+              <Text style={styles.notificationBadge}>
+                {unreadNotifications > 9 ? "9+" : unreadNotifications}
+              </Text>
+            )}
+          </Pressable>
+          <Pressable
+            accessibilityLabel="Missões"
+            onPress={onOpenMissions}
+            style={styles.missionsButton}
+          >
             <Text style={styles.missionsIcon}>⚡</Text>
           </Pressable>
           <Pressable onPress={() => onOpenProfile(session.user.id)}>
@@ -312,6 +337,20 @@ const styles = StyleSheet.create({
   missionsIcon: {
     color: "#ffc400",
     fontSize: 18,
+  },
+  notificationBadge: {
+    backgroundColor: "#ef4444",
+    borderRadius: 9,
+    color: "#ffffff",
+    fontSize: 10,
+    fontWeight: "900",
+    minWidth: 18,
+    overflow: "hidden",
+    paddingHorizontal: 4,
+    position: "absolute",
+    right: -4,
+    textAlign: "center",
+    top: -4,
   },
   list: {
     gap: 14,

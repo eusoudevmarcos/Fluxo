@@ -1,15 +1,18 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, BackHandler, StyleSheet, Text, View } from "react-native";
 
 import { BottomNav, type ScreenTab } from "../components/BottomNav";
 import { createMobileSupabaseClient } from "../lib/supabase/client";
+import { countMyUnreadNotifications } from "../lib/services/notifications.service";
 import { ensureMobileProfile, type Profile } from "../lib/services/profiles.service";
 import { CreateScreen } from "./CreateScreen";
+import { CreatorProgramScreen } from "./CreatorProgramScreen";
 import { FeedScreen } from "./FeedScreen";
 import { InvitesScreen } from "./InvitesScreen";
 import { MessagesScreen } from "./MessagesScreen";
 import { MissionsScreen } from "./MissionsScreen";
+import { NotificationsScreen } from "./NotificationsScreen";
 import { OnboardingScreen } from "./OnboardingScreen";
 import { ProfileScreen } from "./ProfileScreen";
 import { SearchScreen } from "./SearchScreen";
@@ -29,8 +32,49 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
   const [isMissionsOpen, setIsMissionsOpen] = useState(false);
   const [isWalletOpen, setIsWalletOpen] = useState(false);
   const [isInvitesOpen, setIsInvitesOpen] = useState(false);
+  const [isCreatorProgramOpen, setIsCreatorProgramOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [openConversationWithUserId, setOpenConversationWithUserId] = useState<string | null>(null);
   const [unreadMessages, setUnreadMessages] = useState(0);
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
+
+  // Contador de notificacoes: carga inicial + tempo real (notifications esta no
+  // supabase_realtime desde a migration 043; a RLS so entrega as do proprio usuario).
+  useEffect(() => {
+    const supabase = createMobileSupabaseClient();
+    let isMounted = true;
+
+    countMyUnreadNotifications(supabase).then((count) => {
+      if (isMounted) setUnreadNotifications(count);
+    });
+
+    const channel = supabase
+      .channel(`notifications:${session.user.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "notifications",
+          filter: `recipient_id=eq.${session.user.id}`,
+        },
+        () => setUnreadNotifications((current) => current + 1),
+      )
+      .subscribe();
+
+    return () => {
+      isMounted = false;
+      void supabase.removeChannel(channel);
+    };
+  }, [session.user.id]);
+
+  const handleNotificationsRead = useCallback(() => setUnreadNotifications(0), []);
+
+  // Abre uma tela a partir das notificacoes, fechando a lista.
+  const openFromNotifications = useCallback((open: () => void) => {
+    setIsNotificationsOpen(false);
+    open();
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -79,8 +123,56 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
     setIsMissionsOpen(false);
     setIsWalletOpen(false);
     setIsInvitesOpen(false);
+    setIsCreatorProgramOpen(false);
+    setIsNotificationsOpen(false);
     setActiveTab(tab);
   }, []);
+
+  // Botao voltar do Android fecha a tela sobreposta (na mesma ordem em que elas aparecem) e
+  // volta para o Inicio antes de sair do app.
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
+      if (viewedProfileUserId) {
+        setViewedProfileUserId(null);
+        return true;
+      }
+      if (isWalletOpen) {
+        setIsWalletOpen(false);
+        return true;
+      }
+      if (isCreatorProgramOpen) {
+        setIsCreatorProgramOpen(false);
+        return true;
+      }
+      if (isInvitesOpen) {
+        setIsInvitesOpen(false);
+        return true;
+      }
+      if (isMissionsOpen) {
+        setIsMissionsOpen(false);
+        return true;
+      }
+      if (isNotificationsOpen) {
+        setIsNotificationsOpen(false);
+        return true;
+      }
+      if (activeTab !== "home") {
+        setActiveTab("home");
+        return true;
+      }
+      return false;
+    });
+
+    return () => subscription.remove();
+  }, [
+    activeTab,
+    isCreatorProgramOpen,
+    isInvitesOpen,
+    isMissionsOpen,
+    isNotificationsOpen,
+    isWalletOpen,
+    viewedProfileUserId,
+  ]);
 
   const handleConsumedOpenConversationRequest = useCallback(() => {
     setOpenConversationWithUserId(null);
@@ -127,6 +219,8 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
     );
   } else if (isWalletOpen) {
     screen = <WalletScreen onBack={() => setIsWalletOpen(false)} />;
+  } else if (isCreatorProgramOpen) {
+    screen = <CreatorProgramScreen onBack={() => setIsCreatorProgramOpen(false)} />;
   } else if (isInvitesOpen) {
     screen = (
       <InvitesScreen onBack={() => setIsInvitesOpen(false)} onOpenProfile={openProfile} />
@@ -137,6 +231,18 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
         onBack={() => setIsMissionsOpen(false)}
         onOpenInvites={() => setIsInvitesOpen(true)}
         onOpenWallet={() => setIsWalletOpen(true)}
+      />
+    );
+  } else if (isNotificationsOpen) {
+    screen = (
+      <NotificationsScreen
+        onBack={() => setIsNotificationsOpen(false)}
+        onOpenCreatorProgram={() => openFromNotifications(() => setIsCreatorProgramOpen(true))}
+        onOpenInvites={() => openFromNotifications(() => setIsInvitesOpen(true))}
+        onOpenMissions={() => openFromNotifications(() => setIsMissionsOpen(true))}
+        onOpenOwnProfile={() => openFromNotifications(() => setActiveTab("profile"))}
+        onOpenProfile={openProfile}
+        onRead={handleNotificationsRead}
       />
     );
   } else if (activeTab === "search") {
@@ -156,6 +262,9 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
     screen = (
       <ProfileScreen
         onMessageUser={handleMessageUser}
+        onOpenCreatorProgram={() => setIsCreatorProgramOpen(true)}
+        onOpenInvites={() => setIsInvitesOpen(true)}
+        onOpenMissions={() => setIsMissionsOpen(true)}
         onSignOut={onSignOut}
         session={session}
         userId={session.user.id}
@@ -165,9 +274,11 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
     screen = (
       <FeedScreen
         onOpenMissions={() => setIsMissionsOpen(true)}
+        onOpenNotifications={() => setIsNotificationsOpen(true)}
         onOpenProfile={openProfile}
         profile={profile}
         session={session}
+        unreadNotifications={unreadNotifications}
       />
     );
   }

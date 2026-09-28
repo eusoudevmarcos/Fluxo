@@ -5,7 +5,13 @@
     "allowJs": false,
     "noEmit": true,
     "moduleResolution": "bundler",
-    "types": ["react"]
+    "types": ["react"],
+    // Mesmo contorno do metro.config.js: os symlinks node_modules/@ocean/* apontam para o
+    // caminho antigo do projeto, entao o TypeScript resolve os pacotes direto pela pasta.
+    "paths": {
+      "@ocean/design-tokens": ["../../packages/design-tokens/src/index.ts"],
+      "@ocean/shared": ["../../packages/shared/src/index.ts"]
+    }
   },
   "include": ["index.ts", "App.tsx", "src/**/*.ts", "src/**/*.tsx"]
 }

@@ -3,6 +3,7 @@ import type { Session } from "@supabase/supabase-js";
 import { StatusBar } from "expo-status-bar";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
+import { listenForInviteLinks } from "./src/lib/pendingInvite";
 import {
   createMobileSupabaseClient,
   getMobileSupabaseConfigError,
@@ -15,6 +16,9 @@ export default function App() {
   const configError = useMemo(() => getMobileSupabaseConfigError(), []);
   const [isLoading, setIsLoading] = useState(!configError);
   const [session, setSession] = useState<Session | null>(null);
+
+  // Link de convite (fluxo://c/CODIGO) guarda o codigo para preencher no fim do cadastro.
+  useEffect(() => listenForInviteLinks(), []);
 
   useEffect(() => {
     if (configError) return undefined;

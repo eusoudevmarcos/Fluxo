@@ -1,7 +1,9 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export type VerifiedSeal =
+  | "prime_user"
   | "azul"
+  | "prime_influencer"
   | "roxo"
   | "gold"
   | "diamante"
@@ -12,6 +14,12 @@ export type VerifiedSeal =
 type SealRow = {
   user_id: string;
   seal: VerifiedSeal;
+};
+
+export type SealHistoryItem = {
+  seal: VerifiedSeal;
+  granted_reason: string | null;
+  granted_at: string;
 };
 
 export async function getVerifiedSealsByUserIds(
@@ -43,8 +51,29 @@ export async function getVerifiedSeal(
   return seals.get(userId) ?? null;
 }
 
-// Concede o selo azul automaticamente ao atingir 100 mil fas. Nao faz nada (e nao lanca) se a
-// migration 042 ainda nao foi aplicada no Supabase, ou se o usuario ja tem qualquer selo.
+// Linha do tempo de conquistas exibida no perfil (migration 049). Publica; o selo exibido ao
+// lado do nome e o de maior patamar.
+export async function getSealHistory(
+  supabase: SupabaseClient,
+  userId: string,
+): Promise<SealHistoryItem[]> {
+  const { data, error } = await supabase
+    .from("user_seal_history")
+    .select("seal,granted_reason,granted_at")
+    .eq("user_id", userId)
+    .order("granted_at", { ascending: true });
+
+  if (error) {
+    // Migration 049 ainda nao aplicada.
+    if (error.code === "42P01" || error.code === "PGRST205") return [];
+    throw error;
+  }
+
+  return (data ?? []) as SealHistoryItem[];
+}
+
+// Desde a migration 049 o banco confere os selos por fas a cada novo fa (trigger); esta chamada
+// continua como reforco para bancos sem a 049. Nao lanca se a funcao nao existir.
 export async function checkAndGrantVerifiedSeal(supabase: SupabaseClient, userId: string) {
   const { error } = await supabase.rpc("grant_verified_seal_if_eligible", {
     target_user_id: userId,

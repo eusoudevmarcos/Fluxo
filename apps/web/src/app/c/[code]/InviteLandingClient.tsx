@@ -99,14 +99,19 @@ export function InviteLandingClient({ code }: InviteLandingClientProps) {
               <strong>{preview.code}</strong>
             </div>
 
+            {/* Abre o app instalado com o codigo (esquema fluxo:// do app mobile). */}
+            <a className={styles.primary} href={`fluxo://c/${preview.code}`}>
+              Abrir no app Fluxo
+            </a>
+
             {isLoggedIn ? (
-              <Link className={styles.primary} href="/onboarding">
-                Continuar meu cadastro
+              <Link className={styles.secondary} href="/onboarding">
+                Continuar meu cadastro no site
               </Link>
             ) : (
               <>
-                <Link className={styles.primary} href="/auth?mode=signup">
-                  Criar minha conta
+                <Link className={styles.secondary} href="/auth?mode=signup">
+                  Criar conta pelo site
                 </Link>
                 <Link className={styles.secondary} href="/auth?mode=login">
                   Já tenho conta

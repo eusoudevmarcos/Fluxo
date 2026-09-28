@@ -2,7 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import {
   ActivityIndicator,
+  Alert,
   ImageBackground,
+  Modal,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -11,7 +13,7 @@ import {
 } from "react-native";
 
 import { Avatar } from "../components/Avatar";
-import { SealBadge } from "../components/SealBadge";
+import { SEAL_LABELS, SealBadge, hasSealArt } from "../components/SealBadge";
 import { createMobileSupabaseClient } from "../lib/supabase/client";
 import {
   getProfileContentStats,
@@ -29,7 +31,9 @@ import {
 } from "../lib/services/profiles.service";
 import {
   checkAndGrantVerifiedSeal,
+  getSealHistory,
   getVerifiedSeal,
+  type SealHistoryItem,
   type VerifiedSeal,
 } from "../lib/services/seals.service";
 
@@ -39,9 +43,25 @@ type ProfileScreenProps = {
   onBack?: () => void;
   onSignOut?: () => Promise<void> | void;
   onMessageUser: (userId: string) => void;
+  onOpenMissions?: () => void;
+  onOpenInvites?: () => void;
+  onOpenCreatorProgram?: () => void;
 };
 
-export function ProfileScreen({ session, userId, onBack, onSignOut, onMessageUser }: ProfileScreenProps) {
+function formatMonthYear(isoDate: string) {
+  return new Date(isoDate).toLocaleDateString("pt-BR", { month: "short", year: "numeric" });
+}
+
+export function ProfileScreen({
+  session,
+  userId,
+  onBack,
+  onSignOut,
+  onMessageUser,
+  onOpenMissions,
+  onOpenInvites,
+  onOpenCreatorProgram,
+}: ProfileScreenProps) {
   const isSelf = userId === session.user.id;
 
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -52,6 +72,8 @@ export function ProfileScreen({ session, userId, onBack, onSignOut, onMessageUse
   });
   const [contents, setContents] = useState<ContentRow[]>([]);
   const [verifiedSeal, setVerifiedSeal] = useState<VerifiedSeal | null>(null);
+  const [sealHistory, setSealHistory] = useState<SealHistoryItem[]>([]);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [canFollow, setCanFollow] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -65,15 +87,23 @@ export function ProfileScreen({ session, userId, onBack, onSignOut, onMessageUse
       await checkAndGrantVerifiedSeal(supabase, userId).catch(() => undefined);
     }
 
-    const [profileData, relationshipStats, profileContentStats, authoredContents, relationshipState, seal] =
-      await Promise.all([
-        getProfileByUserId(supabase, userId),
-        getRelationshipStats(supabase, userId),
-        getProfileContentStats(supabase, userId),
-        listContentsByAuthorId(supabase, userId),
-        isSelf ? Promise.resolve({ isFollowing: false, canFollow: false }) : getRelationshipState(supabase, userId),
-        getVerifiedSeal(supabase, userId),
-      ]);
+    const [
+      profileData,
+      relationshipStats,
+      profileContentStats,
+      authoredContents,
+      relationshipState,
+      seal,
+      history,
+    ] = await Promise.all([
+      getProfileByUserId(supabase, userId),
+      getRelationshipStats(supabase, userId),
+      getProfileContentStats(supabase, userId),
+      listContentsByAuthorId(supabase, userId),
+      isSelf ? Promise.resolve({ isFollowing: false, canFollow: false }) : getRelationshipState(supabase, userId),
+      getVerifiedSeal(supabase, userId),
+      getSealHistory(supabase, userId).catch(() => []),
+    ]);
 
     setProfile(profileData);
     setStats(relationshipStats);
@@ -82,7 +112,21 @@ export function ProfileScreen({ session, userId, onBack, onSignOut, onMessageUse
     setIsFollowing(relationshipState.isFollowing);
     setCanFollow(relationshipState.canFollow);
     setVerifiedSeal(seal);
+    setSealHistory(history);
   }, [userId, isSelf]);
+
+  function openFromSettings(action?: () => void) {
+    setIsSettingsOpen(false);
+    action?.();
+  }
+
+  function confirmSignOut() {
+    setIsSettingsOpen(false);
+    Alert.alert("Sair da Fluxo?", "Você vai precisar entrar de novo na próxima vez.", [
+      { text: "Cancelar", style: "cancel" },
+      { text: "Sair", style: "destructive", onPress: () => void onSignOut?.() },
+    ]);
+  }
 
   useEffect(() => {
     let isMounted = true;
@@ -149,7 +193,11 @@ export function ProfileScreen({ session, userId, onBack, onSignOut, onMessageUse
           <Text style={styles.brandSmall}>fluxo</Text>
         )}
         {isSelf && (
-          <Pressable onPress={onSignOut} style={styles.settingsButton}>
+          <Pressable
+            accessibilityLabel="Configurações"
+            onPress={() => setIsSettingsOpen(true)}
+            style={styles.settingsButton}
+          >
             <Text style={styles.settingsText}>⚙</Text>
           </Pressable>
         )}
@@ -205,6 +253,44 @@ export function ProfileScreen({ session, userId, onBack, onSignOut, onMessageUse
         </View>
       )}
 
+      {(sealHistory.length > 0 || isSelf) && (
+        <View style={styles.achievements}>
+          <Text style={styles.achievementsTitle}>Conquistas</Text>
+          {sealHistory.length ? (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View style={styles.achievementRow}>
+                {sealHistory.map((item) => (
+                  <View
+                    key={item.seal}
+                    style={[
+                      styles.achievementCard,
+                      item.seal === verifiedSeal && styles.achievementCurrent,
+                    ]}
+                  >
+                    {hasSealArt(item.seal) ? (
+                      <SealBadge seal={item.seal} size={30} />
+                    ) : (
+                      <Text style={styles.achievementFallback}>✦</Text>
+                    )}
+                    <Text style={styles.achievementLabel}>{SEAL_LABELS[item.seal]}</Text>
+                    <Text style={styles.achievementDate}>{formatMonthYear(item.granted_at)}</Text>
+                    {item.seal === verifiedSeal && (
+                      <Text style={styles.achievementTag}>Atual</Text>
+                    )}
+                  </View>
+                ))}
+              </View>
+            </ScrollView>
+          ) : (
+            <Pressable onPress={onOpenMissions}>
+              <Text style={styles.achievementHint}>
+                Convide amigos e cumpra missões para conquistar seus primeiros selos ›
+              </Text>
+            </Pressable>
+          )}
+        </View>
+      )}
+
       <View style={styles.grid}>
         {contents.map((content) =>
           content.media_url ? (
@@ -228,6 +314,45 @@ export function ProfileScreen({ session, userId, onBack, onSignOut, onMessageUse
           </Text>
         )}
       </View>
+
+      <Modal
+        animationType="fade"
+        onRequestClose={() => setIsSettingsOpen(false)}
+        transparent
+        visible={isSettingsOpen}
+      >
+        <Pressable onPress={() => setIsSettingsOpen(false)} style={styles.sheetBackdrop}>
+          <Pressable style={styles.sheet}>
+            <Text style={styles.sheetTitle}>Sua conta</Text>
+            {!!onOpenMissions && (
+              <Pressable onPress={() => openFromSettings(onOpenMissions)} style={styles.sheetItem}>
+                <Text style={styles.sheetItemText}>⚡  Missões & recompensas</Text>
+              </Pressable>
+            )}
+            {!!onOpenInvites && (
+              <Pressable onPress={() => openFromSettings(onOpenInvites)} style={styles.sheetItem}>
+                <Text style={styles.sheetItemText}>✉  Convidar amigos</Text>
+              </Pressable>
+            )}
+            {!!onOpenCreatorProgram && (
+              <Pressable
+                onPress={() => openFromSettings(onOpenCreatorProgram)}
+                style={styles.sheetItem}
+              >
+                <Text style={styles.sheetItemText}>✦  Prime Influencer</Text>
+              </Pressable>
+            )}
+            {!!onSignOut && (
+              <Pressable onPress={confirmSignOut} style={styles.sheetItem}>
+                <Text style={[styles.sheetItemText, styles.sheetDanger]}>Sair da conta</Text>
+              </Pressable>
+            )}
+            <Pressable onPress={() => setIsSettingsOpen(false)} style={styles.sheetCancel}>
+              <Text style={styles.sheetCancelText}>Fechar</Text>
+            </Pressable>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </ScrollView>
   );
 }
@@ -361,6 +486,100 @@ const styles = StyleSheet.create({
   messageButtonText: {
     color: "#ffffff",
     fontSize: 25,
+  },
+  achievements: {
+    gap: 10,
+    marginTop: 22,
+  },
+  achievementsTitle: {
+    color: "#ffffff",
+    fontSize: 15,
+    fontWeight: "900",
+  },
+  achievementRow: {
+    flexDirection: "row",
+    gap: 10,
+  },
+  achievementCard: {
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.05)",
+    borderColor: "rgba(255,255,255,0.08)",
+    borderRadius: 16,
+    borderWidth: 1,
+    gap: 4,
+    minWidth: 96,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+  },
+  achievementCurrent: {
+    borderColor: "rgba(255,196,0,0.6)",
+  },
+  achievementFallback: {
+    color: "#ffc400",
+    fontSize: 24,
+  },
+  achievementLabel: {
+    color: "#ffffff",
+    fontSize: 12,
+    fontWeight: "800",
+  },
+  achievementDate: {
+    color: "rgba(255,255,255,0.55)",
+    fontSize: 11,
+  },
+  achievementTag: {
+    color: "#ffc400",
+    fontSize: 10,
+    fontWeight: "900",
+    textTransform: "uppercase",
+  },
+  achievementHint: {
+    color: "rgba(255,255,255,0.65)",
+    fontSize: 13,
+    lineHeight: 19,
+  },
+  sheetBackdrop: {
+    backgroundColor: "rgba(0,0,0,0.6)",
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  sheet: {
+    backgroundColor: "#0b1222",
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    gap: 4,
+    paddingBottom: 36,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  sheetTitle: {
+    color: "rgba(255,255,255,0.6)",
+    fontSize: 13,
+    fontWeight: "800",
+    marginBottom: 6,
+  },
+  sheetItem: {
+    borderBottomColor: "rgba(255,255,255,0.06)",
+    borderBottomWidth: 1,
+    paddingVertical: 15,
+  },
+  sheetItemText: {
+    color: "#ffffff",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  sheetDanger: {
+    color: "#f87171",
+  },
+  sheetCancel: {
+    alignItems: "center",
+    marginTop: 10,
+    paddingVertical: 12,
+  },
+  sheetCancelText: {
+    color: "rgba(255,255,255,0.7)",
+    fontSize: 15,
+    fontWeight: "800",
   },
   grid: {
     flexDirection: "row",

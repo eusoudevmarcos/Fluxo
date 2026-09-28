@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Pressable,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -40,12 +41,41 @@ function getProgressForMission(mission: MissionDefinition, progress: UserMission
   return progress.find((item) => item.mission_id === mission.id);
 }
 
+const MISSION_ICONS: Partial<Record<MissionDefinition["mission_type"], string>> = {
+  create_post: "✎",
+  create_flow: "▶",
+  create_moments: "◉",
+  create_wave: "〰",
+  create_comment: "💬",
+  mention_people: "@",
+  follow_people: "♚",
+  gain_fans: "★",
+  receive_waves: "🌊",
+  receive_comments: "💭",
+  join_communities: "◎",
+  invite_accepted: "✉",
+  invite_friends: "✉",
+  daily_active: "☀",
+  daily_streak: "🔥",
+};
+
+// Missoes so avancam com acoes reais (contadas no servidor); diarias viram a meia-noite de
+// Brasilia e semanais na segunda.
+function getHoursUntilMidnightBrasilia() {
+  const now = new Date();
+  const brasiliaNow = new Date(now.getTime() - 3 * 60 * 60 * 1000);
+  const minutesLeft =
+    24 * 60 - (brasiliaNow.getUTCHours() * 60 + brasiliaNow.getUTCMinutes());
+  return Math.max(1, Math.ceil(minutesLeft / 60));
+}
+
 export function MissionsScreen({ onBack, onOpenWallet, onOpenInvites }: MissionsScreenProps) {
   const [gamification, setGamification] = useState<UserGamification | null>(null);
   const [coinBalance, setCoinBalance] = useState(0);
   const [missions, setMissions] = useState<MissionDefinition[]>([]);
   const [progress, setProgress] = useState<UserMissionProgress[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const loadMissions = useCallback(async () => {
@@ -85,6 +115,18 @@ export function MissionsScreen({ onBack, onOpenWallet, onOpenInvites }: Missions
     };
   }, [loadMissions]);
 
+  async function handleRefresh() {
+    setIsRefreshing(true);
+    try {
+      await loadMissions();
+      setErrorMessage("");
+    } catch {
+      // mantem o que ja estava na tela
+    } finally {
+      setIsRefreshing(false);
+    }
+  }
+
   if (isLoading) {
     return (
       <View style={styles.centered}>
@@ -99,9 +141,18 @@ export function MissionsScreen({ onBack, onOpenWallet, onOpenInvites }: Missions
   const dailyMissions = missions.filter((mission) => missionGroup(mission) === "daily");
   const weeklyMissions = missions.filter((mission) => missionGroup(mission) === "weekly");
   const otherMissions = missions.filter((mission) => missionGroup(mission) === "other");
+  const completedToday = dailyMissions.filter(
+    (mission) => getProgressForMission(mission, progress)?.is_completed,
+  ).length;
 
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
+    <ScrollView
+      contentContainerStyle={styles.content}
+      refreshControl={
+        <RefreshControl onRefresh={handleRefresh} refreshing={isRefreshing} tintColor="#ffc400" />
+      }
+      style={styles.screen}
+    >
       <View style={styles.topRow}>
         <Pressable onPress={onBack} style={styles.backButton}>
           <Text style={styles.backText}>‹</Text>
@@ -138,8 +189,22 @@ export function MissionsScreen({ onBack, onOpenWallet, onOpenInvites }: Missions
         </Text>
       </Pressable>
 
-      <MissionSection missions={dailyMissions} progress={progress} title="Missões de hoje" />
-      <MissionSection missions={weeklyMissions} progress={progress} title="Missões da semana" />
+      <Text style={styles.reachHint}>
+        Missões concluídas aumentam seu alcance: você aparece mais nas sugestões de quem seguir.
+      </Text>
+
+      <MissionSection
+        missions={dailyMissions}
+        progress={progress}
+        subtitle={`${completedToday}/${dailyMissions.length} feitas · renovam em ${getHoursUntilMidnightBrasilia()}h`}
+        title="Missões de hoje"
+      />
+      <MissionSection
+        missions={weeklyMissions}
+        progress={progress}
+        subtitle="Renovam na segunda · cada uma vale +1 convite"
+        title="Missões da semana"
+      />
       {otherMissions.length > 0 && (
         <MissionSection missions={otherMissions} progress={progress} title="Desafios especiais" />
       )}
@@ -149,40 +214,55 @@ export function MissionsScreen({ onBack, onOpenWallet, onOpenInvites }: Missions
 
 function MissionSection({
   title,
+  subtitle,
   missions,
   progress,
 }: {
   title: string;
+  subtitle?: string;
   missions: MissionDefinition[];
   progress: UserMissionProgress[];
 }) {
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>{title}</Text>
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>{title}</Text>
+        {!!subtitle && <Text style={styles.sectionSubtitle}>{subtitle}</Text>}
+      </View>
 
       {missions.length ? (
         missions.map((mission) => {
           const missionProgress = getProgressForMission(mission, progress);
+          const isCompleted = Boolean(missionProgress?.is_completed);
           const current = missionProgress?.current_value ?? 0;
           const target = missionProgress?.target_value ?? mission.target_value;
           const percent = Math.min(100, Math.round((current / Math.max(1, target)) * 100));
 
           return (
-            <View key={mission.id} style={styles.mission}>
-              <Text style={styles.missionIcon}>⚡</Text>
+            <View key={mission.id} style={[styles.mission, isCompleted && styles.missionDone]}>
+              <View style={[styles.missionIconWrap, isCompleted && styles.missionIconDone]}>
+                <Text style={styles.missionIcon}>
+                  {isCompleted ? "✓" : MISSION_ICONS[mission.mission_type] ?? "⚡"}
+                </Text>
+              </View>
               <View style={styles.missionBody}>
                 <Text style={styles.missionTitle}>{mission.title}</Text>
                 <Text style={styles.missionDescription}>
                   {mission.description || "Avance seu flow e ganhe recompensas."}
                 </Text>
                 <View style={styles.missionBar}>
-                  <View style={[styles.missionBarFill, { width: `${percent}%` }]} />
+                  <View
+                    style={[
+                      styles.missionBarFill,
+                      isCompleted && styles.missionBarDone,
+                      { width: `${percent}%` },
+                    ]}
+                  />
                 </View>
               </View>
               <View style={styles.missionMeta}>
                 <Text style={styles.missionProgress}>
-                  {current}/{target}
-                  {missionProgress?.is_completed ? " ✓" : ""}
+                  {isCompleted ? "Feita" : `${current}/${target}`}
                 </Text>
                 <Text style={styles.missionReward}>+{mission.xp_reward} XP</Text>
                 {mission.coin_reward > 0 && (
@@ -321,13 +401,43 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
   },
+  reachHint: {
+    color: "rgba(255,255,255,0.6)",
+    fontSize: 12,
+    lineHeight: 17,
+  },
   section: {
     gap: 10,
+  },
+  sectionHeader: {
+    gap: 2,
   },
   sectionTitle: {
     color: "#ffffff",
     fontSize: 15,
     fontWeight: "900",
+  },
+  sectionSubtitle: {
+    color: "rgba(255,255,255,0.55)",
+    fontSize: 12,
+  },
+  missionDone: {
+    backgroundColor: "rgba(74,222,128,0.07)",
+    borderColor: "rgba(74,222,128,0.3)",
+  },
+  missionIconWrap: {
+    alignItems: "center",
+    backgroundColor: "rgba(255,196,0,0.12)",
+    borderRadius: 14,
+    height: 36,
+    justifyContent: "center",
+    width: 36,
+  },
+  missionIconDone: {
+    backgroundColor: "rgba(74,222,128,0.18)",
+  },
+  missionBarDone: {
+    backgroundColor: "#4ade80",
   },
   mission: {
     alignItems: "center",
