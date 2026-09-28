@@ -369,6 +369,8 @@ begin
     where candidate.user_id <> viewer_id
       and candidate.profile_required_completed = true
       and candidate.username is not null
+      -- is_blocked_between vem da 055 (resolvida so na execucao; aplicar 047-055 juntas)
+      and not public.is_blocked_between(viewer_id, candidate.user_id)
       and not exists (
         select 1 from viewer_following where viewer_following.following_id = candidate.user_id
       )

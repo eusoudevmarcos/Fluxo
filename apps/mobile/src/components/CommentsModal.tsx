@@ -13,6 +13,7 @@ import {
 } from "react-native";
 
 import { Avatar } from "./Avatar";
+import { ReportSheet } from "./ReportSheet";
 import { SealBadge } from "./SealBadge";
 import { createMobileSupabaseClient } from "../lib/supabase/client";
 import {
@@ -43,6 +44,15 @@ export function CommentsModal({ contentId, onClose, onCommentAdded }: CommentsMo
   const [isSending, setIsSending] = useState(false);
   const [input, setInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [reportCommentId, setReportCommentId] = useState<string | null>(null);
+
+  useEffect(() => {
+    createMobileSupabaseClient()
+      .auth.getUser()
+      .then(({ data }) => setCurrentUserId(data.user?.id ?? null))
+      .catch(() => undefined);
+  }, []);
 
   const loadComments = useCallback(async (id: string) => {
     const supabase = createMobileSupabaseClient();
@@ -120,8 +130,14 @@ export function CommentsModal({ contentId, onClose, onCommentAdded }: CommentsMo
               keyExtractor={(comment) => comment.id}
               renderItem={({ item }) => {
                 const authorName = item.author?.display_name || item.author?.username || "Fluxo";
+                const canReport = Boolean(currentUserId) && item.author_id !== currentUserId;
                 return (
-                  <View style={styles.commentRow}>
+                  <Pressable
+                    // Toque longo em comentario de outra pessoa abre a denuncia.
+                    delayLongPress={350}
+                    onLongPress={canReport ? () => setReportCommentId(item.id) : undefined}
+                    style={styles.commentRow}
+                  >
                     <Avatar avatarUrl={item.author?.avatar_url} label={authorName} />
                     <View style={styles.commentBody}>
                       <View style={styles.commentAuthorRow}>
@@ -131,7 +147,7 @@ export function CommentsModal({ contentId, onClose, onCommentAdded }: CommentsMo
                       </View>
                       <Text style={styles.commentText}>{item.text}</Text>
                     </View>
-                  </View>
+                  </Pressable>
                 );
               }}
               ListEmptyComponent={
@@ -154,6 +170,16 @@ export function CommentsModal({ contentId, onClose, onCommentAdded }: CommentsMo
           </View>
         </KeyboardAvoidingView>
       </View>
+
+      <ReportSheet
+        onClose={() => setReportCommentId(null)}
+        onReported={() =>
+          setComments((previous) => previous.filter((comment) => comment.id !== reportCommentId))
+        }
+        targetId={reportCommentId}
+        targetType="comment"
+        visible={Boolean(reportCommentId)}
+      />
     </Modal>
   );
 }

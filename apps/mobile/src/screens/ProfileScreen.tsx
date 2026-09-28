@@ -13,7 +13,9 @@ import {
 } from "react-native";
 
 import { Avatar } from "../components/Avatar";
+import { ReportSheet } from "../components/ReportSheet";
 import { SEAL_LABELS, SealBadge, hasSealArt } from "../components/SealBadge";
+import { blockUser, isUserBlockedByMe, unblockUser } from "../lib/services/safety.service";
 import { createMobileSupabaseClient } from "../lib/supabase/client";
 import {
   getProfileContentStats,
@@ -46,6 +48,8 @@ type ProfileScreenProps = {
   onOpenMissions?: () => void;
   onOpenInvites?: () => void;
   onOpenCreatorProgram?: () => void;
+  onOpenFeedback?: () => void;
+  onOpenBlockedUsers?: () => void;
 };
 
 function formatMonthYear(isoDate: string) {
@@ -61,6 +65,8 @@ export function ProfileScreen({
   onOpenMissions,
   onOpenInvites,
   onOpenCreatorProgram,
+  onOpenFeedback,
+  onOpenBlockedUsers,
 }: ProfileScreenProps) {
   const isSelf = userId === session.user.id;
 
@@ -74,6 +80,9 @@ export function ProfileScreen({
   const [verifiedSeal, setVerifiedSeal] = useState<VerifiedSeal | null>(null);
   const [sealHistory, setSealHistory] = useState<SealHistoryItem[]>([]);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isActionsOpen, setIsActionsOpen] = useState(false);
+  const [isReportOpen, setIsReportOpen] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [canFollow, setCanFollow] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -105,6 +114,10 @@ export function ProfileScreen({
       getSealHistory(supabase, userId).catch(() => []),
     ]);
 
+    if (!isSelf) {
+      setIsBlocked(await isUserBlockedByMe(supabase, userId));
+    }
+
     setProfile(profileData);
     setStats(relationshipStats);
     setContentStats(profileContentStats);
@@ -118,6 +131,42 @@ export function ProfileScreen({
   function openFromSettings(action?: () => void) {
     setIsSettingsOpen(false);
     action?.();
+  }
+
+  function confirmToggleBlock() {
+    setIsActionsOpen(false);
+    const supabase = createMobileSupabaseClient();
+
+    if (isBlocked) {
+      unblockUser(supabase, userId)
+        .then(() => setIsBlocked(false))
+        .catch((error) =>
+          setErrorMessage(error instanceof Error ? error.message : "Não foi possível desbloquear."),
+        );
+      return;
+    }
+
+    Alert.alert(
+      "Bloquear este perfil?",
+      "Vocês deixam de se seguir, não veem posts nem comentários um do outro e não podem trocar mensagens. A pessoa não é avisada.",
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Bloquear",
+          style: "destructive",
+          onPress: () => {
+            blockUser(supabase, userId)
+              .then(() => {
+                setIsBlocked(true);
+                setIsFollowing(false);
+              })
+              .catch((error) =>
+                setErrorMessage(error instanceof Error ? error.message : "Não foi possível bloquear."),
+              );
+          },
+        },
+      ],
+    );
   }
 
   function confirmSignOut() {
@@ -201,6 +250,15 @@ export function ProfileScreen({
             <Text style={styles.settingsText}>⚙</Text>
           </Pressable>
         )}
+        {!isSelf && (
+          <Pressable
+            accessibilityLabel="Mais opções"
+            onPress={() => setIsActionsOpen(true)}
+            style={styles.settingsButton}
+          >
+            <Text style={styles.settingsText}>⋯</Text>
+          </Pressable>
+        )}
       </View>
 
       {!!errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
@@ -236,7 +294,16 @@ export function ProfileScreen({
         </View>
       </View>
 
-      {!isSelf && (
+      {!isSelf && isBlocked && (
+        <View style={styles.blockedBanner}>
+          <Text style={styles.blockedText}>Você bloqueou este perfil.</Text>
+          <Pressable onPress={confirmToggleBlock}>
+            <Text style={styles.blockedAction}>Desbloquear</Text>
+          </Pressable>
+        </View>
+      )}
+
+      {!isSelf && !isBlocked && (
         <View style={styles.followRow}>
           <Pressable
             disabled={!canFollow || isTogglingFollow}
@@ -342,6 +409,16 @@ export function ProfileScreen({
                 <Text style={styles.sheetItemText}>✦  Prime Influencer</Text>
               </Pressable>
             )}
+            {!!onOpenFeedback && (
+              <Pressable onPress={() => openFromSettings(onOpenFeedback)} style={styles.sheetItem}>
+                <Text style={styles.sheetItemText}>✎  Enviar feedback / reportar bug</Text>
+              </Pressable>
+            )}
+            {!!onOpenBlockedUsers && (
+              <Pressable onPress={() => openFromSettings(onOpenBlockedUsers)} style={styles.sheetItem}>
+                <Text style={styles.sheetItemText}>⊘  Pessoas bloqueadas</Text>
+              </Pressable>
+            )}
             {!!onSignOut && (
               <Pressable onPress={confirmSignOut} style={styles.sheetItem}>
                 <Text style={[styles.sheetItemText, styles.sheetDanger]}>Sair da conta</Text>
@@ -353,6 +430,43 @@ export function ProfileScreen({
           </Pressable>
         </Pressable>
       </Modal>
+
+      <Modal
+        animationType="fade"
+        onRequestClose={() => setIsActionsOpen(false)}
+        transparent
+        visible={isActionsOpen}
+      >
+        <Pressable onPress={() => setIsActionsOpen(false)} style={styles.sheetBackdrop}>
+          <Pressable style={styles.sheet}>
+            <Text style={styles.sheetTitle}>@{profile?.username || "perfil"}</Text>
+            <Pressable
+              onPress={() => {
+                setIsActionsOpen(false);
+                setIsReportOpen(true);
+              }}
+              style={styles.sheetItem}
+            >
+              <Text style={styles.sheetItemText}>⚑  Denunciar perfil</Text>
+            </Pressable>
+            <Pressable onPress={confirmToggleBlock} style={styles.sheetItem}>
+              <Text style={[styles.sheetItemText, !isBlocked && styles.sheetDanger]}>
+                {isBlocked ? "Desbloquear" : "⊘  Bloquear"}
+              </Text>
+            </Pressable>
+            <Pressable onPress={() => setIsActionsOpen(false)} style={styles.sheetCancel}>
+              <Text style={styles.sheetCancelText}>Fechar</Text>
+            </Pressable>
+          </Pressable>
+        </Pressable>
+      </Modal>
+
+      <ReportSheet
+        onClose={() => setIsReportOpen(false)}
+        targetId={userId}
+        targetType="profile"
+        visible={isReportOpen}
+      />
     </ScrollView>
   );
 }
@@ -486,6 +600,27 @@ const styles = StyleSheet.create({
   messageButtonText: {
     color: "#ffffff",
     fontSize: 25,
+  },
+  blockedBanner: {
+    alignItems: "center",
+    backgroundColor: "rgba(248,113,113,0.1)",
+    borderColor: "rgba(248,113,113,0.3)",
+    borderRadius: 14,
+    borderWidth: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+    padding: 14,
+  },
+  blockedText: {
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: "700",
+  },
+  blockedAction: {
+    color: "#fca5a5",
+    fontSize: 14,
+    fontWeight: "900",
   },
   achievements: {
     gap: 10,

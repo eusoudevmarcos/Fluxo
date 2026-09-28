@@ -50,6 +50,8 @@ begin
   where candidate.profile_required_completed = true
     and candidate.username is not null
     and (viewer_id is null or candidate.user_id <> viewer_id)
+    -- is_blocked_between vem da 055 (resolvida so na execucao; aplicar 047-055 juntas)
+    and not public.is_blocked_between(viewer_id, candidate.user_id)
     and (
       candidate.display_name ilike '%' || clean_term || '%'
       or candidate.username ilike '%' || username_term || '%'

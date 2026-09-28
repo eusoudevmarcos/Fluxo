@@ -43,6 +43,12 @@
         }
       ],
       [
+        "expo-notifications",
+        {
+          "color": "#ffc400"
+        }
+      ],
+      [
         "expo-location",
         {
           "locationWhenInUsePermission": "A Fluxo usa sua localização para sugerir comunidades locais e, se você ativar, mostrar pessoas próximas. Sua localização exata nunca aparece para ninguém."

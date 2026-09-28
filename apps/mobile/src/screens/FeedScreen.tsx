@@ -14,6 +14,7 @@ import {
 import { Avatar } from "../components/Avatar";
 import { CommentsModal } from "../components/CommentsModal";
 import { PostVideo } from "../components/PostVideo";
+import { ReportSheet } from "../components/ReportSheet";
 import { SealBadge } from "../components/SealBadge";
 import { createMobileSupabaseClient } from "../lib/supabase/client";
 import { toggleDahora } from "../lib/services/dahoras.service";
@@ -44,14 +45,18 @@ function timeAgo(isoDate: string) {
 
 function PostCard({
   content,
+  isOwn,
   onOpenComments,
   onOpenProfile,
+  onReport,
   onToggleDahora,
   onToggleWave,
 }: {
   content: FeedContent;
+  isOwn: boolean;
   onOpenComments: (contentId: string) => void;
   onOpenProfile: (userId: string) => void;
+  onReport: (contentId: string) => void;
   onToggleDahora: (contentId: string) => void;
   onToggleWave: (contentId: string) => void;
 }) {
@@ -59,19 +64,31 @@ function PostCard({
 
   return (
     <View style={styles.card}>
-      <Pressable onPress={() => onOpenProfile(content.author_id)} style={styles.cardHeader}>
-        <Avatar avatarUrl={content.author?.avatar_url} label={authorName} />
-        <View style={styles.cardHeaderText}>
-          <View style={styles.authorNameRow}>
-            <Text style={styles.authorName}>{authorName}</Text>
-            <SealBadge seal={content.author?.verified_seal} size={14} />
+      <View style={styles.cardHeader}>
+        <Pressable onPress={() => onOpenProfile(content.author_id)} style={styles.cardHeaderAuthor}>
+          <Avatar avatarUrl={content.author?.avatar_url} label={authorName} />
+          <View style={styles.cardHeaderText}>
+            <View style={styles.authorNameRow}>
+              <Text style={styles.authorName}>{authorName}</Text>
+              <SealBadge seal={content.author?.verified_seal} size={14} />
+            </View>
+            <Text style={styles.timestamp}>
+              {content.author?.username ? `~${content.author.username} · ` : ""}
+              {timeAgo(content.created_at)}
+            </Text>
           </View>
-          <Text style={styles.timestamp}>
-            {content.author?.username ? `~${content.author.username} · ` : ""}
-            {timeAgo(content.created_at)}
-          </Text>
-        </View>
-      </Pressable>
+        </Pressable>
+        {!isOwn && (
+          <Pressable
+            accessibilityLabel="Denunciar post"
+            hitSlop={10}
+            onPress={() => onReport(content.id)}
+            style={styles.moreButton}
+          >
+            <Text style={styles.moreText}>⋯</Text>
+          </Pressable>
+        )}
+      </View>
 
       {!!content.text && <Text style={styles.body}>{content.text}</Text>}
 
@@ -116,6 +133,15 @@ export function FeedScreen({
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [openCommentsForContentId, setOpenCommentsForContentId] = useState<string | null>(null);
+  const [reportContentId, setReportContentId] = useState<string | null>(null);
+
+  // Depois de denunciar, o post some do feed de quem denunciou.
+  function handleReported() {
+    const reportedId = reportContentId;
+    if (reportedId) {
+      setContents((previous) => previous.filter((content) => content.id !== reportedId));
+    }
+  }
 
   const loadFeed = useCallback(async () => {
     const supabase = createMobileSupabaseClient();
@@ -273,8 +299,10 @@ export function FeedScreen({
         renderItem={({ item }) => (
           <PostCard
             content={item}
+            isOwn={item.author_id === session.user.id}
             onOpenComments={setOpenCommentsForContentId}
             onOpenProfile={onOpenProfile}
+            onReport={setReportContentId}
             onToggleDahora={handleToggleDahora}
             onToggleWave={handleToggleWave}
           />
@@ -291,6 +319,14 @@ export function FeedScreen({
         contentId={openCommentsForContentId}
         onClose={() => setOpenCommentsForContentId(null)}
         onCommentAdded={handleCommentAdded}
+      />
+
+      <ReportSheet
+        onClose={() => setReportContentId(null)}
+        onReported={handleReported}
+        targetId={reportContentId}
+        targetType="content"
+        visible={Boolean(reportContentId)}
       />
     </View>
   );
@@ -369,6 +405,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     gap: 10,
+  },
+  cardHeaderAuthor: {
+    alignItems: "center",
+    flex: 1,
+    flexDirection: "row",
+    gap: 10,
+  },
+  moreButton: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+  },
+  moreText: {
+    color: "rgba(255,255,255,0.7)",
+    fontSize: 22,
+    fontWeight: "900",
   },
   cardHeaderText: {
     flex: 1,

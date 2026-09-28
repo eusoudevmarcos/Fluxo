@@ -4,9 +4,12 @@ import { ActivityIndicator, BackHandler, StyleSheet, Text, View } from "react-na
 
 import { BottomNav, type ScreenTab } from "../components/BottomNav";
 import { createMobileSupabaseClient } from "../lib/supabase/client";
+import { addPushTapListener, registerForPushNotifications } from "../lib/push";
 import { countMyUnreadNotifications } from "../lib/services/notifications.service";
 import { ensureMobileProfile, type Profile } from "../lib/services/profiles.service";
+import { BlockedUsersScreen } from "./BlockedUsersScreen";
 import { CreateScreen } from "./CreateScreen";
+import { FeedbackScreen } from "./FeedbackScreen";
 import { CreatorProgramScreen } from "./CreatorProgramScreen";
 import { FeedScreen } from "./FeedScreen";
 import { InvitesScreen } from "./InvitesScreen";
@@ -34,6 +37,8 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
   const [isInvitesOpen, setIsInvitesOpen] = useState(false);
   const [isCreatorProgramOpen, setIsCreatorProgramOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const [isBlockedUsersOpen, setIsBlockedUsersOpen] = useState(false);
   const [openConversationWithUserId, setOpenConversationWithUserId] = useState<string | null>(null);
   const [unreadMessages, setUnreadMessages] = useState(0);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
@@ -69,6 +74,24 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
   }, [session.user.id]);
 
   const handleNotificationsRead = useCallback(() => setUnreadNotifications(0), []);
+
+  // Push: registra o aparelho depois do onboarding (o pedido de permissao nao aparece no meio
+  // do cadastro) e abre a lista de notificacoes quando a pessoa toca num push.
+  const isProfileReady = Boolean(profile?.profile_required_completed);
+
+  useEffect(() => {
+    if (!isProfileReady) return;
+    registerForPushNotifications(createMobileSupabaseClient()).catch(() => undefined);
+  }, [isProfileReady]);
+
+  useEffect(
+    () =>
+      addPushTapListener(() => {
+        setViewedProfileUserId(null);
+        setIsNotificationsOpen(true);
+      }),
+    [],
+  );
 
   // Abre uma tela a partir das notificacoes, fechando a lista.
   const openFromNotifications = useCallback((open: () => void) => {
@@ -125,6 +148,8 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
     setIsInvitesOpen(false);
     setIsCreatorProgramOpen(false);
     setIsNotificationsOpen(false);
+    setIsFeedbackOpen(false);
+    setIsBlockedUsersOpen(false);
     setActiveTab(tab);
   }, []);
 
@@ -138,6 +163,14 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
       }
       if (isWalletOpen) {
         setIsWalletOpen(false);
+        return true;
+      }
+      if (isFeedbackOpen) {
+        setIsFeedbackOpen(false);
+        return true;
+      }
+      if (isBlockedUsersOpen) {
+        setIsBlockedUsersOpen(false);
         return true;
       }
       if (isCreatorProgramOpen) {
@@ -166,6 +199,8 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
     return () => subscription.remove();
   }, [
     activeTab,
+    isBlockedUsersOpen,
+    isFeedbackOpen,
     isCreatorProgramOpen,
     isInvitesOpen,
     isMissionsOpen,
@@ -219,6 +254,10 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
     );
   } else if (isWalletOpen) {
     screen = <WalletScreen onBack={() => setIsWalletOpen(false)} />;
+  } else if (isFeedbackOpen) {
+    screen = <FeedbackScreen onBack={() => setIsFeedbackOpen(false)} />;
+  } else if (isBlockedUsersOpen) {
+    screen = <BlockedUsersScreen onBack={() => setIsBlockedUsersOpen(false)} />;
   } else if (isCreatorProgramOpen) {
     screen = <CreatorProgramScreen onBack={() => setIsCreatorProgramOpen(false)} />;
   } else if (isInvitesOpen) {
@@ -262,7 +301,9 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
     screen = (
       <ProfileScreen
         onMessageUser={handleMessageUser}
+        onOpenBlockedUsers={() => setIsBlockedUsersOpen(true)}
         onOpenCreatorProgram={() => setIsCreatorProgramOpen(true)}
+        onOpenFeedback={() => setIsFeedbackOpen(true)}
         onOpenInvites={() => setIsInvitesOpen(true)}
         onOpenMissions={() => setIsMissionsOpen(true)}
         onSignOut={onSignOut}

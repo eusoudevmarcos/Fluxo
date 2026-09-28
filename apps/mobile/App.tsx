@@ -3,7 +3,9 @@ import type { Session } from "@supabase/supabase-js";
 import { StatusBar } from "expo-status-bar";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
+import { ErrorBoundary } from "./src/components/ErrorBoundary";
 import { listenForInviteLinks } from "./src/lib/pendingInvite";
+import { unregisterPushNotifications } from "./src/lib/push";
 import {
   createMobileSupabaseClient,
   getMobileSupabaseConfigError,
@@ -46,7 +48,9 @@ export default function App() {
   }, [configError]);
 
   async function handleSignOut() {
-    await createMobileSupabaseClient().auth.signOut();
+    const supabase = createMobileSupabaseClient();
+    await unregisterPushNotifications(supabase).catch(() => undefined);
+    await supabase.auth.signOut();
   }
 
   if (configError) {
@@ -69,14 +73,14 @@ export default function App() {
   }
 
   return (
-    <>
+    <ErrorBoundary>
       <StatusBar style="light" />
       {session ? (
         <HomeScreen onSignOut={handleSignOut} session={session} />
       ) : (
         <AuthScreen />
       )}
-    </>
+    </ErrorBoundary>
   );
 }
 
