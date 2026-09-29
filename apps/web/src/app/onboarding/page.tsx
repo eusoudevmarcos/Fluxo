@@ -393,6 +393,14 @@ export default function OnboardingPage() {
       setError("");
       return true;
     } catch (birthError) {
+      // Banco ainda sem a migration 047: nao trava o cadastro em producao enquanto o SQL do
+      // beta nao for aplicado (a data volta a ser exigida pelo proprio banco depois dele).
+      const code = (birthError as { code?: string } | null)?.code;
+      if (code === "PGRST202" || code === "42883") {
+        setBirthRecorded(true);
+        setError("");
+        return true;
+      }
       setError(getErrorMessage(birthError, "Não foi possível continuar."));
       return false;
     }

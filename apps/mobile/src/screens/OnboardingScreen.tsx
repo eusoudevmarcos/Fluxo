@@ -197,8 +197,15 @@ export function OnboardingScreen({ session, profile, onComplete }: OnboardingScr
         }
         setBirthRecorded(true);
       } catch (error) {
-        setErrorMessage(error instanceof Error ? error.message : "Não foi possível continuar.");
-        return;
+        // Banco ainda sem a migration 047: nao trava o cadastro (o banco passa a exigir a data
+        // sozinho depois que o SQL do beta for aplicado).
+        const code = (error as { code?: string } | null)?.code;
+        if (code === "PGRST202" || code === "42883") {
+          setBirthRecorded(true);
+        } else {
+          setErrorMessage(error instanceof Error ? error.message : "Não foi possível continuar.");
+          return;
+        }
       } finally {
         setIsSubmitting(false);
       }
