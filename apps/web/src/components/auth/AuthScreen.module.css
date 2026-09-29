@@ -146,6 +146,71 @@
   width: 100%;
 }
 
+.appDownload {
+  background: var(--auth-card);
+  backdrop-filter: blur(24px);
+  border: 1px solid var(--auth-border);
+  border-radius: 24px;
+  display: grid;
+  gap: 4px;
+  padding: 16px;
+  text-align: center;
+}
+
+.appDownload > strong {
+  color: var(--auth-text);
+  font-size: 17px;
+}
+
+.appDownload > span {
+  color: var(--auth-muted);
+  font-size: 13px;
+}
+
+.appButtons {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 10px;
+}
+
+.appButton {
+  align-items: center;
+  background: #0b0f19;
+  border: 1px solid rgba(248, 250, 252, 0.22);
+  border-radius: 14px;
+  color: #f8fafc;
+  display: inline-flex;
+  gap: 10px;
+  justify-content: center;
+  min-height: 52px;
+  padding: 8px 12px;
+  text-decoration: none;
+}
+
+.appButton:hover {
+  border-color: rgba(248, 250, 252, 0.45);
+}
+
+.appButton svg {
+  flex: none;
+  font-size: 24px;
+}
+
+.appButton span {
+  display: grid;
+  font-size: 16px;
+  font-weight: 850;
+  line-height: 1.1;
+  text-align: left;
+}
+
+.appButton small {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
 .authCard,
 .switchPanel {
   background: var(--auth-card);
@@ -432,6 +497,15 @@
 
   .authCard {
     border-radius: 26px;
+  }
+
+  /* No celular: download do app e login primeiro; apresentacao depois. */
+  .authArea {
+    order: -1;
+  }
+
+  .previewFrame {
+    display: none;
   }
 }
 

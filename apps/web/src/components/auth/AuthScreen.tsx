@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { FaAndroid, FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { HiLightningBolt, HiShieldCheck, HiSparkles, HiUserGroup } from "react-icons/hi";
 
@@ -295,6 +296,37 @@ export function AuthScreen({ initialMode, initialError }: AuthScreenProps) {
       </section>
 
       <section className={styles.authArea} aria-label="Autenticação Fluxo">
+        {/* Download do app: links vindos da Vercel (NEXT_PUBLIC_ANDROID_APK_URL /
+            NEXT_PUBLIC_IOS_TESTFLIGHT_URL); sem eles, /baixar explica o que falta. */}
+        <div className={styles.appDownload}>
+          <strong>Baixe o app da Fluxo</strong>
+          <span>A experiência completa é no celular.</span>
+          <div className={styles.appButtons}>
+            <a
+              className={styles.appButton}
+              href={process.env.NEXT_PUBLIC_ANDROID_APK_URL || "/baixar"}
+              rel="noopener"
+            >
+              <FaAndroid aria-hidden />
+              <span>
+                <small>Baixar para</small>
+                Android
+              </span>
+            </a>
+            <a
+              className={styles.appButton}
+              href={process.env.NEXT_PUBLIC_IOS_TESTFLIGHT_URL || "/baixar"}
+              rel="noopener"
+            >
+              <FaApple aria-hidden />
+              <span>
+                <small>Baixar para</small>
+                iPhone
+              </span>
+            </a>
+          </div>
+        </div>
+
         <div className={styles.authCard}>
           <div className={styles.cardLogo}>
             <OceanLogo />
