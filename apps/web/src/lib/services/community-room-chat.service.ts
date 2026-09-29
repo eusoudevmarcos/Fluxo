@@ -1,4 +1,6 @@
-import type { RealtimeChannel, SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+import { pollForNewRows, type PollingSubscription } from "@/lib/polling";
 
 export const COMMUNITY_ROOM_CHAT_SETUP_MESSAGE =
   "As salas de chat precisam da migração Supabase de mensagens para enviar.";
@@ -180,18 +182,7 @@ export function subscribeToRoomMessages(
   supabase: SupabaseClient,
   roomId: string,
   callback: () => void,
-): RealtimeChannel {
-  return supabase
-    .channel(`community-room:${roomId}`)
-    .on(
-      "postgres_changes",
-      {
-        event: "INSERT",
-        schema: "public",
-        table: "community_room_messages",
-        filter: `room_id=eq.${roomId}`,
-      },
-      () => callback(),
-    )
-    .subscribe();
+): PollingSubscription {
+  // Consulta periodica no lugar do Realtime (nao roda no Render).
+  return pollForNewRows(supabase, "community_room_messages", "room_id", roomId, callback);
 }

@@ -130,7 +130,7 @@ export function CommunityRoomChat({
     return () => {
       isMounted = false;
       window.clearTimeout(timeoutId);
-      void supabase.removeChannel(channel);
+      channel.unsubscribe();
       if (isMember) {
         leaveRoomPresence(supabase, room.id).catch(() => undefined);
       }

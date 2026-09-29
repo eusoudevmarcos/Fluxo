@@ -46,33 +46,23 @@ export function HomeScreen({ onSignOut, session }: HomeScreenProps) {
   const [unreadMessages, setUnreadMessages] = useState(0);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
 
-  // Contador de notificacoes: carga inicial + tempo real (notifications esta no
-  // supabase_realtime desde a migration 043; a RLS so entrega as do proprio usuario).
+  // Contador de notificacoes: consulta ao abrir e a cada 30 s (o Realtime nao roda no Render;
+  // o push avisa com o app fechado).
   useEffect(() => {
     const supabase = createMobileSupabaseClient();
     let isMounted = true;
 
-    countMyUnreadNotifications(supabase).then((count) => {
-      if (isMounted) setUnreadNotifications(count);
-    });
+    const refresh = () =>
+      countMyUnreadNotifications(supabase).then((count) => {
+        if (isMounted) setUnreadNotifications(count);
+      });
 
-    const channel = supabase
-      .channel(`notifications:${session.user.id}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "notifications",
-          filter: `recipient_id=eq.${session.user.id}`,
-        },
-        () => setUnreadNotifications((current) => current + 1),
-      )
-      .subscribe();
+    void refresh();
+    const timer = setInterval(() => void refresh(), 30000);
 
     return () => {
       isMounted = false;
-      void supabase.removeChannel(channel);
+      clearInterval(timer);
     };
   }, [session.user.id]);
 

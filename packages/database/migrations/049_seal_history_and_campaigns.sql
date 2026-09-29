@@ -18,7 +18,11 @@ check (seal in (
 alter table public.notifications drop constraint if exists notifications_type_check;
 alter table public.notifications
 add constraint notifications_type_check
-check (type in ('dahora', 'comment', 'wave', 'follow', 'mission_reward', 'coin_gift', 'seal_granted'));
+-- Lista completa (inclui os tipos da 050 e 054) para a migration poder ser reaplicada.
+check (type in (
+  'dahora', 'comment', 'wave', 'follow', 'mission_reward', 'coin_gift', 'seal_granted',
+  'invite_accepted', 'creator_application_reviewed'
+));
 
 create or replace function public.seal_rank(seal text)
 returns integer

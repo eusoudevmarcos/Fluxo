@@ -1,4 +1,6 @@
-import type { RealtimeChannel, SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+import { pollForNewRows, type PollingSubscription } from "@/lib/polling";
 
 export type PrivProfile = {
   user_id: string;
@@ -304,23 +306,7 @@ export function subscribeToConversation(
   supabase: SupabaseClient,
   conversationId: string,
   callback: () => void,
-): RealtimeChannel {
-  const channelId =
-    typeof crypto !== "undefined" && "randomUUID" in crypto
-      ? crypto.randomUUID()
-      : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-
-  return supabase
-    .channel(`privs:${conversationId}:${channelId}`)
-    .on(
-      "postgres_changes",
-      {
-        event: "INSERT",
-        schema: "public",
-        table: "priv_messages",
-        filter: `conversation_id=eq.${conversationId}`,
-      },
-      () => callback(),
-    )
-    .subscribe();
+): PollingSubscription {
+  // Consulta periodica no lugar do Realtime (nao roda no Render).
+  return pollForNewRows(supabase, "priv_messages", "conversation_id", conversationId, callback);
 }

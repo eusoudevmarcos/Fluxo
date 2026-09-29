@@ -157,7 +157,7 @@ export function PrivsPanel({ onClose }: PrivsPanelProps) {
 
     return () => {
       window.clearTimeout(timeoutId);
-      void supabase.removeChannel(channel);
+      channel.unsubscribe();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeId, supabase]);

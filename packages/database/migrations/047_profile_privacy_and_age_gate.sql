@@ -165,6 +165,9 @@ revoke execute on function public.set_my_birth_date(date) from public;
 revoke execute on function public.set_my_birth_date(date) from anon;
 grant execute on function public.set_my_birth_date(date) to authenticated;
 
+-- A 053 amplia o retorno desta funcao; o drop deixa reaplicar esta migration depois dela.
+drop function if exists public.get_my_private_profile();
+
 create or replace function public.get_my_private_profile()
 returns table (
   location_lat numeric,

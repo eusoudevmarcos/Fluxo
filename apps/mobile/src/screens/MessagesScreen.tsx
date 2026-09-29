@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { RealtimeChannel, Session } from "@supabase/supabase-js";
+import type { Session } from "@supabase/supabase-js";
 import {
   ActivityIndicator,
   FlatList,
@@ -13,6 +13,7 @@ import {
 } from "react-native";
 
 import { Avatar } from "../components/Avatar";
+import type { PollingSubscription } from "../lib/polling";
 import { createMobileSupabaseClient } from "../lib/supabase/client";
 import {
   getConversationMessages,
@@ -46,7 +47,7 @@ export function MessagesScreen({
   const [isLoadingThread, setIsLoadingThread] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const channelRef = useRef<RealtimeChannel | null>(null);
+  const channelRef = useRef<PollingSubscription | null>(null);
 
   const loadConversations = useCallback(async () => {
     const supabase = createMobileSupabaseClient();

@@ -1,0 +1,87 @@
+# Ensaio local da pilha do Render (NAO e usado em producao).
+# O banco imita o Render: o app conecta com um dono SEM superusuario (render_owner, so CREATEROLE).
+# Uso: node infra/render/local/run-local.mjs  (gera segredos locais, sobe tudo e aplica o banco)
+name: wave-render-local
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: local-superuser
+    volumes:
+      - ./init-render-owner.sql:/docker-entrypoint-initdb.d/00-render-owner.sql:ro
+    ports:
+      - "56543:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      retries: 30
+
+  auth:
+    image: supabase/auth:v2.197.0
+    restart: on-failure
+    ports:
+      - "56999:9999"
+    environment:
+      GOTRUE_API_HOST: 0.0.0.0
+      GOTRUE_API_PORT: "9999"
+      API_EXTERNAL_URL: http://localhost:8787/auth/v1
+      GOTRUE_DB_DRIVER: postgres
+      GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:${AUTH_ADMIN_PASSWORD}@db:5432/${DB_NAME:-wave}?search_path=auth
+      GOTRUE_SITE_URL: http://localhost:3001
+      GOTRUE_URI_ALLOW_LIST: "http://localhost:3001/**,fluxo://**"
+      GOTRUE_DISABLE_SIGNUP: "false"
+      GOTRUE_JWT_SECRET: ${JWT_SECRET}
+      GOTRUE_JWT_EXP: "3600"
+      GOTRUE_JWT_AUD: authenticated
+      GOTRUE_JWT_DEFAULT_GROUP_NAME: authenticated
+      GOTRUE_JWT_ADMIN_ROLES: service_role
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
+      GOTRUE_MAILER_AUTOCONFIRM: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  rest:
+    image: postgrest/postgrest:v16.4
+    restart: on-failure
+    ports:
+      - "56300:3000"
+    environment:
+      PGRST_DB_URI: postgres://authenticator:${AUTHENTICATOR_PASSWORD}@db:5432/${DB_NAME:-wave}
+      PGRST_DB_SCHEMAS: public
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: ${JWT_SECRET}
+      PGRST_DB_USE_LEGACY_GUCS: "false"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  storage:
+    image: supabase/storage-api:v1.79.26
+    restart: on-failure
+    ports:
+      - "56500:5000"
+    environment:
+      ANON_KEY: ${ANON_KEY}
+      SERVICE_KEY: ${SERVICE_ROLE_KEY}
+      AUTH_JWT_SECRET: ${JWT_SECRET}
+      PGRST_JWT_SECRET: ${JWT_SECRET}
+      AUTH_JWT_ALGORITHM: HS256
+      DATABASE_URL: postgres://supabase_storage_admin:${STORAGE_ADMIN_PASSWORD}@db:5432/${DB_NAME:-wave}
+      POSTGREST_URL: http://rest:3000
+      FILE_SIZE_LIMIT: "104857600"
+      STORAGE_BACKEND: file
+      FILE_STORAGE_BACKEND_PATH: /var/lib/storage
+      TENANT_ID: stub
+      REGION: local
+      GLOBAL_S3_BUCKET: stub
+      ENABLE_IMAGE_TRANSFORMATION: "false"
+    volumes:
+      - storage-data:/var/lib/storage
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  storage-data:

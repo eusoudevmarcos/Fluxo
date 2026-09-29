@@ -10,7 +10,7 @@
 --   * 047 zera profile_required_completed de quem nao tem data de nascimento: todos (inclusive
 --     fundador) passam uma vez pelo onboarding so para informar a data.
 --   * Termos/privacidade mudaram de versao no app: todos aceitam de novo no proximo acesso.
---   * 056 habilita a extensao pg_net (push via Expo).
+--   * 056 cria a fila de push (o envio e feito pelo gateway em apps/api, sem pg_net).
 --
 -- DEPOIS DE APLICAR, cadastrar as contas oficiais (aprovam criadores, moderam, veem metricas):
 --   insert into public.official_accounts (user_id, kind, is_default_follow, is_founder, label)
@@ -18,6 +18,10 @@
 --   from public.profiles where username = 'SEU_USERNAME'
 --   on conflict (user_id) do nothing;
 
+
+-- ============================================================
+-- 046_disable_coin_gifting.sql
+-- ============================================================
 
 -- ============================================================
 -- 046_disable_coin_gifting.sql
@@ -200,6 +204,9 @@ $$;
 revoke execute on function public.set_my_birth_date(date) from public;
 revoke execute on function public.set_my_birth_date(date) from anon;
 grant execute on function public.set_my_birth_date(date) to authenticated;
+
+-- A 053 amplia o retorno desta funcao; o drop deixa reaplicar esta migration depois dela.
+drop function if exists public.get_my_private_profile();
 
 create or replace function public.get_my_private_profile()
 returns table (
@@ -856,7 +863,11 @@ check (seal in (
 alter table public.notifications drop constraint if exists notifications_type_check;
 alter table public.notifications
 add constraint notifications_type_check
-check (type in ('dahora', 'comment', 'wave', 'follow', 'mission_reward', 'coin_gift', 'seal_granted'));
+-- Lista completa (inclui os tipos da 050 e 054) para a migration poder ser reaplicada.
+check (type in (
+  'dahora', 'comment', 'wave', 'follow', 'mission_reward', 'coin_gift', 'seal_granted',
+  'invite_accepted', 'creator_application_reviewed'
+));
 
 create or replace function public.seal_rank(seal text)
 returns integer
@@ -1170,7 +1181,8 @@ alter table public.notifications drop constraint if exists notifications_type_ch
 alter table public.notifications
 add constraint notifications_type_check
 check (type in (
-  'dahora', 'comment', 'wave', 'follow', 'mission_reward', 'coin_gift', 'seal_granted', 'invite_accepted'
+  'dahora', 'comment', 'wave', 'follow', 'mission_reward', 'coin_gift', 'seal_granted',
+  'invite_accepted', 'creator_application_reviewed'
 ));
 
 -- 2) Tabelas.
@@ -3474,14 +3486,13 @@ grant execute on function public.list_app_feedback(text) to authenticated;
 -- 056_push_notifications.sql
 -- ============================================================
 
--- Notificacoes push (app fechado). Cada notificacao criada em public.notifications (043+)
--- vira um push via Expo Push API, disparado pelo proprio banco com pg_net -- sem servidor ou
--- Edge Function extra. O app registra o token do aparelho com register_push_token().
+-- Notificacoes push (app fechado). Cada notificacao criada em public.notifications (043+) vira
+-- um push via Expo Push API. O envio e feito pelo gateway no Render (apps/api/src/push-worker.ts),
+-- que chama claim_pending_pushes() a cada poucos segundos -- o Postgres do Render nao tem pg_net.
+-- O app registra o token do aparelho com register_push_token().
 --
 -- Adolescentes (14-17): sem push entre 21h e 8h (horario de Brasilia), modelo TikTok / ECA
 -- Digital -- a notificacao continua na lista dentro do app.
-
-create extension if not exists pg_net with schema extensions;
 
 create table if not exists public.push_tokens (
   token text primary key,
@@ -3569,58 +3580,63 @@ begin
 end;
 $$;
 
-create or replace function public.send_push_on_notification()
-returns trigger
+revoke execute on function public.push_notification_text(public.notifications) from public;
+revoke execute on function public.push_notification_text(public.notifications) from anon;
+revoke execute on function public.push_notification_text(public.notifications) from authenticated;
+
+-- Fila de envio: push_sent_at nulo = pendente. O que ja existia antes desta migration conta como
+-- enviado (nada de enxurrada de push antigo).
+alter table public.notifications add column if not exists push_sent_at timestamptz;
+
+update public.notifications set push_sent_at = created_at where push_sent_at is null;
+
+create index if not exists notifications_push_pending_idx
+  on public.notifications(created_at)
+  where push_sent_at is null;
+
+-- Pega ate max_items notificacoes pendentes, marca como enviadas e devolve uma linha por aparelho
+-- de destino, ja com o texto. Notificacao de adolescente em horario de silencio ou com mais de
+-- 1 hora e so marcada (nao envia). Uso exclusivo do gateway (conexao do dono do banco).
+create or replace function public.claim_pending_pushes(max_items integer default 500)
+returns table (token text, body text, notification_id uuid, type text)
 language plpgsql
 security definer
-set search_path = public, extensions
+set search_path = public
 as $$
 declare
-  recipient_band text;
-  local_hour integer;
-  messages jsonb;
+  local_hour integer := extract(hour from now() at time zone 'America/Sao_Paulo');
 begin
-  recipient_band := public.user_age_band(new.recipient_id);
-  local_hour := extract(hour from now() at time zone 'America/Sao_Paulo');
-
-  if recipient_band in ('teen_14', 'teen_16') and (local_hour >= 21 or local_hour < 8) then
-    return new;
-  end if;
-
-  select jsonb_agg(jsonb_build_object(
-    'to', tokens.token,
-    'title', 'Fluxo',
-    'body', public.push_notification_text(new),
-    'sound', 'default',
-    'data', jsonb_build_object('notification_id', new.id, 'type', new.type)
-  ))
-  into messages
-  from public.push_tokens tokens
-  where tokens.user_id = new.recipient_id;
-
-  if messages is null then
-    return new;
-  end if;
-
-  -- Assincrono: o pg_net enfileira e envia fora da transacao; falha de push nunca quebra a acao.
-  begin
-    perform net.http_post(
-      url := 'https://exp.host/--/api/v2/push/send',
-      body := messages,
-      headers := jsonb_build_object('Content-Type', 'application/json', 'Accept', 'application/json')
+  return query
+  with picked as (
+    select pending.id
+    from public.notifications pending
+    where pending.push_sent_at is null
+    order by pending.created_at
+    limit greatest(coalesce(max_items, 500), 1)
+    for update skip locked
+  ),
+  marked as (
+    update public.notifications target
+    set push_sent_at = now()
+    from picked
+    where target.id = picked.id
+    returning target.id
+  )
+  select tokens.token, public.push_notification_text(source), source.id, source.type
+  from marked
+  join public.notifications source on source.id = marked.id
+  join public.push_tokens tokens on tokens.user_id = source.recipient_id
+  where source.created_at > now() - interval '1 hour'
+    and not (
+      public.user_age_band(source.recipient_id) in ('teen_14', 'teen_16')
+      and (local_hour >= 21 or local_hour < 8)
     );
-  exception when others then
-    null;
-  end;
-
-  return new;
 end;
 $$;
 
-drop trigger if exists notifications_send_push on public.notifications;
-create trigger notifications_send_push
-after insert on public.notifications
-for each row execute function public.send_push_on_notification();
+revoke execute on function public.claim_pending_pushes(integer) from public;
+revoke execute on function public.claim_pending_pushes(integer) from anon;
+revoke execute on function public.claim_pending_pushes(integer) from authenticated;
 
 
 -- ============================================================

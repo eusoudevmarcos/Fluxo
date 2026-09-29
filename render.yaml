@@ -1,0 +1,152 @@
+# Blueprint do Render: a pilha Supabase auto-hospedada da Fluxo, ligada ao Postgres pago que ja
+# existe no Render. Passo a passo completo em infra/render/README.md.
+#
+#   wave-gateway  (web)     porta publica unica: /auth/v1, /rest/v1, /storage/v1 + envio de push
+#   wave-auth     (privado) GoTrue - login, cadastro, Google
+#   wave-rest     (privado) PostgREST - tabelas e funcoes (seguranca pela RLS do banco)
+#   wave-storage  (privado) Storage API - fotos e videos num disco persistente
+#
+# Valores "sync: false" sao pedidos pelo Render na criacao do Blueprint. Eles estao prontos em
+# infra/render/.env.secrets (gerado por infra/render/setup-render-db.mjs) -- copie de la.
+services:
+  - type: web
+    name: wave-gateway
+    runtime: node
+    plan: 0.5c-512mb
+    buildCommand: npm install --workspace=@ocean/api --include-workspace-root=false && npm run build -w @ocean/api
+    startCommand: npm run start -w @ocean/api
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: AUTH_URL
+        fromService:
+          type: pserv
+          name: wave-auth
+          property: hostport
+      - key: REST_URL
+        fromService:
+          type: pserv
+          name: wave-rest
+          property: hostport
+      - key: STORAGE_URL
+        fromService:
+          type: pserv
+          name: wave-storage
+          property: hostport
+      - key: ALLOWED_ORIGINS
+        value: https://www.wavesocial.com.br,https://wavesocial.com.br
+      - key: ANON_KEY
+        sync: false
+      - key: SERVICE_ROLE_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+
+  - type: pserv
+    name: wave-auth
+    runtime: image
+    plan: 0.5c-512mb
+    image:
+      url: docker.io/supabase/auth:v2.197.0
+    envVars:
+      - key: GOTRUE_API_HOST
+        value: 0.0.0.0
+      - key: GOTRUE_API_PORT
+        value: "9999"
+      - key: GOTRUE_DB_DRIVER
+        value: postgres
+      - key: GOTRUE_DB_DATABASE_URL
+        sync: false
+      - key: API_EXTERNAL_URL
+        sync: false
+      - key: GOTRUE_SITE_URL
+        value: https://www.wavesocial.com.br
+      - key: GOTRUE_URI_ALLOW_LIST
+        value: https://www.wavesocial.com.br/**,https://wavesocial.com.br/**,fluxo://**,exp://**
+      - key: GOTRUE_DISABLE_SIGNUP
+        value: "false"
+      - key: GOTRUE_JWT_SECRET
+        sync: false
+      - key: GOTRUE_JWT_EXP
+        value: "3600"
+      - key: GOTRUE_JWT_AUD
+        value: authenticated
+      - key: GOTRUE_JWT_DEFAULT_GROUP_NAME
+        value: authenticated
+      - key: GOTRUE_JWT_ADMIN_ROLES
+        value: service_role
+      - key: GOTRUE_EXTERNAL_EMAIL_ENABLED
+        value: "true"
+      # Sem SMTP ainda: contas entram sem confirmar e-mail. Ao configurar SMTP, mude para "false"
+      # e adicione GOTRUE_SMTP_HOST/PORT/USER/PASS/ADMIN_EMAIL/SENDER_NAME no painel.
+      - key: GOTRUE_MAILER_AUTOCONFIRM
+        value: "true"
+      - key: GOTRUE_EXTERNAL_GOOGLE_ENABLED
+        value: "true"
+      - key: GOTRUE_EXTERNAL_GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOTRUE_EXTERNAL_GOOGLE_SECRET
+        sync: false
+      - key: GOTRUE_EXTERNAL_GOOGLE_REDIRECT_URI
+        sync: false
+
+  - type: pserv
+    name: wave-rest
+    runtime: image
+    plan: 0.5c-512mb
+    image:
+      url: docker.io/postgrest/postgrest:v16.4
+    envVars:
+      - key: PGRST_SERVER_PORT
+        value: "3000"
+      - key: PGRST_DB_URI
+        sync: false
+      - key: PGRST_DB_SCHEMAS
+        value: public
+      - key: PGRST_DB_ANON_ROLE
+        value: anon
+      - key: PGRST_JWT_SECRET
+        sync: false
+      - key: PGRST_DB_USE_LEGACY_GUCS
+        value: "false"
+
+  - type: pserv
+    name: wave-storage
+    runtime: image
+    plan: 0.5c-512mb
+    image:
+      url: docker.io/supabase/storage-api:v1.79.26
+    disk:
+      name: storage-files
+      mountPath: /var/lib/storage
+      sizeGB: 10
+    envVars:
+      - key: SERVER_PORT
+        value: "5000"
+      - key: DATABASE_URL
+        sync: false
+      - key: ANON_KEY
+        sync: false
+      - key: SERVICE_KEY
+        sync: false
+      - key: AUTH_JWT_SECRET
+        sync: false
+      - key: PGRST_JWT_SECRET
+        sync: false
+      - key: AUTH_JWT_ALGORITHM
+        value: HS256
+      - key: FILE_SIZE_LIMIT
+        value: "104857600"
+      - key: STORAGE_BACKEND
+        value: file
+      - key: FILE_STORAGE_BACKEND_PATH
+        value: /var/lib/storage
+      - key: TENANT_ID
+        value: stub
+      - key: REGION
+        value: render
+      - key: GLOBAL_S3_BUCKET
+        value: stub
+      - key: ENABLE_IMAGE_TRANSFORMATION
+        value: "false"

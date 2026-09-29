@@ -284,8 +284,18 @@ await as(bia.id, () => q(`insert into public.app_feedback (user_id, kind, messag
 await as(dani.id, () => q(`select public.register_push_token('ExponentPushToken[abc123]', 'android')`));
 await as(ana.id, () => q(`delete from public.user_blocks where blocker_id = $1`, [ana.id]));
 await as(ana.id, () => q(`insert into public.user_relationships (follower_id, following_id) values ($1, $2)`, [ana.id, dani.id]));
-const pushes = await q(`select body from net.sent`);
-expect(pushes.length >= 1 && JSON.stringify(pushes.at(-1).body).includes("ExponentPushToken[abc123]"), "push enviado ao seguir");
+const pushes = await q(`select * from public.claim_pending_pushes(100)`);
+expect(
+  pushes.some((row) => row.token === "ExponentPushToken[abc123]" && /fã/.test(row.body)),
+  "fila de push entrega a notificacao de novo fa ao aparelho",
+);
+const again2 = await q(`select * from public.claim_pending_pushes(100)`);
+expect(again2.length === 0, "push nao e enviado duas vezes");
+await expectError(
+  as(dani.id, () => q(`select * from public.claim_pending_pushes(10)`)),
+  /permission denied/,
+  "app nao consegue ler a fila de push",
+);
 
 // Recompensa para quem RECEBE a acao (autor), disparada por outra pessoa
 await db.query(`insert into public.mission_definitions

@@ -18,7 +18,8 @@ alter table public.notifications drop constraint if exists notifications_type_ch
 alter table public.notifications
 add constraint notifications_type_check
 check (type in (
-  'dahora', 'comment', 'wave', 'follow', 'mission_reward', 'coin_gift', 'seal_granted', 'invite_accepted'
+  'dahora', 'comment', 'wave', 'follow', 'mission_reward', 'coin_gift', 'seal_granted',
+  'invite_accepted', 'creator_application_reviewed'
 ));
 
 -- 2) Tabelas.
