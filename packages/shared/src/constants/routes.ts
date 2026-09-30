@@ -4,9 +4,6 @@ export const PROFILE_ROUTE = "/perfil";
 export const FEED_ROUTE = "/feed";
 export const MOMENTS_ROUTE = "/moments";
 
-// Legacy route kept for compatibility with the current web app structure.
-export const LEGACY_MOMENTS_ROUTE = "/momentos";
-
 export const FLOWS_ROUTE = "/flows";
 export const LEGACY_FLOWS_ROUTE = "/swags";
 

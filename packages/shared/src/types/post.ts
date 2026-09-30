@@ -7,7 +7,7 @@ export type Post = {
   image_url: string | null;
   video_url: string | null;
   type: PostType;
-  momentum_id: string | null;
+  moment_id: string | null;
   created_at: string | null;
   updated_at: string | null;
 };

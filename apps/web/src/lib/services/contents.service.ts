@@ -24,7 +24,7 @@ export type FeedContent = {
   text: string | null;
   media_url: string | null;
   media_type: MediaType;
-  momentum_id: string | null;
+  moment_id: string | null;
   community_id?: string | null;
   visibility: "public";
   comments_enabled: boolean;
@@ -47,7 +47,7 @@ type ContentRow = {
   text: string | null;
   media_url: string | null;
   media_type: MediaType;
-  momentum_id: string | null;
+  moment_id: string | null;
   community_id?: string | null;
   visibility: "public";
   comments_enabled: boolean;
@@ -135,7 +135,7 @@ export async function listFeedContents(
 ): Promise<FeedContent[]> {
   const { data: contentsData, error: contentsError } = await supabase
     .from("contents")
-    .select("id,author_id,content_type,text,media_url,media_type,momentum_id,visibility,comments_enabled,created_at,updated_at")
+    .select("id,author_id,content_type,text,media_url,media_type,moment_id,visibility,comments_enabled,created_at,updated_at")
     .eq("visibility", "public")
     .order("created_at", { ascending: false })
     .limit(50);
@@ -328,7 +328,7 @@ export async function createContent(
   const { data, error } = await supabase
     .from("contents")
     .insert(insertPayload)
-    .select("id,author_id,content_type,text,media_url,media_type,momentum_id,visibility,comments_enabled,created_at,updated_at")
+    .select("id,author_id,content_type,text,media_url,media_type,moment_id,visibility,comments_enabled,created_at,updated_at")
     .single();
 
   if (error) {
@@ -378,7 +378,7 @@ export async function setCommentsEnabled(
       updated_at: new Date().toISOString(),
     })
     .eq("id", contentId)
-    .select("id,author_id,content_type,text,media_url,media_type,momentum_id,visibility,comments_enabled,created_at,updated_at")
+    .select("id,author_id,content_type,text,media_url,media_type,moment_id,visibility,comments_enabled,created_at,updated_at")
     .single();
 
   if (error) {
@@ -394,7 +394,7 @@ export async function getContentById(
 ): Promise<ContentRow | null> {
   const { data, error } = await supabase
     .from("contents")
-    .select("id,author_id,content_type,text,media_url,media_type,momentum_id,visibility,comments_enabled,created_at,updated_at")
+    .select("id,author_id,content_type,text,media_url,media_type,moment_id,visibility,comments_enabled,created_at,updated_at")
     .eq("id", contentId)
     .maybeSingle();
 
@@ -455,7 +455,7 @@ export async function listContentsByAuthorId(
 ): Promise<ContentRow[]> {
   const { data, error } = await supabase
     .from("contents")
-    .select("id,author_id,content_type,text,media_url,media_type,momentum_id,visibility,comments_enabled,created_at,updated_at")
+    .select("id,author_id,content_type,text,media_url,media_type,moment_id,visibility,comments_enabled,created_at,updated_at")
     .eq("author_id", authorId)
     .eq("visibility", "public")
     .order("created_at", { ascending: false })
@@ -478,7 +478,7 @@ export async function listContentsByIds(
 
   const { data, error } = await supabase
     .from("contents")
-    .select("id,author_id,content_type,text,media_url,media_type,momentum_id,visibility,comments_enabled,created_at,updated_at")
+    .select("id,author_id,content_type,text,media_url,media_type,moment_id,visibility,comments_enabled,created_at,updated_at")
     .eq("visibility", "public")
     .in("id", contentIds);
 
@@ -506,7 +506,7 @@ export async function listActiveFlows(
 ): Promise<FlowPreview[]> {
   const { data: flowsData, error: flowsError } = await supabase
     .from("contents")
-    .select("id,author_id,content_type,text,media_url,media_type,momentum_id,visibility,comments_enabled,created_at,updated_at")
+    .select("id,author_id,content_type,text,media_url,media_type,moment_id,visibility,comments_enabled,created_at,updated_at")
     .eq("visibility", "public")
     .eq("content_type", "flow")
     .order("created_at", { ascending: false })

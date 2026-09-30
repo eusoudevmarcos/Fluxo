@@ -34,7 +34,7 @@ from (values
   ('d_post_05', 'Recomendação quente', 'Publique 1 post recomendando uma música, série ou lugar.', 'create_post', 'daily', 1, 45, 4, 'all'),
   ('d_post_06', 'Pergunta pra galera', 'Publique 1 post com uma pergunta para seus fãs.', 'create_post', 'daily', 1, 45, 4, 'active'),
   ('d_post_07', 'Trinca de posts', 'Publique 3 posts hoje.', 'create_post', 'daily', 3, 100, 9, 'active'),
-  ('d_post_08', 'Diário do flow', 'Publique 2 posts contando momentos do seu dia.', 'create_post', 'daily', 2, 70, 6, 'active'),
+  ('d_post_08', 'Diário do flow', 'Publique 2 posts contando moments do seu dia.', 'create_post', 'daily', 2, 70, 6, 'active'),
   ('d_post_09', 'Criador em ação', 'Publique 3 posts para manter seu perfil movimentado.', 'create_post', 'daily', 3, 110, 10, 'creator'),
   ('d_post_10', 'Bastidores', 'Publique 1 post mostrando os bastidores do que você faz.', 'create_post', 'daily', 1, 50, 5, 'creator'),
   ('d_post_11', 'Hot take', 'Publique 1 post com uma opinião que vai render conversa.', 'create_post', 'daily', 1, 50, 5, 'active'),

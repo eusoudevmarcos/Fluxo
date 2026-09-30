@@ -5,7 +5,7 @@ create table if not exists public.contents (
   text text,
   media_url text,
   media_type text not null default 'none',
-  momentum_id uuid null,
+  moment_id uuid null,
   visibility text not null default 'public',
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
@@ -30,7 +30,7 @@ alter table public.contents
 add column if not exists media_type text not null default 'none';
 
 alter table public.contents
-add column if not exists momentum_id uuid null;
+add column if not exists moment_id uuid null;
 
 alter table public.contents
 add column if not exists visibility text not null default 'public';

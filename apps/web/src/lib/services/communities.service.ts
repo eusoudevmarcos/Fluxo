@@ -43,7 +43,7 @@ type CommunityContentRow = {
   text: string | null;
   media_url: string | null;
   media_type: "image" | "video" | "none";
-  momentum_id: string | null;
+  moment_id: string | null;
   community_id: string | null;
   visibility: "public";
   comments_enabled: boolean;
@@ -229,7 +229,7 @@ export async function listCommunityContents(
 ): Promise<FeedContent[]> {
   const { data, error } = await supabase
     .from("contents")
-    .select("id,author_id,content_type,text,media_url,media_type,momentum_id,community_id,visibility,comments_enabled,created_at,updated_at")
+    .select("id,author_id,content_type,text,media_url,media_type,moment_id,community_id,visibility,comments_enabled,created_at,updated_at")
     .eq("visibility", "public")
     .eq("community_id", communityId)
     .order("created_at", { ascending: false })
