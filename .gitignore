@@ -50,3 +50,13 @@ next-env.d.ts
 
 # Migracao Supabase -> Render: copias do banco com dados de usuarios
 infra/render/.work/
+
+# build output (Render builds apps/api itself via render.yaml)
+dist/
+
+# reference images (not shipped; kept out of git history)
+apps/web/public/brand/ChatGPT Image*.png
+
+# local tooling state
+.claude/*.lock
+.claude/settings.local.json
